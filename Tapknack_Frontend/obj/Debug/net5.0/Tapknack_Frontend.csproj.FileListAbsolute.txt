@@ -1,0 +1,12 @@
+D:\Storage\Projects\Web\ASP\_Tapknack\Tapknack_Frontend\bin\Debug\net5.0\Tapknack_Frontend.deps.json
+D:\Storage\Projects\Web\ASP\_Tapknack\Tapknack_Frontend\bin\Debug\net5.0\Tapknack_Frontend.dll
+D:\Storage\Projects\Web\ASP\_Tapknack\Tapknack_Frontend\bin\Debug\net5.0\ref\Tapknack_Frontend.dll
+D:\Storage\Projects\Web\ASP\_Tapknack\Tapknack_Frontend\bin\Debug\net5.0\Tapknack_Frontend.pdb
+D:\Storage\Projects\Web\ASP\_Tapknack\Tapknack_Frontend\obj\Debug\net5.0\Tapknack_Frontend.csproj.AssemblyReference.cache
+D:\Storage\Projects\Web\ASP\_Tapknack\Tapknack_Frontend\obj\Debug\net5.0\Tapknack_Frontend.GeneratedMSBuildEditorConfig.editorconfig
+D:\Storage\Projects\Web\ASP\_Tapknack\Tapknack_Frontend\obj\Debug\net5.0\Tapknack_Frontend.AssemblyInfoInputs.cache
+D:\Storage\Projects\Web\ASP\_Tapknack\Tapknack_Frontend\obj\Debug\net5.0\Tapknack_Frontend.AssemblyInfo.cs
+D:\Storage\Projects\Web\ASP\_Tapknack\Tapknack_Frontend\obj\Debug\net5.0\Tapknack_Frontend.csproj.CoreCompileInputs.cache
+D:\Storage\Projects\Web\ASP\_Tapknack\Tapknack_Frontend\obj\Debug\net5.0\Tapknack_Frontend.dll
+D:\Storage\Projects\Web\ASP\_Tapknack\Tapknack_Frontend\obj\Debug\net5.0\ref\Tapknack_Frontend.dll
+D:\Storage\Projects\Web\ASP\_Tapknack\Tapknack_Frontend\obj\Debug\net5.0\Tapknack_Frontend.pdb
