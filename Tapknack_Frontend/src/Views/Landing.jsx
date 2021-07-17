@@ -68,7 +68,7 @@ const Landing = () => {
             justifyContent: "center",
           }}
         >
-          {/* Top Panel Content */}
+          {/* Top Panel Left - Content */}
           <Grid
             container
             style={{
@@ -78,7 +78,7 @@ const Landing = () => {
               marginTop: "-175px",
             }}
           >
-            {/* Top Panel Logo */}
+            {/* Top Panel Left Content - Logo */}
             <Grid
               item
               style={{
@@ -89,7 +89,7 @@ const Landing = () => {
               <TPKIcon />
             </Grid>
 
-            {/* Top Panel Left Content */}
+            {/* Top Panel Left Content - Center Container */}
             <Grid
               container
               style={{
@@ -98,7 +98,7 @@ const Landing = () => {
                 justifyContent: "center",
               }}
             >
-              {/* Top Panel Left Header */}
+              {/* Top Panel Left Content - Title */}
               <Grid
                 item
                 style={{
@@ -132,7 +132,7 @@ const Landing = () => {
                 </Typography>
               </Grid>
 
-              {/* Top Panel Left Body */}
+              {/* Top Panel Left Content - Body */}
               <Grid
                 item
                 style={{
@@ -169,29 +169,49 @@ const Landing = () => {
             </Grid>
           </Grid>
         </Grid>
+
+        {/* Top Panel Right */}
         <Grid
           container
           style={{
             flex: 0.5,
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            marginTop: "-350px",
+            alignItems: "center",
+            marginTop: "-0px",
           }}
         >
-          <Typography
+          <Grid
+            container
             style={{
-              fontFamily: "Ubuntu",
-              textAlign: "center",
-              color: "white",
-              fontSize: 28,
-              fontWeight: "bold",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            Sign Up Now!
-          </Typography>
-          <Grid item style={{ display: "flex", justifyContent: "center" }}>
-            <SignupForm />
+            <Grid item style={{ flex: 0.1 }}>
+              <Typography
+                style={{
+                  fontFamily: "Ubuntu",
+                  textAlign: "center",
+                  color: "white",
+                  fontSize: 28,
+                  fontWeight: "bold",
+                }}
+              >
+                Sign Up Now!
+              </Typography>
+            </Grid>
+
+            {/* Top Panel Right - Form */}
+            <Grid
+              item
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                flex: 0.9,
+              }}
+            >
+              <SignupForm />
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
