@@ -8,4 +8,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="NadoMapper">
+      <HintPath>..\..\..\Utilities\NadoMapper\NadoMapper\NadoMapper\bin\Debug\netstandard2.0\NadoMapper.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

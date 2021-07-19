@@ -1,21 +1,17 @@
 import React from "react";
 import { Grid, Typography, Button, makeStyles } from "@material-ui/core";
-
 import SignupForm from "../Components/Landing/SignupForm";
-
 import background from "../res/tpk_background.png";
 import tpkIcon from "../res/tpk.png";
 import ndcIcon from "../res/nadocoLogo.png";
 
-const TPKIcon = () => {
-  return (
-    <img
-      src={tpkIcon}
-      alt="TapKnack"
-      style={{ width: "250px", height: "250px", objectFit: "contain" }}
-    />
-  );
-};
+const TPKIcon = () => (
+  <img
+    src={tpkIcon}
+    alt="TapKnack"
+    style={{ width: "250px", height: "250px", objectFit: "contain" }}
+  />
+);
 
 const NDCIcon = () => {
   const classes = useStyles();
@@ -149,10 +145,10 @@ const Landing = () => {
                     textAlign: "center",
                   }}
                 >
-                  "TapKnack is the revolutionary new platform, connecting
+                  'TapKnack is the revolutionary new platform, connecting
                   students with valuable work experience in their chosen field
                   and connecting businesses/startups with the talent they so
-                  desperately need"
+                  desperately need'
                 </Typography>
                 <Typography
                   style={{
