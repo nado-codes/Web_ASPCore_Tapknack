@@ -1,20 +1,29 @@
-import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import './App.css';
-import Landing from './Views/Landing.jsx';
+import React from "react";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import "./App.css";
+import Layout from "./Layout";
+import NotFound from "./Views/NotFound";
+import Landing from "./Views/Landing";
+import Signin from "./Views/Signin";
 
-function App() {
-
+const App = () => {
   const paths = [
-    { path: '/signin', View: undefined}
-  ]
+    { path: "/", View: Landing },
+    { path: "/signin", View: Signin },
+  ];
   return (
     <BrowserRouter>
-      <Switch>
-        <Route path="/" exact render={() => <Landing/>}/>
-      </Switch>
+      <Layout>
+        <Switch>
+          {paths.map(({ path, View }) => (
+            <Route key={path} exact path={path} render={() => <View />} />
+          ))}
+          <Route path="/404" component={NotFound} />
+          <Redirect to="/404" />
+        </Switch>
+      </Layout>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

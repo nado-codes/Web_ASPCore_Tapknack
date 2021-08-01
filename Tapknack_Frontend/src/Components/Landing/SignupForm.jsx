@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Typography,
   TextField,
   Button,
+  CircularProgress,
   makeStyles,
 } from "@material-ui/core";
+import { useGlobalStyles } from "../../Styles/GlobalStyles";
+
+import FormField from "../FormField";
 
 const useStyles = makeStyles((theme) => ({
   formField: {
@@ -17,12 +21,14 @@ const useStyles = makeStyles((theme) => ({
   formFieldLabelContainer: {
     display: "flex",
     alignItems: "center",
+    justifyContent: "flex-end",
     width: "185px",
+    marginRight: "10px",
   },
   formFieldLabel: {
     font: "Ubuntu",
     color: "white",
-    fontSize: 14,
+    fontSize: 16,
   },
   formFieldTextFieldContainer: {
     display: "flex",
@@ -38,23 +44,28 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "Ubuntu",
     color: "white",
   },
-  formButton: {
-    color: "#29E4FF",
-    textTransform: "none",
-    fontFamily: "Ubuntu",
-    "&:hover": {
-      background: "rgba(40,172,217,0.75)",
-      color: "white", //40 172 217
-    },
-    "&:active": {
-      background: "#29E4FF",
-      color: "white",
-    },
-  },
 }));
 
 const SignupForm = ({ theme }) => {
   const classes = useStyles(theme);
+  const globalStyles = useGlobalStyles(theme);
+
+  const [username, setUsername] = useState("");
+  const [pass, setPass] = useState("");
+  const [passConfirm, setPassConfirm] = useState("");
+  const [email, setEmail] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmitClicked = () => {
+    console.log("you clicked submit!");
+    setIsLoading(true);
+    setTimeout(handleSubmit, 1500);
+  };
+
+  const handleSubmit = () => {
+    setIsLoading(false);
+  };
 
   return (
     <Grid
@@ -66,128 +77,148 @@ const SignupForm = ({ theme }) => {
         paddingTop: "10px",
       }}
     >
-      {/* Top - Form Fields */}
       <Grid
-        container
+        item
         style={{
           display: "flex",
-          width: "75%",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        {/* Username */}
-        <Grid container className={classes.formField}>
-          <Grid item className={classes.formFieldLabelContainer}>
-            <Typography className={classes.formFieldLabel}>
-              Create Your Username
-            </Typography>
-          </Grid>
-          <Grid item className={classes.formFieldTextFieldContainer}>
-            <TextField
-              InputProps={{
-                className: classes.formFieldTextField,
-              }}
-              InputLabelProps={{
-                style: { color: "white" },
-              }}
-            />
-          </Grid>
-        </Grid>
+        {isLoading && (
+          <CircularProgress size={40} style={{ position: "absolute" }} />
+        )}
+        {/* Top - Form Fields */}
+        <Grid
+          container
+          style={{
+            display: "flex",
+            width: "75%",
+            opacity: isLoading ? 0.5 : 1,
+          }}
+        >
+          {/* Username */}
+          {/* <Grid container className={classes.formField}>
+            <Grid item className={classes.formFieldLabelContainer}>
+              <Typography className={globalStyles.white14}>
+                Create Your Username
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              className={classes.formFieldTextFieldContainer}
+              style={isLoading ? { border: "1px solid #AAAAAA" } : {}}
+            >
+              <TextField
+                disabled={isLoading}
+                value={username}
+                onChange={({ target: { value } }) => setUsername(value)}
+                InputProps={{
+                  className: classes.formFieldTextField,
+                }}
+                InputLabelProps={{
+                  style: { color: "white" },
+                }}
+              />
+            </Grid>
+              </Grid> */}
+          <FormField label="Create Your Username" onChange={setUsername} />
 
-        {/* Pass */}
-        <Grid container className={classes.formField}>
-          <Grid item className={classes.formFieldLabelContainer}>
-            <Typography className={classes.formFieldLabel}>
-              Create Your Password
-            </Typography>
+          {/* Pass */}
+          <Grid container className={classes.formField}>
+            <Grid item className={classes.formFieldLabelContainer}>
+              <Typography className={globalStyles.white14}>
+                Create Your Password
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              className={classes.formFieldTextFieldContainer}
+              style={isLoading ? { border: "1px solid #AAAAAA" } : {}}
+            >
+              <TextField
+                disabled={isLoading}
+                value={pass}
+                onChange={({ target: { value } }) => setPass(value)}
+                type="password"
+                InputProps={{
+                  className: classes.formFieldTextField,
+                }}
+                InputLabelProps={{
+                  style: { color: "white" },
+                }}
+              />
+            </Grid>
           </Grid>
-          <Grid item className={classes.formFieldTextFieldContainer}>
-            <TextField
-              type="password"
-              InputProps={{
-                className: classes.formFieldTextField,
-              }}
-              InputLabelProps={{
-                style: { color: "white" },
-              }}
-            />
-          </Grid>
-        </Grid>
 
-        {/* Pass Confirm */}
-        <Grid container className={classes.formField}>
-          <Grid item className={classes.formFieldLabelContainer}>
-            <Typography className={classes.formFieldLabel}>
-              Confirm Your Password
-            </Typography>
+          {/* Pass Confirm */}
+          <Grid container className={classes.formField}>
+            <Grid item className={classes.formFieldLabelContainer}>
+              <Typography className={globalStyles.white14}>
+                Confirm Your Password
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              className={classes.formFieldTextFieldContainer}
+              style={isLoading ? { border: "1px solid #AAAAAA" } : {}}
+            >
+              <TextField
+                disabled={isLoading}
+                value={passConfirm}
+                onChange={({ target: { value } }) => setPassConfirm(value)}
+                type="password"
+                InputProps={{
+                  className: classes.formFieldTextField,
+                }}
+                InputLabelProps={{
+                  style: { color: "white" },
+                }}
+              />
+            </Grid>
           </Grid>
-          <Grid item className={classes.formFieldTextFieldContainer}>
-            <TextField
-              type="password"
-              InputProps={{
-                className: classes.formFieldTextField,
-              }}
-              InputLabelProps={{
-                style: { color: "white" },
-              }}
-            />
-          </Grid>
-        </Grid>
 
-        {/* Email */}
-        <Grid container className={classes.formField}>
-          <Grid item className={classes.formFieldLabelContainer}>
-            <Typography className={classes.formFieldLabel}>
-              Enter Your Email
-            </Typography>
-          </Grid>
-          <Grid item className={classes.formFieldTextFieldContainer}>
-            <TextField
-              InputProps={{
-                className: classes.formFieldTextField,
-              }}
-              InputLabelProps={{
-                style: { color: "white" },
-              }}
-            />
+          {/* Email */}
+          <Grid container className={classes.formField}>
+            <Grid item className={classes.formFieldLabelContainer}>
+              <Typography className={globalStyles.white14}>
+                Enter Your Email
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              className={classes.formFieldTextFieldContainer}
+              style={isLoading ? { border: "1px solid #AAAAAA" } : {}}
+            >
+              <TextField
+                disabled={isLoading}
+                value={email}
+                onChange={({ target: { value } }) => setEmail(value)}
+                InputProps={{
+                  className: classes.formFieldTextField,
+                }}
+                InputLabelProps={{
+                  style: { color: "white" },
+                }}
+              />
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
-      {/* Bottom - Submit + Use & Liability */}
-      <Grid
-        container
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          paddingTop: "40px",
-        }}
-      >
-        {/* Upper Bottom - Submit */}
-        <Grid item>
-          <Button
-            className={classes.formButton}
-            variant="outline"
-            title
-            style={{
-              border: "2px solid #29E4FF",
-              fontSize: 20,
-              width: "200px",
-              height: "50px",
-            }}
-          >
-            Submit
-            {/*<Typography
-              className={classes.formFieldLabel}
-              style={{
-                fontSize: 20,
-                color: "#29E4FF",
-                textTransform: "none",
-              }}
-            >*/}
-            {/* </Typography> */}
-          </Button>
-        </Grid>
-        <Grid item>Use + Liability</Grid>
+      {/* Bottom - Submit */}
+      <Grid item>
+        <Button
+          className={globalStyles.genericButton}
+          disabled={isLoading}
+          onClick={handleSubmitClicked}
+          variant="outline"
+          title
+          style={{
+            marginTop: 20,
+          }}
+        >
+          Submit
+        </Button>
       </Grid>
     </Grid>
   );

@@ -1,9 +1,11 @@
-import React from "react";
-import { Grid, Typography, Button, makeStyles } from "@material-ui/core";
+import React, { useEffect } from "react";
+import { Grid, Typography, Button, makeStyles, Link } from "@material-ui/core";
 import SignupForm from "../Components/Landing/SignupForm";
-import background from "../res/tpk_background.png";
+
 import tpkIcon from "../res/tpk.png";
 import ndcIcon from "../res/nadocoLogo.png";
+
+import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 const TPKIcon = () => (
   <img
@@ -34,8 +36,6 @@ const useStyles = makeStyles(() => ({
     width: "100%",
     bottom: 0,
     top: 0,
-    backgroundImage: `url(${background})`,
-    backgroundSize: "contain",
   },
   img: {
     webkitUserSelect: "none",
@@ -44,10 +44,31 @@ const useStyles = makeStyles(() => ({
     oUserSelect: "none",
     userSelect: "none",
   },
+  link: {
+    color: "#29E4FF",
+    cursor: "pointer",
+
+    "&:active": {
+      color: "white",
+    },
+  },
 }));
 
-const Landing = () => {
-  const classes = useStyles();
+const Landing = ({ isMobile, theme }) => {
+  const classes = useStyles(theme);
+  const globalClasses = useGlobalStyles(theme);
+
+  const handleSigninClicked = () => {
+    // .. load signin page here
+  };
+
+  const handleUseLiabilityClicked = () => {
+    console.log("you clicked use & liability!");
+  };
+
+  const handlePrivacyClicked = () => {
+    console.log("you clicked privacy policy!");
+  };
 
   return (
     <Grid container className={classes.root}>
@@ -74,7 +95,7 @@ const Landing = () => {
               marginTop: "-175px",
             }}
           >
-            {/* Top Panel Left Content - Logo */}
+            {/* Logo */}
             <Grid
               item
               style={{
@@ -85,7 +106,7 @@ const Landing = () => {
               <TPKIcon />
             </Grid>
 
-            {/* Top Panel Left Content - Center Container */}
+            {/* Center Container */}
             <Grid
               container
               style={{
@@ -94,7 +115,7 @@ const Landing = () => {
                 justifyContent: "center",
               }}
             >
-              {/* Top Panel Left Content - Title */}
+              {/* Title */}
               <Grid
                 item
                 style={{
@@ -107,16 +128,11 @@ const Landing = () => {
                   paddingBottom: "10px",
                 }}
               >
-                <Typography
-                  style={{
-                    color: "white",
-                    fontFamily: "Ubuntu",
-                    fontWeight: "bold",
-                    fontSize: "30px",
-                  }}
-                >
-                  Welcome to TapKnack.com!
+                {/* Title */}
+                <Typography className={globalClasses.whiteTitle}>
+                  Welcome to TapKnack!
                 </Typography>
+                {/* Slogan */}
                 <Typography
                   style={{
                     textAlign: "center",
@@ -128,7 +144,7 @@ const Landing = () => {
                 </Typography>
               </Grid>
 
-              {/* Top Panel Left Content - Body */}
+              {/* Body */}
               <Grid
                 item
                 style={{
@@ -137,11 +153,10 @@ const Landing = () => {
                   marginTop: "20px",
                 }}
               >
+                {/* Description - "Tapknack is..." */}
                 <Typography
+                  className={globalClasses.white14}
                   style={{
-                    fontFamily: "Ubuntu",
-                    color: "white",
-                    fontSize: 16,
                     textAlign: "center",
                   }}
                 >
@@ -150,6 +165,7 @@ const Landing = () => {
                   and connecting businesses/startups with the talent they so
                   desperately need'
                 </Typography>
+                {/* Description Footer - "...It's Free!"" */}
                 <Typography
                   style={{
                     fontFamily: "Ubuntu",
@@ -176,28 +192,22 @@ const Landing = () => {
             marginTop: "-0px",
           }}
         >
+          {/* Center Container */}
           <Grid
             container
             style={{
               display: "flex",
               flexDirection: "column",
+              alignItems: "center",
             }}
           >
             <Grid item style={{ flex: 0.1 }}>
-              <Typography
-                style={{
-                  fontFamily: "Ubuntu",
-                  textAlign: "center",
-                  color: "white",
-                  fontSize: 28,
-                  fontWeight: "bold",
-                }}
-              >
+              <Typography className={globalClasses.whiteTitle}>
                 Sign Up Now!
               </Typography>
             </Grid>
 
-            {/* Top Panel Right - Form */}
+            {/* Form */}
             <Grid
               item
               style={{
@@ -208,10 +218,65 @@ const Landing = () => {
             >
               <SignupForm />
             </Grid>
+
+            {/* Sign-in, Use & Liability + Privacy Policy */}
+            <Grid
+              container
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                paddingTop: "40px",
+              }}
+            >
+              {/* Sign In */}
+              <Grid item>
+                <Typography className={globalClasses.white14}>
+                  Already a member?{" "}
+                  <Link
+                    className={classes.link}
+                    onClick={() => (window.location = "/signin?t=enter")}
+                  >
+                    Sign In!
+                  </Link>
+                </Typography>
+              </Grid>
+              {/* Use & Liability */}
+              <Grid item style={{ marginTop: 10 }}>
+                <Typography className={globalClasses.white14}>
+                  Please read our{" "}
+                  <Link
+                    className={classes.link}
+                    onClick={handleUseLiabilityClicked}
+                  >
+                    {"Use & Liability"}
+                  </Link>{" "}
+                  clause before use
+                </Typography>
+              </Grid>
+              {/* Disclaimer */}
+              <Grid item>
+                <Typography
+                  className={globalClasses.white14}
+                  style={{ fontSize: 11 }}
+                >
+                  By using Tapknack, you automatically agree to these terms!
+                </Typography>
+              </Grid>
+              {/* Privacy Policy */}
+              <Grid item style={{ marginTop: 10 }}>
+                <Typography className={globalClasses.white14}>
+                  View our{" "}
+                  <Link className={classes.link} onClick={handlePrivacyClicked}>
+                    Privacy Policy
+                  </Link>
+                </Typography>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
-
+      {/* Bottom Panel */}
       <Grid
         container
         style={{
