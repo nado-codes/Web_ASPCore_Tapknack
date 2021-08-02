@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { makeStyles, Grid } from "@material-ui/core";
+import { makeStyles, Grid, Typography } from "@material-ui/core";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
+import FormField from "../Components/FormField";
 
 import tpkIcon from "../res/tpk.png";
 import ndcIcon from "../res/nadocoLogo.png";
@@ -31,7 +32,6 @@ const Signin = ({ theme }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "red",
           width: "35%",
           position: "absolute",
           top: 0,
@@ -53,7 +53,9 @@ const Signin = ({ theme }) => {
           <TPKIcon />
         </Grid>
         {/* Form */}
-        <Grid item></Grid>
+        <Grid item>
+          <FormField label="abc" />
+        </Grid>
 
         {/* Links */}
         <Grid item></Grid>

@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import { makeStyles, Grid, TextField, Typography } from "@material-ui/core";
+import {
+  makeStyles,
+  Grid,
+  TextField,
+  Typography,
+  InputLabel,
+} from "@material-ui/core";
 
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 const useStyles = makeStyles((theme) => ({
   formField: {
     display: "flex",
-    flexDirection: "row",
     justifyContent: "center",
     padding: "10px",
   },
@@ -38,14 +43,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FormField = ({ label, disabled, value, onChange, theme }) => {
+const FormField = ({ label, type, disabled, value, onChange, theme }) => {
   const classes = useStyles(theme);
   const globalStyles = useGlobalStyles(theme);
 
   return (
     <Grid container className={classes.formField}>
       <Grid item className={classes.formFieldLabelContainer}>
-        <Typography className={globalStyles.white14}>{label}</Typography>
+        <InputLabel className={globalStyles.white14}>{label}</InputLabel>
       </Grid>
       <Grid
         item
@@ -55,6 +60,7 @@ const FormField = ({ label, disabled, value, onChange, theme }) => {
         <TextField
           disabled={disabled}
           value={value}
+          type={type}
           onChange={({ target: { value } }) => onChange?.(value)}
           InputProps={{
             className: classes.formFieldTextField,
