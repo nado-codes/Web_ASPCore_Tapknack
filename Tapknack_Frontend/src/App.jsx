@@ -40,13 +40,24 @@ const App = () => {
     }
   }, []);
 
-  const GotoUrl = (url) => {
+  const GetHrefNoHash = () => {
     const {
       location: { href: locationHref },
     } = window;
-    const hrefNoHash = locationHref.substring(0, locationHref.indexOf("/#"));
 
-    // console.log("HREF NO HASH=", hrefNoHash);
+    return locationHref.substring(0, locationHref.indexOf("/#"));
+  };
+
+  const GetPathnameNoHash = () => {
+    const {
+      location: { pathname: locationPathname },
+    } = window;
+
+    return locationPathname.substring(0, locationPathname.indexOf("/#"));
+  };
+
+  const GotoUrl = (url) => {
+    const hrefNoHash = GetHrefNoHash();
 
     localStorage.prevPage = hrefNoHash;
 
@@ -54,13 +65,30 @@ const App = () => {
     setTimeout(() => (window.location = `${url}/#enter`), exitTimeout);
   };
 
-  /* const TestTransitions = () => {
-    if (window.location.pathname === "/") GotoUrl("/signin");
-  }; */
+  const ForceEnter = (url) => {
+    const hrefNoHash = GetHrefNoHash();
+    localStorage.prevPage = hrefNoHash;
+    window.location = `${url}/#enter`;
+  };
+
+  const ReturnToPrevUrl = () => {
+    const hrefNoHash = GetHrefNoHash();
+
+    window.location = `${localStorage.prevPage}/#return`;
+    localStorage.prevPage = hrefNoHash;
+  };
+
+  console.log("pathname=", window.location.pathname);
+
+  const validPath =
+    paths.find(({ path }) => path === GetPathnameNoHash()) !== undefined;
+
+  console.log("validPath=", validPath);
+  console.log("pathnamenohash=", GetPathnameNoHash());
 
   return (
     <BrowserRouter>
-      <Layout /* testTransitions={TestTransitions} */ exitTimeout={exitTimeout}>
+      <Layout exitTimeout={exitTimeout}>
         <Switch>
           {paths.map(({ path, View }) => (
             <Route
@@ -70,8 +98,12 @@ const App = () => {
               render={() => <View gotoUrl={GotoUrl} />}
             />
           ))}
-          <Route path="/404" component={NotFound} />
-          <Redirect to="/404" />
+          <Route
+            key={window.location.pathname}
+            exact
+            path={window.location.pathname}
+            render={() => <NotFound returnToPrevUrl={ReturnToPrevUrl} />}
+          />
         </Switch>
       </Layout>
     </BrowserRouter>

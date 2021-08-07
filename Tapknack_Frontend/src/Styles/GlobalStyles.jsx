@@ -35,4 +35,12 @@ export const useGlobalStyles = makeStyles((theme) => ({
       color: "white",
     },
   },
+  link: {
+    color: "#29E4FF",
+    cursor: "pointer",
+
+    "&:active": {
+      color: "white",
+    },
+  },
 }));

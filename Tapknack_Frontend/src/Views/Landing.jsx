@@ -60,16 +60,15 @@ const Landing = ({ theme, gotoUrl }) => {
   const globalClasses = useGlobalStyles(theme);
 
   const handleSigninClicked = () => {
-    // .. load signin page here
     gotoUrl("/signin");
   };
 
   const handleUseLiabilityClicked = () => {
-    console.log("you clicked use & liability!");
+    gotoUrl("/liability");
   };
 
   const handlePrivacyClicked = () => {
-    console.log("you clicked privacy policy!");
+    gotoUrl("/privacy");
   };
 
   return (

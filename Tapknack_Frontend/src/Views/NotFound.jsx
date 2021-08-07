@@ -4,6 +4,7 @@ import { Grid, Typography, Button } from "@material-ui/core";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 import tpkIcon from "../res/tpk.png";
+import { useEffect } from "react";
 
 const TPKIcon = () => (
   <img
@@ -13,10 +14,8 @@ const TPKIcon = () => (
   />
 );
 
-const NotFound = ({ theme }) => {
+const NotFound = ({ theme, returnToPrevUrl }) => {
   const globalStyles = useGlobalStyles(theme);
-
-  const handleLandingPageClicked = () => {};
 
   return (
     <Grid
@@ -47,15 +46,13 @@ const NotFound = ({ theme }) => {
         >
           Page Not Found
         </Typography>
-        <NavLink to="/" style={{ textDecoration: "none" }}>
-          <Button
-            className={globalStyles.genericButton}
-            style={{ width: "300px", marginTop: "20px" }}
-            onClick={handleLandingPageClicked}
-          >
-            Take me to the Landing Page!
-          </Button>
-        </NavLink>
+        <Button
+          className={globalStyles.genericButton}
+          style={{ width: "300px", marginTop: "20px" }}
+          onClick={returnToPrevUrl}
+        >
+          Take me back!
+        </Button>
       </Grid>
     </Grid>
   );

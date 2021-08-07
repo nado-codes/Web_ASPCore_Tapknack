@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Slide, Fade, CircularProgress } from "@material-ui/core";
+import { Grid, Slide, Fade, Box } from "@material-ui/core";
 import background from "./res/tpk_background.png";
 import PropTypes from "prop-types";
 
@@ -55,9 +55,6 @@ const Layout = ({ children, /* testTransitions, */ exitTimeout }) => {
             timeout={{ enter: !isForceLoad ? 750 : 0, exit: 750 }}
             mountOnEnter
             unmountOnExit
-            /* onEntered={() => {
-              !isForceLoad && testTransitions();
-            }} */
           >
             {children}
           </Slide>

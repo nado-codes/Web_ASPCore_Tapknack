@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 const SignupForm = ({ theme }) => {
   const classes = useStyles(theme);
   const globalStyles = useGlobalStyles(theme);
+  const labelMinWidth = "185px";
 
   const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
@@ -94,6 +95,7 @@ const SignupForm = ({ theme }) => {
             label="Create Your Username"
             disabled={isLoading}
             value={username}
+            labelMinWidth={labelMinWidth}
             onChange={setUsername}
           />
           <FormField
@@ -101,6 +103,7 @@ const SignupForm = ({ theme }) => {
             type="password"
             disabled={isLoading}
             value={pass}
+            labelMinWidth={labelMinWidth}
             onChange={setPass}
           />
 
@@ -109,6 +112,7 @@ const SignupForm = ({ theme }) => {
             type="password"
             disabled={isLoading}
             value={passConfirm}
+            labelMinWidth={labelMinWidth}
             onChange={setPassConfirm}
           />
 
@@ -116,6 +120,7 @@ const SignupForm = ({ theme }) => {
             label="Enter Your Email"
             disabled={isLoading}
             value={email}
+            labelMinWidth={labelMinWidth}
             onChange={setEmail}
           />
         </Grid>

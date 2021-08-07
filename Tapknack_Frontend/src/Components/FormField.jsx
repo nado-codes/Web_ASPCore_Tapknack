@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-end",
-    width: "185px",
+    width: "auto",
     marginRight: "10px",
   },
   formFieldLabel: {
@@ -43,14 +43,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FormField = ({ label, type, disabled, value, onChange, theme }) => {
+const FormField = ({
+  label,
+  icon,
+  type,
+  disabled,
+  value,
+  labelMinWidth,
+  onChange,
+  theme,
+}) => {
   const classes = useStyles(theme);
   const globalStyles = useGlobalStyles(theme);
 
   return (
     <Grid container className={classes.formField}>
-      <Grid item className={classes.formFieldLabelContainer}>
-        <InputLabel className={globalStyles.white14}>{label}</InputLabel>
+      <Grid
+        item
+        className={classes.formFieldLabelContainer}
+        style={{ minWidth: labelMinWidth }}
+      >
+        {icon && icon}
+        {label && (
+          <InputLabel className={globalStyles.white14}>{label}</InputLabel>
+        )}
       </Grid>
       <Grid
         item
