@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Slide, Fade, Box } from "@material-ui/core";
+import { Grid, Slide, Fade } from "@material-ui/core";
 import background from "./res/tpk_background.png";
 import PropTypes from "prop-types";
 

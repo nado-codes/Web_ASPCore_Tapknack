@@ -43,4 +43,16 @@ export const useGlobalStyles = makeStyles((theme) => ({
       color: "white",
     },
   },
+  noSelect: {
+    webkitUserSelect: "none",
+    khtmlUserSelect: "none",
+    mozUserSelect: "none",
+    oUserSelect: "none",
+    userSelect: "none",
+    webkitUserDrag: "none",
+    khtmlUserDrag: "none",
+    mozUserDrag: "none",
+    oUserDrag: "none",
+    userDrag: "none",
+  },
 }));

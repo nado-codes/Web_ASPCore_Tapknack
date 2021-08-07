@@ -1,14 +1,10 @@
-import React, { useState } from "react";
-import {
-  makeStyles,
-  Grid,
-  TextField,
-  InputLabel,
-  Typography,
-} from "@material-ui/core";
+import React from "react";
+import { makeStyles, Grid, TextField, InputLabel } from "@material-ui/core";
+import PropTypes from "prop-types";
 
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 
+// TODO: Make some of these into inline styles
 const useStyles = makeStyles((theme) => ({
   formField: {
     display: "flex",
@@ -50,6 +46,7 @@ const FormField = ({
   disabled,
   value,
   labelMinWidth,
+  textFieldMinWidth,
   onChange,
   theme,
 }) => {
@@ -71,7 +68,12 @@ const FormField = ({
       <Grid
         item
         className={classes.formFieldTextFieldContainer}
-        style={disabled ? { border: "1px solid #AAAAAA" } : {}}
+        style={{
+          border: disabled
+            ? "1px solid #AAAAAA"
+            : classes.formFieldTextFieldContainer.border,
+          minWidth: textFieldMinWidth,
+        }}
       >
         <TextField
           disabled={disabled}
@@ -88,6 +90,29 @@ const FormField = ({
       </Grid>
     </Grid>
   );
+};
+
+FormField.propTypes = {
+  label: PropTypes.string,
+  icon: PropTypes.shape({}),
+  type: PropTypes.string,
+  disabled: PropTypes.bool,
+  value: PropTypes.string.isRequired,
+  labelMinWidth: PropTypes.number,
+  textFieldMinWidth: PropTypes.number,
+  onChange: PropTypes.func,
+  theme: PropTypes.shape({}),
+};
+
+FormField.defaultProps = {
+  label: "",
+  icon: undefined,
+  type: undefined,
+  disabled: false,
+  labelMinWidth: undefined,
+  textFieldMinWidth: undefined,
+  onChange: () => {},
+  theme: {},
 };
 
 export default FormField;

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Layout from "./Layout";
 import NotFound from "./Views/NotFound";
@@ -65,26 +65,12 @@ const App = () => {
     setTimeout(() => (window.location = `${url}/#enter`), exitTimeout);
   };
 
-  const ForceEnter = (url) => {
-    const hrefNoHash = GetHrefNoHash();
-    localStorage.prevPage = hrefNoHash;
-    window.location = `${url}/#enter`;
-  };
-
   const ReturnToPrevUrl = () => {
     const hrefNoHash = GetHrefNoHash();
 
     window.location = `${localStorage.prevPage}/#return`;
     localStorage.prevPage = hrefNoHash;
   };
-
-  console.log("pathname=", window.location.pathname);
-
-  const validPath =
-    paths.find(({ path }) => path === GetPathnameNoHash()) !== undefined;
-
-  console.log("validPath=", validPath);
-  console.log("pathnamenohash=", GetPathnameNoHash());
 
   return (
     <BrowserRouter>

@@ -1,46 +1,10 @@
 import React, { useState } from "react";
-import { Grid, Button, CircularProgress, makeStyles } from "@material-ui/core";
+import { Grid, Button, CircularProgress } from "@material-ui/core";
 import { useGlobalStyles } from "../../Styles/GlobalStyles";
 
 import FormField from "../FormField";
 
-const useStyles = makeStyles((theme) => ({
-  formField: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    padding: "10px",
-  },
-  formFieldLabelContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    width: "185px",
-    marginRight: "10px",
-  },
-  formFieldLabel: {
-    font: "Ubuntu",
-    color: "white",
-    fontSize: 16,
-  },
-  formFieldTextFieldContainer: {
-    display: "flex",
-    justifyContent: "center",
-    border: "1px solid #29E4FF",
-    borderRadius: "8px",
-    width: "175px",
-    height: "35px",
-    paddingLeft: "10px",
-    paddingRight: "10px",
-  },
-  formFieldTextField: {
-    fontFamily: "Ubuntu",
-    color: "white",
-  },
-}));
-
 const SignupForm = ({ theme }) => {
-  const classes = useStyles(theme);
   const globalStyles = useGlobalStyles(theme);
   const labelMinWidth = "185px";
 
@@ -52,13 +16,14 @@ const SignupForm = ({ theme }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmitClicked = () => {
-    console.log("you clicked submit!");
     setIsLoading(true);
     setTimeout(handleSubmit, 1500);
   };
 
   const handleSubmit = () => {
     setIsLoading(false);
+
+    // .. TODO: Goto "Dashboard"
   };
 
   return (

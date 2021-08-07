@@ -7,9 +7,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import FormField from "../Components/FormField";
+import Footer from "../Components/FooterA";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 
-import tpkIcon from "../res/tpk.png";
+import TPKIcon from "../res/Icons/iconTPK";
 import padlockIcon from "../res/ic/icPadlock_48.png";
 import PropTypes from "prop-types";
 
@@ -29,19 +30,11 @@ const PadlockIcon = () => (
   />
 );
 
-const TPKIcon = () => (
-  <img
-    src={tpkIcon}
-    alt="TapKnack"
-    style={{ width: "250px", height: "250px", objectFit: "contain" }}
-  />
-);
-
 const Signin = ({ theme, gotoUrl }) => {
   const globalStyles = useGlobalStyles(theme);
 
-  const [username, setUsername] = useState(undefined);
-  const [pass, setPass] = useState(undefined);
+  const [username, setUsername] = useState("");
+  const [pass, setPass] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignupClicked = () => {
@@ -100,16 +93,17 @@ const Signin = ({ theme, gotoUrl }) => {
             borderBottom: "2px solid rgba(40,172,217,.5)",
           }}
         >
-          <TPKIcon />
+          <TPKIcon size={200} />
         </Grid>
         {/* Form */}
         <Grid
-          item
+          container
           style={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            marginTop: "50px",
+            marginTop: "30px",
+            width: "100%",
           }}
         >
           {isLoading && (
@@ -118,27 +112,34 @@ const Signin = ({ theme, gotoUrl }) => {
               style={{ position: "absolute", marginTop: "20px" }}
             />
           )}
-          <FormField
-            label="abc"
-            disabled={isLoading}
-            value={username}
-            labelMinWidth={"35px"}
-            onChange={setUsername}
-          />
-          <FormField
-            icon={<PadlockIcon />}
-            type="password"
-            disabled={isLoading}
-            value={pass}
-            labelMinWidth={"35px"}
-            onChange={setPass}
-          />
+          <Grid item style={{ marginLeft: "0px" }}>
+            {" "}
+            {/* -25px */}
+            <FormField
+              label="abc"
+              disabled={isLoading}
+              value={username}
+              labelMinWidth={30}
+              textFieldMinWidth={0} // 250
+              onChange={setUsername}
+            />
+            <FormField
+              icon={<PadlockIcon />}
+              type="password"
+              disabled={isLoading}
+              value={pass}
+              labelMinWidth={30}
+              textFieldMinWidth={0} // 250
+              onChange={setPass}
+            />
+          </Grid>
           <Button
             className={globalStyles.genericButton}
             disabled={isLoading}
             onClick={handleSubmitClicked}
             style={{
               marginTop: "50px",
+              width: "150px",
             }}
           >
             Login
@@ -176,9 +177,11 @@ const Signin = ({ theme, gotoUrl }) => {
               </Link>
             </Typography>
           </Grid>
+          {/* Footer */}
+          <Grid item style={{ width: "100%", marginTop: "30px" }}>
+            <Footer />
+          </Grid>
         </Grid>
-        {/* Footer */}
-        <Grid item></Grid>
       </Grid>
     </Grid>
   );

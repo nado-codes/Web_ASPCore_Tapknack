@@ -1,33 +1,12 @@
 import React from "react";
-import { Grid, Typography, Button, makeStyles, Link } from "@material-ui/core";
+import { Grid, Typography, makeStyles, Link } from "@material-ui/core";
 import SignupForm from "../Components/Landing/SignupForm";
+import Footer from "../Components/FooterA";
 
-import tpkIcon from "../res/tpk.png";
-import ndcIcon from "../res/nadocoLogo.png";
+import TPKIcon from "../res/Icons/iconTPK";
 
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 import PropTypes from "prop-types";
-
-const TPKIcon = () => (
-  <img
-    src={tpkIcon}
-    alt="TapKnack"
-    style={{ width: "250px", height: "250px", objectFit: "contain" }}
-  />
-);
-
-const NDCIcon = () => {
-  const classes = useStyles();
-
-  return (
-    <img
-      className={classes.img}
-      src={ndcIcon}
-      alt="NadoCo Interactive"
-      style={{ width: "150px", height: "50px", objectFit: "contain" }}
-    />
-  );
-};
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -38,17 +17,9 @@ const useStyles = makeStyles(() => ({
     bottom: 0,
     top: 0,
   },
-  img: {
-    webkitUserSelect: "none",
-    khtmlUserSelect: "none",
-    mozUserSelect: "none",
-    oUserSelect: "none",
-    userSelect: "none",
-  },
   link: {
     color: "#29E4FF",
     cursor: "pointer",
-
     "&:active": {
       color: "white",
     },
@@ -107,7 +78,7 @@ const Landing = ({ theme, gotoUrl }) => {
               <TPKIcon />
             </Grid>
 
-            {/* Center Container */}
+            {/* Centering Container */}
             <Grid
               container
               style={{
@@ -193,7 +164,7 @@ const Landing = ({ theme, gotoUrl }) => {
             marginTop: "-0px",
           }}
         >
-          {/* Center Container */}
+          {/* Centering Container */}
           <Grid
             container
             style={{
@@ -275,50 +246,7 @@ const Landing = ({ theme, gotoUrl }) => {
         </Grid>
       </Grid>
       {/* Bottom Panel */}
-      <Grid
-        container
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          flex: 0.2,
-          alignItems: "center",
-        }}
-      >
-        <Grid
-          container
-          style={{
-            width: "25%",
-            flex: 0.1,
-            display: "flex",
-            justifyContent: "center",
-            paddingTop: "20px",
-          }}
-        >
-          <Typography style={{ color: "#29E4FF", fontFamily: "Ubuntu" }}>
-            Brought to you by
-          </Typography>
-        </Grid>
-        <Grid
-          container
-          style={{
-            width: "25%",
-            flex: 0.9,
-            paddingTop: "-20px",
-            justifyContent: "center",
-            alignItems: "flex-start",
-          }}
-        >
-          <Grid item>
-            <Button
-              startIcon={<NDCIcon />}
-              style={{
-                borderRadius: "10px",
-                userSelect: "none",
-              }}
-            />
-          </Grid>
-        </Grid>
-      </Grid>
+      <Footer showSubtitle />
     </Grid>
   );
 };

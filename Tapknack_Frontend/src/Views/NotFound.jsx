@@ -1,10 +1,8 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import { Grid, Typography, Button } from "@material-ui/core";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 import tpkIcon from "../res/tpk.png";
-import { useEffect } from "react";
 
 const TPKIcon = () => (
   <img
