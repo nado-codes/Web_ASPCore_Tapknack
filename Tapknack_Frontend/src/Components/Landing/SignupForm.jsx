@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Grid,
-  Typography,
-  TextField,
-  Button,
-  CircularProgress,
-  makeStyles,
-} from "@material-ui/core";
+import { Grid, Button, CircularProgress, makeStyles } from "@material-ui/core";
 import { useGlobalStyles } from "../../Styles/GlobalStyles";
 
 import FormField from "../FormField";
@@ -115,13 +108,12 @@ const SignupForm = ({ theme }) => {
             label="Confirm Your Password"
             type="password"
             disabled={isLoading}
-            value={pass}
-            onChange={setPass}
+            value={passConfirm}
+            onChange={setPassConfirm}
           />
 
           <FormField
             label="Enter Your Email"
-            type="password"
             disabled={isLoading}
             value={email}
             onChange={setEmail}
