@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Grid, Typography, Button, makeStyles, Link } from "@material-ui/core";
 import SignupForm from "../Components/Landing/SignupForm";
 
@@ -6,6 +6,7 @@ import tpkIcon from "../res/tpk.png";
 import ndcIcon from "../res/nadocoLogo.png";
 
 import { useGlobalStyles } from "../Styles/GlobalStyles";
+import PropTypes from "prop-types";
 
 const TPKIcon = () => (
   <img
@@ -54,12 +55,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Landing = ({ isMobile, theme }) => {
+const Landing = ({ theme, gotoUrl }) => {
   const classes = useStyles(theme);
   const globalClasses = useGlobalStyles(theme);
 
   const handleSigninClicked = () => {
     // .. load signin page here
+    gotoUrl("/signin");
   };
 
   const handleUseLiabilityClicked = () => {
@@ -233,10 +235,7 @@ const Landing = ({ isMobile, theme }) => {
               <Grid item>
                 <Typography className={globalClasses.white14}>
                   Already a member?{" "}
-                  <Link
-                    className={classes.link}
-                    onClick={() => (window.location = "/signin?t=enter")}
-                  >
+                  <Link className={classes.link} onClick={handleSigninClicked}>
                     Sign In!
                   </Link>
                 </Typography>
@@ -323,6 +322,10 @@ const Landing = ({ isMobile, theme }) => {
       </Grid>
     </Grid>
   );
+};
+
+Landing.propTypes = {
+  gotoUrl: PropTypes.func.isRequired,
 };
 
 export default Landing;

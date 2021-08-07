@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { makeStyles, Grid, Typography, Button } from "@material-ui/core";
+import { Grid, Typography, Button } from "@material-ui/core";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 import tpkIcon from "../res/tpk.png";

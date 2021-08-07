@@ -1,12 +1,16 @@
-import React, { useState } from "react";
-import { makeStyles, Grid } from "@material-ui/core";
-import { useGlobalStyles } from "../Styles/GlobalStyles";
+import React from "react";
+import { Grid } from "@material-ui/core";
+// import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 import tpkIcon from "../res/tpk.png";
-import ndcIcon from "../res/nadocoLogo.png";
+import PropTypes from "prop-types";
 
-const Signin = ({ theme }) => {
-  const globalStyles = useGlobalStyles(theme);
+// TODO: will use later
+// import ndcIcon from "../res/nadocoLogo.png";
+
+const Signin = ({ theme, gotoUrl }) => {
+  // TODO: will use later
+  // const globalStyles = useGlobalStyles(theme);
 
   const TPKIcon = () => (
     <img
@@ -21,6 +25,11 @@ const Signin = ({ theme }) => {
       container
       style={{
         display: "flex",
+        flexDirection: "column",
+        position: "absolute",
+        width: "100%",
+        bottom: 0,
+        top: 0,
         alignItems: "center",
         justifyContent: "center",
       }}
@@ -31,7 +40,6 @@ const Signin = ({ theme }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "red",
           width: "35%",
           position: "absolute",
           top: 0,
@@ -62,6 +70,10 @@ const Signin = ({ theme }) => {
       </Grid>
     </Grid>
   );
+};
+
+Signin.propTypes = {
+  gotoUrl: PropTypes.func.isRequired,
 };
 
 export default Signin;

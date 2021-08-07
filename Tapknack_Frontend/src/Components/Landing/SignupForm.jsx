@@ -211,8 +211,6 @@ const SignupForm = ({ theme }) => {
           className={globalStyles.genericButton}
           disabled={isLoading}
           onClick={handleSubmitClicked}
-          variant="outline"
-          title
           style={{
             marginTop: 20,
           }}
