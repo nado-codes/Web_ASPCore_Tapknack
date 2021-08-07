@@ -97,112 +97,35 @@ const SignupForm = ({ theme }) => {
             opacity: isLoading ? 0.5 : 1,
           }}
         >
-          {/* Username */}
-          {/* <Grid container className={classes.formField}>
-            <Grid item className={classes.formFieldLabelContainer}>
-              <Typography className={globalStyles.white14}>
-                Create Your Username
-              </Typography>
-            </Grid>
-            <Grid
-              item
-              className={classes.formFieldTextFieldContainer}
-              style={isLoading ? { border: "1px solid #AAAAAA" } : {}}
-            >
-              <TextField
-                disabled={isLoading}
-                value={username}
-                onChange={({ target: { value } }) => setUsername(value)}
-                InputProps={{
-                  className: classes.formFieldTextField,
-                }}
-                InputLabelProps={{
-                  style: { color: "white" },
-                }}
-              />
-            </Grid>
-              </Grid> */}
-          <FormField label="Create Your Username" onChange={setUsername} />
+          <FormField
+            label="Create Your Username"
+            disabled={isLoading}
+            value={username}
+            onChange={setUsername}
+          />
+          <FormField
+            label="Create Your Password"
+            type="password"
+            disabled={isLoading}
+            value={pass}
+            onChange={setPass}
+          />
 
-          {/* Pass */}
-          <Grid container className={classes.formField}>
-            <Grid item className={classes.formFieldLabelContainer}>
-              <Typography className={globalStyles.white14}>
-                Create Your Password
-              </Typography>
-            </Grid>
-            <Grid
-              item
-              className={classes.formFieldTextFieldContainer}
-              style={isLoading ? { border: "1px solid #AAAAAA" } : {}}
-            >
-              <TextField
-                disabled={isLoading}
-                value={pass}
-                onChange={({ target: { value } }) => setPass(value)}
-                type="password"
-                InputProps={{
-                  className: classes.formFieldTextField,
-                }}
-                InputLabelProps={{
-                  style: { color: "white" },
-                }}
-              />
-            </Grid>
-          </Grid>
+          <FormField
+            label="Confirm Your Password"
+            type="password"
+            disabled={isLoading}
+            value={pass}
+            onChange={setPass}
+          />
 
-          {/* Pass Confirm */}
-          <Grid container className={classes.formField}>
-            <Grid item className={classes.formFieldLabelContainer}>
-              <Typography className={globalStyles.white14}>
-                Confirm Your Password
-              </Typography>
-            </Grid>
-            <Grid
-              item
-              className={classes.formFieldTextFieldContainer}
-              style={isLoading ? { border: "1px solid #AAAAAA" } : {}}
-            >
-              <TextField
-                disabled={isLoading}
-                value={passConfirm}
-                onChange={({ target: { value } }) => setPassConfirm(value)}
-                type="password"
-                InputProps={{
-                  className: classes.formFieldTextField,
-                }}
-                InputLabelProps={{
-                  style: { color: "white" },
-                }}
-              />
-            </Grid>
-          </Grid>
-
-          {/* Email */}
-          <Grid container className={classes.formField}>
-            <Grid item className={classes.formFieldLabelContainer}>
-              <Typography className={globalStyles.white14}>
-                Enter Your Email
-              </Typography>
-            </Grid>
-            <Grid
-              item
-              className={classes.formFieldTextFieldContainer}
-              style={isLoading ? { border: "1px solid #AAAAAA" } : {}}
-            >
-              <TextField
-                disabled={isLoading}
-                value={email}
-                onChange={({ target: { value } }) => setEmail(value)}
-                InputProps={{
-                  className: classes.formFieldTextField,
-                }}
-                InputLabelProps={{
-                  style: { color: "white" },
-                }}
-              />
-            </Grid>
-          </Grid>
+          <FormField
+            label="Enter Your Email"
+            type="password"
+            disabled={isLoading}
+            value={email}
+            onChange={setEmail}
+          />
         </Grid>
       </Grid>
       {/* Bottom - Submit */}
