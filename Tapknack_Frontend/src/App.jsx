@@ -15,8 +15,6 @@ const App = () => {
   const exitTimeout = 500;
 
   useEffect(() => {
-    console.log("refresh - last page was ", localStorage.prevPage);
-
     const {
       location: { href: locationHref },
     } = window;
@@ -34,10 +32,6 @@ const App = () => {
     // when I click the back button
     if (localStorage.prevPage === hrefNoHash)
       window.location = `${hrefNoHash}/#return`;
-    else {
-      console.log("set new prev page to: ", hrefNoHash);
-      // localStorage.prevPage = hrefNoHash;
-    }
   }, []);
 
   const GetHrefNoHash = () => {
@@ -46,14 +40,6 @@ const App = () => {
     } = window;
 
     return locationHref.substring(0, locationHref.indexOf("/#"));
-  };
-
-  const GetPathnameNoHash = () => {
-    const {
-      location: { pathname: locationPathname },
-    } = window;
-
-    return locationPathname.substring(0, locationPathname.indexOf("/#"));
   };
 
   const GotoUrl = (url) => {

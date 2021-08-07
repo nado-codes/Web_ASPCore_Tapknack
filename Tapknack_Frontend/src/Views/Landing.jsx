@@ -8,6 +8,7 @@ import TPKIcon from "../res/Icons/iconTPK";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 import PropTypes from "prop-types";
 
+// TODO: Make these into inline styles
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
@@ -26,27 +27,26 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+/*
+  Landing Page. Includes site description + signup form to allow Users to create an account. Users may also access the signin page from here
+
+  Created by Nathan Linsley 08/08/2021
+*/
 const Landing = ({ theme, gotoUrl }) => {
+  // .. Styles
   const classes = useStyles(theme);
   const globalClasses = useGlobalStyles(theme);
 
-  const handleSigninClicked = () => {
-    gotoUrl("/signin");
-  };
-
-  const handleUseLiabilityClicked = () => {
-    gotoUrl("/liability");
-  };
-
-  const handlePrivacyClicked = () => {
-    gotoUrl("/privacy");
-  };
+  // .. Link behaviour
+  const handleSigninClicked = () => gotoUrl("/signin");
+  const handleUseLiabilityClicked = () => gotoUrl("/liability");
+  const handlePrivacyClicked = () => gotoUrl("/privacy");
 
   return (
     <Grid container className={classes.root}>
-      {/* Top Panel */}
+      {/* Top Panel - Site Info + Signup Form */}
       <Grid container style={{ display: "flex", flex: 0.8 }}>
-        {/* Top Panel Left */}
+        {/* Top Panel Left - Content - Logo, Title & Description  */}
         <Grid
           container
           style={{
@@ -57,7 +57,7 @@ const Landing = ({ theme, gotoUrl }) => {
             justifyContent: "center",
           }}
         >
-          {/* Top Panel Left - Content */}
+          {/* Top Panel Left - Content - Logo, Title & Description  */}
           <Grid
             container
             style={{
@@ -67,7 +67,7 @@ const Landing = ({ theme, gotoUrl }) => {
               marginTop: "-175px",
             }}
           >
-            {/* Logo */}
+            {/* Logo - TapKnack */}
             <Grid
               item
               style={{
@@ -78,7 +78,7 @@ const Landing = ({ theme, gotoUrl }) => {
               <TPKIcon />
             </Grid>
 
-            {/* Centering Container */}
+            {/* Centering Container - Title, Slogan, Description */}
             <Grid
               container
               style={{
@@ -87,7 +87,7 @@ const Landing = ({ theme, gotoUrl }) => {
                 justifyContent: "center",
               }}
             >
-              {/* Title */}
+              {/* Title - Welcome, Slogan "Created for Students..." */}
               <Grid
                 item
                 style={{
@@ -116,7 +116,7 @@ const Landing = ({ theme, gotoUrl }) => {
                 </Typography>
               </Grid>
 
-              {/* Body */}
+              {/* Body - Description */}
               <Grid
                 item
                 style={{
@@ -154,7 +154,7 @@ const Landing = ({ theme, gotoUrl }) => {
           </Grid>
         </Grid>
 
-        {/* Top Panel Right */}
+        {/* Top Panel Right - Title, Form & Links */}
         <Grid
           container
           style={{
@@ -164,7 +164,7 @@ const Landing = ({ theme, gotoUrl }) => {
             marginTop: "-0px",
           }}
         >
-          {/* Centering Container */}
+          {/* Centering Container - Title, Form & Links */}
           <Grid
             container
             style={{
@@ -173,6 +173,7 @@ const Landing = ({ theme, gotoUrl }) => {
               alignItems: "center",
             }}
           >
+            {/* Sign Up Now! */}
             <Grid item style={{ flex: 0.1 }}>
               <Typography className={globalClasses.whiteTitle}>
                 Sign Up Now!
@@ -245,7 +246,7 @@ const Landing = ({ theme, gotoUrl }) => {
           </Grid>
         </Grid>
       </Grid>
-      {/* Bottom Panel */}
+      {/* Footer */}
       <Footer showSubtitle />
     </Grid>
   );
@@ -253,6 +254,11 @@ const Landing = ({ theme, gotoUrl }) => {
 
 Landing.propTypes = {
   gotoUrl: PropTypes.func.isRequired,
+  theme: PropTypes.shape({}),
+};
+
+Landing.defaultProps = {
+  theme: {},
 };
 
 export default Landing;

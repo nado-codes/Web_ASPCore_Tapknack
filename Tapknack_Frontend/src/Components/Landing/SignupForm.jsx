@@ -6,7 +6,7 @@ import FormField from "../FormField";
 
 const SignupForm = ({ theme }) => {
   const globalStyles = useGlobalStyles(theme);
-  const labelMinWidth = "185px";
+  const labelMinWidth = 185;
 
   const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
