@@ -9,6 +9,7 @@ namespace Tapknack_Server.Repositories
 {
     public class TPKRepoBase<T> : RepositoryBase<T> where T : ModelBase, new()
     {
+        //TODO: This should be encrypted in somewhere like AppConfig ... not hardcoded here!!
         const string connectionString = "Data Source=localhost;Initial Catalog=Tapknack;Integrated Security=True;";
         
         public TPKRepoBase()
