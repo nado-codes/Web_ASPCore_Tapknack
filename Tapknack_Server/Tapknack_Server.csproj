@@ -1,16 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.5" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="NadoMapper">
-      <HintPath>..\..\..\Utilities\NadoMapper\NadoMapper\NadoMapper\bin\Debug\netstandard2.0\NadoMapper.dll</HintPath>
+      <HintPath>bin\Debug\net5.0\NadoMapper.dll</HintPath>
     </Reference>
   </ItemGroup>
 

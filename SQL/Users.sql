@@ -18,3 +18,36 @@ begin
 
 	select cast(SCOPE_IDENTITY() as int) as Id
 end
+go
+create procedure GetUserById
+	@id int
+as
+	select 
+		Id,
+		Username,
+		Email,
+		[Password],
+		DateAdded,
+		LastModified
+	from Users where Id=@id
+go
+create procedure GetUserByUsername
+	@username nvarchar(256)
+as
+	select 
+		Id,
+		Username,
+		Email,
+		[Password],
+		DateAdded,
+		LastModified
+	from Users where Username=@username
+go
+
+-- ROLLBACK
+/*
+drop procedure AddUser
+drop procedure GetUserById
+drop procedure GetUserByUsername
+drop table Users
+*/
