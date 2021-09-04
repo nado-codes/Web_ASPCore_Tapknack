@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Grid, Button, CircularProgress } from "@material-ui/core";
 import { useGlobalStyles } from "../../Styles/GlobalStyles";
+import axios from "axios";
 
 import FormField from "../FormField";
 
@@ -17,11 +18,26 @@ const SignupForm = ({ theme }) => {
 
   const handleSubmitClicked = () => {
     setIsLoading(true);
-    setTimeout(handleSubmit, 1500);
+    handleSubmit();
   };
 
   const handleSubmit = () => {
-    setIsLoading(false);
+    try {
+      const { data } = axios.post(`api/users`, {
+        Username: username,
+        Password: pass,
+        Email: email,
+      });
+
+      if (data !== 1)
+        throw Error(
+          `Expected 1 row to be updated in call to AddUser, got ${data}`
+        );
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
 
     // .. TODO: Goto "Dashboard"
   };

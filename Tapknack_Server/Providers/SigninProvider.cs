@@ -24,6 +24,9 @@ namespace Tapknack_Server.Providers
             var scheme = authorization.Scheme;
             var parameter = authorization.Parameter;
 
+            if (scheme != "basic")
+                throw new BadHttpRequestException("Authorization scheme must be basic");
+
             if(string.IsNullOrEmpty(parameter))
                 throw new BadHttpRequestException("Authorization parameter cannot be empty");
 

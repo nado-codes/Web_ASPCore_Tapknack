@@ -10,6 +10,7 @@ using Tapknack_Server.Repositories;
 
 namespace Tapknack_Server.Controllers
 {
+    [ApiController]
     public class CRUDApiController<TModel,TRepo> : ControllerBase where TRepo : TPKRepoBase<TModel>, new() where TModel : ModelBase, new()
     {
         protected TRepo _Repo = new TRepo();

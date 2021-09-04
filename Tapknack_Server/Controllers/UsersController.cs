@@ -8,9 +8,11 @@ using Tapknack_Server.Repositories;
 
 namespace Tapknack_Server.Controllers
 {
-    [Microsoft.AspNetCore.Components.Route("api/users")]
+
+    [Route("api/users")]
     public class UsersController : CRUDApiController<User,UsersRepository>
     {
+        [HttpPost]
         public new async Task<long> AddAsync([FromBody] User entity)
             => (await base.AddAsync(entity)).Id;
     }
