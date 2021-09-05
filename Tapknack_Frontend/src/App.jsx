@@ -5,6 +5,7 @@ import Layout from "./Layout";
 import NotFound from "./Views/NotFound";
 import Landing from "./Views/Landing";
 import Signin from "./Views/Signin";
+import axios from "axios";
 
 const App = () => {
   const paths = [
@@ -34,6 +35,8 @@ const App = () => {
       window.location = `${hrefNoHash}/#return`;
   }, []);
 
+  // ANIMATIONS
+
   const GetHrefNoHash = () => {
     const {
       location: { href: locationHref },
@@ -57,6 +60,42 @@ const App = () => {
     window.location = `${localStorage.prevPage}/#return`;
     localStorage.prevPage = hrefNoHash;
   };
+
+  // END ANIMATIONS
+
+  // AXIOS INTERCEPTS
+
+  const requestHandler = (request) => {
+    const { token } = localStorage;
+    const {
+      location: { pathname },
+    } = window;
+    const { headers } = request;
+    const auth = `Bearer ${token}`;
+
+    console.log("old headers=", headers);
+    console.log("authorization=", auth);
+    console.log("pathname=", pathname);
+    return pathname === "/signin"
+      ? request
+      : {
+          ...request,
+          headers: { ...headers, Authorization: auth },
+        };
+  };
+
+  const responseHandler = (response) => {
+    if (response.status === "401") window.location = "/signin";
+
+    return response;
+  };
+
+  const errorHandler = (err) => Promise.reject(err);
+
+  axios.interceptors.request.use(requestHandler, errorHandler);
+  axios.interceptors.response.use(responseHandler, errorHandler);
+
+  // END AXIOS INTERCEPTS
 
   return (
     <BrowserRouter>
