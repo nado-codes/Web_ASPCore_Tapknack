@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
 
   Created by Nathan Linsley 08/08/2021
 */
-const Landing = ({ theme, gotoUrl }) => {
+const Landing = ({ theme, gotoUrl, testingEnabled }) => {
   // .. Styles
   const classes = useStyles(theme);
   const globalClasses = useGlobalStyles(theme);
@@ -41,6 +41,10 @@ const Landing = ({ theme, gotoUrl }) => {
   const handleSigninClicked = () => gotoUrl("/signin");
   const handleUseLiabilityClicked = () => gotoUrl("/liability");
   const handlePrivacyClicked = () => gotoUrl("/privacy");
+
+  console.log(testingEnabled);
+
+  testingEnabled === true && console.log("testing is enabled");
 
   return (
     <Grid container className={classes.root}>

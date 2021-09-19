@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Button } from "@material-ui/core";
 import "./App.css";
 import Layout from "./Layout";
 import NotFound from "./Views/NotFound";
@@ -12,6 +13,8 @@ const App = () => {
     { path: "/", View: Landing },
     { path: "/signin", View: Signin },
   ];
+
+  const [testingEnabled, setTestingEnabled] = useState(false);
 
   const exitTimeout = 500;
 
@@ -105,26 +108,38 @@ const App = () => {
   // END AXIOS INTERCEPTS
 
   return (
-    <BrowserRouter>
-      <Layout exitTimeout={exitTimeout}>
-        <Switch>
-          {paths.map(({ path, View }) => (
+    <>
+      <Button
+        color="primary"
+        variant="contained"
+        style={{ position: "absolute", margin: 50, zIndex: 200 }}
+        onClick={() => setTestingEnabled(!testingEnabled)}
+      >
+        {!testingEnabled ? "Enable Testing" : "Disable Testing"}
+      </Button>
+      <BrowserRouter>
+        <Layout exitTimeout={exitTimeout}>
+          <Switch>
+            {paths.map(({ path, View }) => (
+              <Route
+                key={path}
+                exact
+                path={path}
+                render={() => (
+                  <View gotoUrl={GotoUrl} testingEnabled={testingEnabled} />
+                )}
+              />
+            ))}
             <Route
-              key={path}
+              key={window.location.pathname}
               exact
-              path={path}
-              render={() => <View gotoUrl={GotoUrl} />}
+              path={window.location.pathname}
+              render={() => <NotFound returnToPrevUrl={ReturnToPrevUrl} />}
             />
-          ))}
-          <Route
-            key={window.location.pathname}
-            exact
-            path={window.location.pathname}
-            render={() => <NotFound returnToPrevUrl={ReturnToPrevUrl} />}
-          />
-        </Switch>
-      </Layout>
-    </BrowserRouter>
+          </Switch>
+        </Layout>
+      </BrowserRouter>
+    </>
   );
 };
 
