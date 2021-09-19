@@ -22,10 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tapknack_Server\Tapknack_Server.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="NadoMapper">
       <HintPath>..\Tapknack_Server\bin\Debug\net5.0\NadoMapper.dll</HintPath>
     </Reference>
