@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tapknack_Frontend", "Tapkna
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tapknack_Tests", "Tapknack_Tests\Tapknack_Tests.csproj", "{30C151EF-08DB-4C8E-8001-3D79F53FBB7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapknack_Server_2", "Tapknack_Server_2\Tapknack_Server_2.csproj", "{255AD823-6588-4B23-81AB-2E328495F1B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tapknack_Server", "Tapknack_Server\Tapknack_Server.csproj", "{3B3AD168-8AB7-4464-9C5C-545CAA09A107}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{30C151EF-08DB-4C8E-8001-3D79F53FBB7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30C151EF-08DB-4C8E-8001-3D79F53FBB7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30C151EF-08DB-4C8E-8001-3D79F53FBB7F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{255AD823-6588-4B23-81AB-2E328495F1B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{255AD823-6588-4B23-81AB-2E328495F1B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{255AD823-6588-4B23-81AB-2E328495F1B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{255AD823-6588-4B23-81AB-2E328495F1B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B3AD168-8AB7-4464-9C5C-545CAA09A107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B3AD168-8AB7-4464-9C5C-545CAA09A107}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B3AD168-8AB7-4464-9C5C-545CAA09A107}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B3AD168-8AB7-4464-9C5C-545CAA09A107}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
