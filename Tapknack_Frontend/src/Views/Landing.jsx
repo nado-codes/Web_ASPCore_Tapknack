@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Grid,
-  Typography,
-  makeStyles,
-  Link,
-  Snackbar,
-} from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
+import { Grid, Typography, makeStyles, Link } from "@material-ui/core";
 import SignupForm from "../Components/Landing/SignupForm";
 import Footer from "../Components/FooterA";
 
@@ -48,14 +41,6 @@ const Landing = ({ theme, gotoUrl, testingEnabled }) => {
   const handleSigninClicked = () => gotoUrl("/signin");
   const handleUseLiabilityClicked = () => gotoUrl("/liability");
   const handlePrivacyClicked = () => gotoUrl("/privacy");
-
-  testingEnabled === true && console.log("testing is enabled");
-
-  const TestWrapper = ({ children }) => {
-    const Assert = (expression) => {};
-
-    return <>{{ ...children, props: { ...children.props, assert: Assert } }}</>;
-  };
 
   return (
     <Grid container className={classes.root}>

@@ -76,7 +76,7 @@ const App = () => {
     const { headers } = request;
     const auth = `Bearer ${token}`;
 
-    console.log(
+    /* console.log(
       "request=",
       pathname === "/signin" || pathname === "/"
         ? request
@@ -84,7 +84,7 @@ const App = () => {
             ...request,
             headers: { ...headers, Authorization: auth },
           }
-    );
+    ); */
 
     return pathname === "/signin" || pathname === "/"
       ? request

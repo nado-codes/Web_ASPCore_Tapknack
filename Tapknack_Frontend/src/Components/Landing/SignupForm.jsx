@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Grid, Button, CircularProgress, Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { useGlobalStyles } from "../../Styles/GlobalStyles";
@@ -23,43 +23,60 @@ const SignupFormTest = ({
   const testUuid = uuidv4();
   const testUsername = `testUser-${testUuid}`;
   const testEmail = `testUserEmail-${testUuid}`;
-  const testUserPass = `testUserPass-${testUuid}`;
-  const testUserPassConfirm = `testUserPassConfirm${testUuid}`;
+  const testPassword = `testUserPass-${testUuid}`;
+  const testPasswordConfirm = `testUserPassConfirm${testUuid}`;
 
-  console.log(testUuid);
+  setUsername(testUsername);
+  setEmail(testEmail);
+  setPass(testPassword);
+  setPassConfirm(testPasswordConfirm);
 
-  //init
-  useEffect(() => {
-    setUsername(testUsername);
-  }, []);
-  useEffect(() => {
-    setEmail(testEmail);
-  }, [username]);
-  useEffect(() => {
-    setPass(testUserPass);
-  }, [email]);
-  useEffect(() => {
-    setPassConfirm(testUserPassConfirm);
-  }, [pass]);
   useEffect(() => {
     run();
-  }, [passConfirm]);
-  //end init
+  }, [username, pass, email]);
 
-  const run = () => {
+  const run = async () => {
     try {
       console.log("running SignupFormTest...");
-      const result = handleSubmit();
+      const result = await handleSubmit({
+        username: testUsername,
+        pass: testPassword,
+        email: testEmail,
+      });
       evaluate(result);
-    } catch (err) {
-      return handleFail?.(err);
+      cleanup();
+    } catch (error) {
+      return handleFail?.(error);
     }
   };
 
-  const evaluate = (result) => {
-    const userId = result;
+  const assertEqual = (expected, actual) => {
+    if (actual !== expected)
+      throw {
+        name: `Assert Equal FAIL`,
+        message: `Expected ${expected}, got ${actual}`,
+      };
 
-    alert("TEST USER ID = ", result);
+    return true;
+  };
+
+  const evaluate = (result) => {
+    const { username, email } = result;
+    try {
+      assertEqual(testUsername, username);
+      assertEqual(testEmail, email);
+      handlePass();
+    } catch (error) {
+      console.log(error);
+      handleFail(error);
+    }
+  };
+
+  const cleanup = () => {
+    setUsername("");
+    setEmail("");
+    setPass("");
+    setPassConfirm("");
   };
 
   return null;
@@ -75,9 +92,12 @@ const SignupForm = ({ theme }) => {
   const [passConfirm, setPassConfirm] = useState("");
 
   const [runTest, setRunTest] = useState(true);
-  const [testResults, setTestResults] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [snackbarIsOpen, setSnackbarIsOpen] = useState(false);
+  const [snackbarText, setSnackbarText] = useState("New Notification");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("info");
+  const [snackbarDetailText, setSnackbarDetailText] = useState("");
 
   useEffect(() => {
     setRunTest(false);
@@ -85,18 +105,18 @@ const SignupForm = ({ theme }) => {
 
   const handleSubmitClicked = () => {
     setIsLoading(true);
-    handleSubmit();
+    handleSubmit({ username, pass, email });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async ({ username, pass, email }) => {
     try {
-      const { data } = axios.post(`api/users`, {
+      const { data } = await axios.post(`api/users`, {
         Username: username,
         Password: pass,
         Email: email,
       });
 
-      if (data !== 1)
+      if (!data)
         throw Error(
           `Expected 1 row to be updated in call to AddUser, got ${data}`
         );
@@ -112,27 +132,29 @@ const SignupForm = ({ theme }) => {
     // .. TODO: Goto "Dashboard"
   };
 
-  const handleTestPass = () => {};
+  const handleTestPass = () => {
+    setSnackbarSeverity("success");
+    setSnackbarText("Test success");
+    setSnackbarIsOpen(true);
+  };
 
-  const handleTestFail = (msg) => {};
+  const handleTestFail = (error) => {
+    const { name, message } = error;
+    setSnackbarSeverity("error");
+    setSnackbarText(`Test failed: ${name}. Click for more details`);
+    setSnackbarDetailText(`${name}: ${message}`);
+    setSnackbarIsOpen(true);
+  };
 
-  /* useEffect(() => {
-    SignupFormTest(
-      username,
-      setUsername,
-      email,
-      setEmail,
-      pass,
-      setPass,
-      passConfirm,
-      setPassConfirm,
-      handleSubmit,
-      handleTestPass,
-      handleTestFail
-    );
-  }, []); */
+  const handleSnackbarDetail = () => {
+    snackbarSeverity === "error" && console.error(snackbarDetailText);
+    snackbarSeverity === "success" && console.log(snackbarDetailText);
+    setSnackbarDetailText("");
 
-  const [snackbarIsOpen, setSnackbarIsOpen] = useState(true);
+    setSnackbarText(`Check the console for further details`);
+    setSnackbarSeverity("info");
+    setSnackbarIsOpen(true);
+  };
 
   return (
     <Grid
@@ -146,17 +168,13 @@ const SignupForm = ({ theme }) => {
     >
       {runTest && (
         <SignupFormTest
-          username={username}
           setUsername={setUsername}
-          email={email}
           setEmail={setEmail}
-          pass={pass}
           setPass={setPass}
-          passConfirm={passConfirm}
           setPassConfirm={setPassConfirm}
           handleSubmit={handleSubmit}
-          handleTestPass={handleTestPass}
-          handleTestFail={handleTestFail}
+          handlePass={handleTestPass}
+          handleFail={handleTestFail}
         />
       )}
       <Snackbar
@@ -165,7 +183,14 @@ const SignupForm = ({ theme }) => {
         open={snackbarIsOpen}
         anchorOrigin={{ horizontal: "center", vertical: "top" }}
       >
-        <Alert severity="error">An error happened</Alert>
+        <Alert
+          severity={snackbarSeverity}
+          onClick={() => {
+            snackbarDetailText && handleSnackbarDetail();
+          }}
+        >
+          {snackbarText}
+        </Alert>
       </Snackbar>
       <Grid
         item
