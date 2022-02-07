@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace Tapknack_Server
 {
@@ -39,10 +41,17 @@ namespace Tapknack_Server
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                //app.UseSwagger();
-                //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tapknack_Server v1"));
+                //app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tapknack_Server v1"));
             }
+
+            app.UseExceptionHandler((app) => app.Run(async context =>
+            {
+                var exception = context.Features.Get<IExceptionHandlerPathFeature>().Error;
+
+                await HandleException(exception, context);
+            }));
 
             app.UseHttpsRedirection();
 
@@ -54,6 +63,18 @@ namespace Tapknack_Server
             {
                 endpoints.MapControllers();
             });
+
+            
+        }
+
+        private static async Task HandleException(Exception exception, HttpContext context)
+        {
+            // var response = context.Response;
+
+            // .. TODO: Handle different signin and authorization exceptions here (change status codes)
+
+            await context.Response.WriteAsJsonAsync(new
+                {Success = false, Exception = exception.ToString(), exception.Message});
         }
     }
 }

@@ -1,7 +1,7 @@
 create table Users (
 	Id int not null primary key identity,
-	Username nvarchar(128) not null,
-	Email nvarchar(256) not null,
+	Username nvarchar(128) not null constraint UsersUsernameUniqueConstraint unique,
+	Email nvarchar(256) not null constraint UsersEmailUniqueConstraint unique,
 	[Password] nvarchar(256) not null,
 	DateAdded datetime2 not null constraint UsersDateAddedDefaultConstraint default(getutcdate()),
 	LastModified timestamp not null

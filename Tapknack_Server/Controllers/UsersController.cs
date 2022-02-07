@@ -17,11 +17,20 @@ namespace Tapknack_Server.Controllers
         [AllowAnonymous]
         public override async Task<User> AddAsync([FromBody] User user)
         {
-            // .. remove the password from the new user for security reasons
-            var newUser = await base.AddAsync(user);
-            newUser.Password = "";
+            try
+            {
+                // .. remove the password from the new user for security reasons
+                var newUser = await base.AddAsync(user);
+                newUser.Password = "";
 
-            return newUser;
+                return newUser;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
         }
     }
 }
