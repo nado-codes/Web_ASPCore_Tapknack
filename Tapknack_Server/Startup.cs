@@ -9,10 +9,14 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Diagnostics;
+using Newtonsoft.Json;
 
 namespace Tapknack_Server
 {
@@ -73,8 +77,16 @@ namespace Tapknack_Server
 
             // .. TODO: Handle different signin and authorization exceptions here (change status codes)
 
+            if (exception is SqlException)
+            {
+                var sqlException = exception as SqlException;
+
+                await context.Response.WriteAsJsonAsync(new
+                    { Success = false, Message = sqlException.Message, Number= sqlException.Number });
+            }
+
             await context.Response.WriteAsJsonAsync(new
-                {Success = false, Exception = exception.ToString(), exception.Message});
+                {Success = false, Message = exception.Message});
         }
     }
 }

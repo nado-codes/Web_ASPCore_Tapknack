@@ -91,7 +91,7 @@ const SignupForm = ({ theme }) => {
   const [pass, setPass] = useState("");
   const [passConfirm, setPassConfirm] = useState("");
 
-  const [runTest, setRunTest] = useState(true);
+  const [runTest, setRunTest] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [snackbarIsOpen, setSnackbarIsOpen] = useState(false);
@@ -123,7 +123,8 @@ const SignupForm = ({ theme }) => {
 
       return data;
     } catch (err) {
-      console.error(err);
+      // const errObj = JSON.parse(err.response.data);
+      console.error("errObj=", err.response.data);
       throw err;
     } finally {
       setIsLoading(false);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -27,7 +28,6 @@ namespace Tapknack_Server.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 throw;
             }
             
