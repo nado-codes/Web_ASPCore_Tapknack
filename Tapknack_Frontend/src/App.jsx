@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Button } from "@material-ui/core";
 import "./App.css";
 import Layout from "./Layout";
 import NotFound from "./Views/NotFound";
@@ -13,8 +12,6 @@ const App = () => {
     { path: "/", View: Landing },
     { path: "/signin", View: Signin },
   ];
-
-  const [testingEnabled, setTestingEnabled] = useState(false);
 
   const exitTimeout = 500;
 
@@ -109,14 +106,6 @@ const App = () => {
 
   return (
     <>
-      <Button
-        color="primary"
-        variant="contained"
-        style={{ position: "absolute", margin: 50, zIndex: 200 }}
-        onClick={() => setTestingEnabled(!testingEnabled)}
-      >
-        {!testingEnabled ? "Enable Testing" : "Disable Testing"}
-      </Button>
       <BrowserRouter>
         <Layout exitTimeout={exitTimeout}>
           <Switch>
@@ -125,9 +114,7 @@ const App = () => {
                 key={path}
                 exact
                 path={path}
-                render={() => (
-                  <View gotoUrl={GotoUrl} testingEnabled={testingEnabled} />
-                )}
+                render={() => <View gotoUrl={GotoUrl} />}
               />
             ))}
             <Route

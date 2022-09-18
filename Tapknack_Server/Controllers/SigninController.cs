@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -13,26 +12,26 @@ namespace Tapknack_Server.Controllers
 {
     [Authorize]
     [Route("api/users")]
-    public class UsersController : CRUDApiController<User,UsersRepository>
+    public class SigninController : ControllerBase
     {
         [HttpPost]
         [AllowAnonymous]
-        public override async Task<User> AddAsync([FromBody] User user)
+        public async Task<User> SigninAsync([FromBody] User user)
         {
             try
             {
                 // .. remove the password from the new user for security reasons
-                var usersProv = new UsersProvider();
-                var newUser = await usersProv.AddUserAsync(user,user.Password);
-                newUser.Password = "";
+                var signinProv = new SigninProvider();
+                var response = await signinProv.SigninAsync(HttpContext.Request);
 
                 return newUser;
             }
             catch (Exception e)
             {
+                Console.WriteLine(e);
                 throw;
             }
-            
+
         }
     }
 }

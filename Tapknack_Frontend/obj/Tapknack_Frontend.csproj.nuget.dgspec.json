@@ -1,27 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Storage\\Projects\\Web\\ASP\\_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj": {}
+    "D:\\Pre-Archive\\Projects\\Web\\ASP\\Web_ASP_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj": {}
   },
   "projects": {
-    "D:\\Storage\\Projects\\Web\\ASP\\_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj": {
+    "D:\\Pre-Archive\\Projects\\Web\\ASP\\Web_ASP_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Storage\\Projects\\Web\\ASP\\_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj",
+        "projectUniqueName": "D:\\Pre-Archive\\Projects\\Web\\ASP\\Web_ASP_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj",
         "projectName": "Tapknack_Frontend",
-        "projectPath": "D:\\Storage\\Projects\\Web\\ASP\\_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj",
-        "packagesPath": "C:\\Users\\Nathan\\.nuget\\packages\\",
-        "outputPath": "D:\\Storage\\Projects\\Web\\ASP\\_Tapknack\\Tapknack_Frontend\\obj\\",
+        "projectPath": "D:\\Pre-Archive\\Projects\\Web\\ASP\\Web_ASP_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj",
+        "packagesPath": "C:\\Users\\nadot\\.nuget\\packages\\",
+        "outputPath": "D:\\Pre-Archive\\Projects\\Web\\ASP\\Web_ASP_Tapknack\\Tapknack_Frontend\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Nathan\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\nadot\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -60,7 +54,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     }

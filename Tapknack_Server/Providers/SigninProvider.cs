@@ -12,11 +12,11 @@ namespace Tapknack_Server.Providers
 {
     public class SigninProvider
     {
-        public async Task<SigninResponse> SigninAsync(HttpRequestMessage request)
+        public async Task<SigninResponse> SigninAsync(HttpRequest request)
         {
             // .. Probably wanna remove this stuff (try not to copy other projects)
             // .. Or at least, make sure I properly understand what this code actually does rather than just copypasta everything
-            var authorization = request.Headers.Authorization;
+            var authorization = request.Headers["Authorization"];
 
             if(authorization == null)
                 throw new BadHttpRequestException("Authorization header cannot be empty");

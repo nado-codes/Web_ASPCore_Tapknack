@@ -1,19 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Diagnostics;
 using Newtonsoft.Json;
@@ -68,7 +60,7 @@ namespace Tapknack_Server
                 endpoints.MapControllers();
             });
 
-            
+
         }
 
         private static async Task HandleException(Exception exception, HttpContext context)
@@ -86,7 +78,7 @@ namespace Tapknack_Server
             }
 
             await context.Response.WriteAsJsonAsync(new
-                {Success = false, Message = exception.Message});
+            { Success = false, Exception = exception.ToString(), exception.Message });
         }
     }
 }
