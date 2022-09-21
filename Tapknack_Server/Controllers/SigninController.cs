@@ -11,12 +11,12 @@ using Tapknack_Server.Providers;
 namespace Tapknack_Server.Controllers
 {
     [Authorize]
-    [Route("api/users")]
+    [Route("api/signin")]
     public class SigninController : ControllerBase
     {
         [HttpPost]
         [AllowAnonymous]
-        public async Task<User> SigninAsync([FromBody] User user)
+        public async Task<SigninResponse> SigninAsync()
         {
             try
             {
@@ -24,7 +24,7 @@ namespace Tapknack_Server.Controllers
                 var signinProv = new SigninProvider();
                 var response = await signinProv.SigninAsync(HttpContext.Request);
 
-                return newUser;
+                return response;
             }
             catch (Exception e)
             {

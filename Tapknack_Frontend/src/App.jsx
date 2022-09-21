@@ -33,6 +33,8 @@ const App = () => {
     // when I click the back button
     if (localStorage.prevPage === hrefNoHash)
       window.location = `${hrefNoHash}/#return`;
+
+    axios.defaults.baseURL = "http://localhost:3000";
   }, []);
 
   // ANIMATIONS
@@ -73,17 +75,18 @@ const App = () => {
     const { headers } = request;
     const auth = `Bearer ${token}`;
 
-    /* console.log(
+    console.log("pathname=", pathname);
+    console.log(
       "request=",
-      pathname === "/signin" || pathname === "/"
+      pathname === "/signin/" || pathname === "/"
         ? request
         : {
             ...request,
             headers: { ...headers, Authorization: auth },
           }
-    ); */
+    );
 
-    return pathname === "/signin" || pathname === "/"
+    return pathname === "/signin/" || pathname === "/"
       ? request
       : {
           ...request,

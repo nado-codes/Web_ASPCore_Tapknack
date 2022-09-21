@@ -9,6 +9,7 @@ import {
 import FormField from "../Components/FormField";
 import Footer from "../Components/FooterA";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
+import axios from "axios";
 
 import TPKIcon from "../res/Icons/iconTPK";
 import padlockIcon from "../res/ic/icPadlock_48.png";
@@ -45,10 +46,30 @@ const Signin = ({ theme, gotoUrl }) => {
     gotoUrl("/privacy");
   };
 
-  const handleSubmitClicked = () => {
+  const handleSubmitClicked = async () => {
     console.log("you clicked submit!");
     setIsLoading(true);
-    setTimeout(handleSubmit, 1500);
+
+    try {
+      const token = btoa(`${username}:${pass}`);
+      console.log("token=", token);
+      const { data } = await axios.post(
+        `api/signin`,
+        {},
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+    } catch (err) {
+      console.error("errObj=", err.response.data);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+
+    // setTimeout(handleSubmit, 1500);
   };
 
   const handleSubmit = () => {
