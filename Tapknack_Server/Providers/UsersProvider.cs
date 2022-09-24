@@ -17,6 +17,9 @@ namespace Tapknack_Server.Providers
 
         public async Task<User> AddUserAsync(User user, string password)
         {
+            if (password == string.Empty)
+                throw new ArgumentException("password cannot be empty");
+
             var passwordProv = new PasswordProvider();
             var hashedPassword = passwordProv.Encrypt(password);
 
@@ -26,7 +29,7 @@ namespace Tapknack_Server.Providers
             var usersRepo = new UsersRepository();
             var newUser = await usersRepo.AddAsync(userToAdd);
 
-            if(newUser == null) throw new ApplicationException("Expected a user to be created, got null");
+            if(newUser == null) throw new NullReferenceException("Expected a user to be created, got null");
 
             return newUser;
         }

@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using NadoMapper.Models;
 
 namespace Tapknack_Server.Models
 {
-    public class SigninResponse
+    public class Session : ModelBase
     {
         public int UserId { get; set; }
         public Guid Token { get; set; }
+        public DateTime Expiry { get; set; }
     }
 }
