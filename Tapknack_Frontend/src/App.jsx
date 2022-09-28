@@ -5,12 +5,14 @@ import Layout from "./Layout";
 import NotFound from "./Views/NotFound";
 import Landing from "./Views/Landing";
 import Signin from "./Views/Signin";
+import Welcome from "./Views/Welcome";
 import axios from "axios";
 
 const App = () => {
   const paths = [
     { path: "/", View: Landing },
     { path: "/signin", View: Signin },
+    { path: "/welcome", View: Welcome },
   ];
 
   const exitTimeout = 500;

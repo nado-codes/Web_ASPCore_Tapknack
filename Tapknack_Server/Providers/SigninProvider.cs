@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Tapknack_Server.Models;
+using Tapknack_Server.Repositories;
 
 namespace Tapknack_Server.Providers
 {
@@ -42,6 +43,17 @@ namespace Tapknack_Server.Providers
 
             if(!isValid)
                 throw new AuthenticationException("Passwords do not match");
+
+            var sessionsRepo = new SessionsRepository();
+            var session = await sessionsRepo.AddAsync(new Session()
+            {
+                UserId = user.Id,
+                Token = Guid.NewGuid(),
+                Expiry = DateTime.UtcNow.AddSeconds(5),
+            });
+
+            if (session == null)
+                throw new ApplicationException("Login failed. Please try again later.");
 
             return new SigninResponse()
             {

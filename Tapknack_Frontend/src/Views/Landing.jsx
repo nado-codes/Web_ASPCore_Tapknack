@@ -2,8 +2,7 @@ import React from "react";
 import { Grid, Typography, makeStyles, Link } from "@material-ui/core";
 import SignupForm from "../Components/Landing/SignupForm";
 import Footer from "../Components/FooterA";
-
-import TPKIcon from "../res/Icons/iconTPK";
+import TPKIcon from "../res/iconTPK";
 
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 import PropTypes from "prop-types";

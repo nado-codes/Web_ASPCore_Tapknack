@@ -15,7 +15,7 @@ namespace Tapknack_Tests.Integration.Repositories
         [Fact]
         public async Task IntegrationTest()
         {
-            var testUser = TestHelpers.CreateTestUser();
+            var testUser = await TestHelpers.CreateTestUser();
             var sessionsRepo = new SessionsRepository();
 
             var session = await sessionsRepo.AddAsync(new Session()

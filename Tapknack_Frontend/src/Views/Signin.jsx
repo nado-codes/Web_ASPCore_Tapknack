@@ -11,7 +11,7 @@ import Footer from "../Components/FooterA";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 import axios from "axios";
 
-import TPKIcon from "../res/Icons/iconTPK";
+import TPKIcon from "../res/iconTPK";
 import padlockIcon from "../res/ic/icPadlock_48.png";
 import PropTypes from "prop-types";
 
