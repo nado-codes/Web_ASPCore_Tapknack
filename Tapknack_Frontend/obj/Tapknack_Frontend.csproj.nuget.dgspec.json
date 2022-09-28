@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Pre-Archive\\Projects\\Web\\ASP\\Web_ASP_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj": {}
+    "d:\\Pre-Archive\\Projects\\Web\\ASP\\Web_ASP_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj": {}
   },
   "projects": {
-    "D:\\Pre-Archive\\Projects\\Web\\ASP\\Web_ASP_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj": {
+    "d:\\Pre-Archive\\Projects\\Web\\ASP\\Web_ASP_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Pre-Archive\\Projects\\Web\\ASP\\Web_ASP_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj",
+        "projectUniqueName": "d:\\Pre-Archive\\Projects\\Web\\ASP\\Web_ASP_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj",
         "projectName": "Tapknack_Frontend",
-        "projectPath": "D:\\Pre-Archive\\Projects\\Web\\ASP\\Web_ASP_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj",
+        "projectPath": "d:\\Pre-Archive\\Projects\\Web\\ASP\\Web_ASP_Tapknack\\Tapknack_Frontend\\Tapknack_Frontend.csproj",
         "packagesPath": "C:\\Users\\nadot\\.nuget\\packages\\",
-        "outputPath": "D:\\Pre-Archive\\Projects\\Web\\ASP\\Web_ASP_Tapknack\\Tapknack_Frontend\\obj\\",
+        "outputPath": "d:\\Pre-Archive\\Projects\\Web\\ASP\\Web_ASP_Tapknack\\Tapknack_Frontend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\nadot\\AppData\\Roaming\\NuGet\\NuGet.Config",
