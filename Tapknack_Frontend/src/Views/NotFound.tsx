@@ -3,6 +3,7 @@ import { Grid, Typography, Button } from "@material-ui/core";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 import tpkIcon from "../res/tpk.png";
+import { ClassNameMap } from "@material-ui/styles";
 
 const TPKIcon = () => (
   <img
@@ -12,7 +13,7 @@ const TPKIcon = () => (
   />
 );
 
-const NotFound = ({ theme, returnToPrevUrl }) => {
+const NotFound : React.FC<Props> = ({ theme, returnToPrevUrl } : Props) => {
   const globalStyles = useGlobalStyles(theme);
 
   return (
@@ -55,5 +56,10 @@ const NotFound = ({ theme, returnToPrevUrl }) => {
     </Grid>
   );
 };
+
+interface Props {
+  theme: ClassNameMap<"root" | "link">,
+  returnToPrevUrl: () => void,
+}
 
 export default NotFound;

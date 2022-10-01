@@ -2,10 +2,10 @@ import React from "react";
 import { Grid, Typography, makeStyles, Link } from "@material-ui/core";
 import SignupForm from "../Components/Landing/SignupForm";
 import Footer from "../Components/FooterA";
-import TPKIcon from "../res/iconTPK";
+import TPKIcon, { TPK } from "../res/iconTPK";
 
 import { useGlobalStyles } from "../Styles/GlobalStyles";
-import PropTypes from "prop-types";
+import { ClassNameMap } from "@material-ui/styles";
 
 // TODO: Make these into inline styles
 const useStyles = makeStyles(() => ({
@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
 
   Created by Nathan Linsley 08/08/2021
 */
-const Landing = ({ theme, gotoUrl, testingEnabled }) => {
+const Landing : React.FC<Props> = ({ theme, gotoUrl } : Props) => {
   // .. Styles
   const classes = useStyles(theme);
   const globalClasses = useGlobalStyles(theme);
@@ -74,7 +74,7 @@ const Landing = ({ theme, gotoUrl, testingEnabled }) => {
                 justifyContent: "center",
               }}
             >
-              <TPKIcon />
+              <TPKIcon icon={TPK.TPK} />
             </Grid>
 
             {/* Centering Container - Title, Slogan, Description */}
@@ -251,13 +251,9 @@ const Landing = ({ theme, gotoUrl, testingEnabled }) => {
   );
 };
 
-Landing.propTypes = {
-  gotoUrl: PropTypes.func.isRequired,
-  theme: PropTypes.shape({}),
-};
-
-Landing.defaultProps = {
-  theme: {},
-};
+interface Props {
+  theme: ClassNameMap<"root" | "link">,
+  gotoUrl: (url: string) => void,
+}
 
 export default Landing;

@@ -1,7 +1,8 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
 
-import TPKIcon from "../res/iconTPK";
+import TPKIcon, { TPK } from "../res/iconTPK";
+import { TPKIconButton } from "../Components/TPKIconButton";
 
 const Welcome = () => {
   return (
@@ -28,10 +29,12 @@ const Welcome = () => {
       >
         {/* Logo - TapKnack */}
         <Grid item style={{ flex: 0.5 }}>
-          <TPKIcon size={75} />
+          <TPKIcon size={75} icon={TPK.TPK} />
         </Grid>
         <Grid item style={{ flex: 0.25 }}>
-          HELLO
+          <TPKIconButton circular>
+            <TPKIcon size={45} icon={TPK.icNotification} />
+          </TPKIconButton>
         </Grid>
       </Grid>
       <Grid

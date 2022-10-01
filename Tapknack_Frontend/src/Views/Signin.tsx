@@ -11,9 +11,9 @@ import Footer from "../Components/FooterA";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 import axios from "axios";
 
-import TPKIcon from "../res/iconTPK";
+import TPKIcon, { TPK } from "../res/iconTPK";
 import padlockIcon from "../res/ic/icPadlock_48.png";
-import PropTypes from "prop-types";
+import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 
 // TODO: will use later
 // import ndcIcon from "../res/nadocoLogo.png";
@@ -31,7 +31,7 @@ const PadlockIcon = () => (
   />
 );
 
-const Signin = ({ theme, gotoUrl }) => {
+const Signin : React.FC<Props> = ({ theme, gotoUrl } : Props) => {
   const globalStyles = useGlobalStyles(theme);
 
   const [username, setUsername] = useState("");
@@ -62,18 +62,14 @@ const Signin = ({ theme, gotoUrl }) => {
           },
         }
       );
+
+      console.log("data=",data);
     } catch (err) {
-      console.error("errObj=", err.response.data);
+      // console.error("errObj=", err.response.data);
       throw err;
     } finally {
       setIsLoading(false);
     }
-
-    // setTimeout(handleSubmit, 1500);
-  };
-
-  const handleSubmit = () => {
-    setIsLoading(false);
   };
 
   return (
@@ -114,7 +110,7 @@ const Signin = ({ theme, gotoUrl }) => {
             borderBottom: "2px solid rgba(40,172,217,.5)",
           }}
         >
-          <TPKIcon size={200} />
+          <TPKIcon size={200} icon={TPK.TPK} />
         </Grid>
         {/* Form */}
         <Grid
@@ -208,8 +204,9 @@ const Signin = ({ theme, gotoUrl }) => {
   );
 };
 
-Signin.propTypes = {
-  gotoUrl: PropTypes.func.isRequired,
-};
+interface Props {
+  theme: ClassNameMap<"root" | "link">,
+  gotoUrl: (url: string) => void,
+}
 
 export default Signin;

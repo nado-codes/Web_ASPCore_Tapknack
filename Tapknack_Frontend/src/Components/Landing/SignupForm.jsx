@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Grid, Button, CircularProgress, Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { useGlobalStyles } from "../../Styles/GlobalStyles";
+import PropTypes from "prop-types";
 import axios from "axios";
 
 import FormField from "../FormField";
 
-const SignupForm = ({ theme }) => {
+const SignupForm = ({theme}) => {
   const globalStyles = useGlobalStyles(theme);
   const labelMinWidth = 185;
 
@@ -155,6 +156,10 @@ const SignupForm = ({ theme }) => {
       </Grid>
     </Grid>
   );
+};
+
+SignupForm.propTypes = {
+  theme: PropTypes.shape({}),
 };
 
 export default SignupForm;

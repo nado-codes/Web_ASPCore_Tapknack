@@ -1,6 +1,6 @@
 import React from "react";
 
-import TPK from "./iconTPK";
+import TPK from "./_iconTPK";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 const TPKIcon: React.FC<Props> = ({ size = 250, icon }: Props) => {
@@ -9,16 +9,21 @@ const TPKIcon: React.FC<Props> = ({ size = 250, icon }: Props) => {
   return (
     <img
       className={globalStyles.noSelect}
-      src={TPK.TPK} // .. need to use "icon" that was passed in
+      src={icon}
       alt="TapKnack"
-      style={{ width: size, height: size, objectFit: "contain" }}
+      style={{
+        width: size,
+        height: size,
+        background: "pink",
+      }}
     />
   );
 };
 
 interface Props {
-  size: number;
+  size?: number;
   icon: string;
 }
 
+export { TPK };
 export default TPKIcon;
