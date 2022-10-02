@@ -14,7 +14,6 @@ const TPKIcon: React.FC<Props> = ({ size = 250, icon }: Props) => {
       style={{
         width: size,
         height: size,
-        background: "pink",
       }}
     />
   );

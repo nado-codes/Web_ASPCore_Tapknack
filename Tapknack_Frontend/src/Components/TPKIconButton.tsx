@@ -4,7 +4,12 @@ export const TPKIconButton: React.FC<Props> = ({
   children,
   circular,
 }: Props) => {
-  return <button className={`border-r-${circular ? 4 : 0}`}>{children}</button>;
+  console.log(circular, children);
+  return (
+    <button className={` bg-red-300`} style={{ background: "none" }}>
+      ddd
+    </button>
+  );
 };
 
 interface Props {
