@@ -4,6 +4,87 @@ import { Grid } from "@material-ui/core";
 import TPKIcon, { TPK } from "../res/iconTPK";
 import { TPKIconButton } from "../Components/TPKIconButton";
 
+const BlueCircle: React.FC<IconCircleProps> = ({
+  size = "48px",
+  children,
+}: IconCircleProps) => (
+  <div
+    style={{
+      display: "flex",
+      alignItems: "middle",
+      justifyContent: "center",
+      width: size,
+      height: size,
+      margin: "auto",
+      background: "#28ACD9",
+      borderRadius: 100,
+    }}
+  >
+    {children}
+  </div>
+);
+
+interface IconCircleProps {
+  size?: string | number;
+  children?: React.ReactNode[] | React.ReactNode;
+}
+
+const BorderCircle: React.FC<BorderCircleProps> = ({
+  size = 48,
+  children,
+  style,
+}: BorderCircleProps) => (
+  <div
+    style={{
+      width: size,
+      height: size,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "middle",
+      border: "2px solid #28ACD9",
+      borderRadius: 100,
+      ...style,
+    }}
+  >
+    {children}
+  </div>
+);
+
+interface BorderCircleProps {
+  size?: string | number;
+  children?: React.ReactNode[] | React.ReactNode;
+  style?: object;
+}
+
+const BorderBox: React.FC<BorderBoxProps> = ({
+  width,
+  height,
+  children,
+  style,
+}: BorderBoxProps) => (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "middle",
+      width,
+      height,
+      border: "2px solid #28ACD9",
+      borderRadius: 10,
+      ...style,
+    }}
+  >
+    {children}
+  </div>
+);
+
+interface BorderBoxProps {
+  width: string | number;
+  height: string | number;
+  children?: React.ReactNode[] | React.ReactNode;
+  style?: object;
+}
+
 const Welcome = () => {
   return (
     <Grid
@@ -22,7 +103,6 @@ const Welcome = () => {
           height: "10px",
           width: "75%",
           marginLeft: "auto",
-          backgroundColor: "red",
           borderBottom: "2px solid rgba(40,172,217,.5)",
           alignItems: "center",
         }}
@@ -31,20 +111,162 @@ const Welcome = () => {
         <Grid item style={{ flex: 0.5 }}>
           <TPKIcon size={75} icon={TPK.TPK} />
         </Grid>
-        <Grid item style={{ flex: 0.25 }}>
-          <TPKIconButton circular>
+        {/* Button Notifications, Logout, Profile, Options */}
+        <Grid
+          item
+          style={{
+            flex: 0.5,
+            display: "flex",
+            alignContent: "middle",
+          }}
+        >
+          <TPKIconButton>
             <TPKIcon size={45} icon={TPK.icNotification} />
+          </TPKIconButton>
+          <TPKIconButton>
+            <BlueCircle>
+              <p
+                style={{
+                  color: "white",
+                  margin: "auto",
+                }}
+              >
+                Logout
+              </p>
+            </BlueCircle>
+          </TPKIconButton>
+          <TPKIconButton>
+            <BlueCircle>
+              <p
+                style={{
+                  color: "white",
+                  margin: "auto",
+                }}
+              >
+                Profile
+              </p>
+            </BlueCircle>
+          </TPKIconButton>
+          <TPKIconButton>
+            <BlueCircle>
+              <p
+                style={{
+                  color: "white",
+                  margin: "auto",
+                }}
+              >
+                Options
+              </p>
+            </BlueCircle>
           </TPKIconButton>
         </Grid>
       </Grid>
+      {/* Center panel*/}
       <Grid
         item
         style={{
           flex: 1,
+          display: "flex",
+          flexDirection: "column",
           height: "10px",
-          backgroundColor: "green",
         }}
-      ></Grid>
+      >
+        {/* Welcome message */}
+        <Grid
+          item
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "middle",
+            borderBottom: "2px solid rgba(40,172,217,.5)",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
+          <BlueCircle size={"72px"} />
+          <h1
+            style={{
+              color: "white",
+              marginLeft: 20,
+            }}
+          >
+            Nathan - Welcome Back!
+          </h1>
+        </Grid>
+
+        {/* News */}
+        <Grid
+          item
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <p style={{ color: "white", textAlign: "center" }}>
+            Here's some stuff you missed...
+          </p>
+          <Grid item style={{ display: "flex", justifyContent: "center" }}>
+            <TPKIconButton>
+              <BorderBox width={150} height={100} style={{ marginRight: 10 }}>
+                <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
+                  News 1
+                </p>
+              </BorderBox>
+            </TPKIconButton>
+            <TPKIconButton>
+              <BorderBox width={150} height={100} style={{ marginRight: 10 }}>
+                <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
+                  News 2
+                </p>
+              </BorderBox>
+            </TPKIconButton>
+            <TPKIconButton>
+              <BorderBox width={150} height={100}>
+                <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
+                  News 3
+                </p>
+              </BorderBox>
+            </TPKIconButton>
+          </Grid>
+        </Grid>
+        {/* Button List Job, Find Job, Find Person */}
+        <Grid
+          item
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <p style={{ color: "white", textAlign: "center" }}>
+            What would you like to do first?
+          </p>
+          <Grid item style={{ display: "flex", justifyContent: "center" }}>
+            <TPKIconButton>
+              <BorderCircle style={{ marginRight: 10 }} size={200}>
+                <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
+                  List A Job
+                </p>
+              </BorderCircle>
+            </TPKIconButton>
+            <TPKIconButton>
+              <BorderCircle style={{ marginRight: 10 }} size={200}>
+                <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
+                  Find A Job
+                </p>
+              </BorderCircle>
+            </TPKIconButton>
+            <TPKIconButton>
+              <BorderCircle style={{ marginRight: 10 }} size={200}>
+                <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
+                  Find A Person
+                </p>
+              </BorderCircle>
+            </TPKIconButton>
+          </Grid>
+        </Grid>
+      </Grid>
+      {/* Footer */}
       <Grid
         item
         style={{

@@ -8,7 +8,6 @@ namespace Tapknack_Server.Repositories
     {
         //TODO: This should be encrypted in somewhere like AppConfig ... not hardcoded here!!
         const string connectionString = "Server=localhost;Database=Tapknack;Trusted_Connection=True;";
-        //"Data Source=localhost;ServerNameInitial Catalog=Tapknack;Integrated Security=True;";
 
         public TPKRepoBase() : base(connectionString)
         {
