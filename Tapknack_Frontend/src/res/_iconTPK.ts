@@ -1,20 +1,15 @@
 import tpkIcon from "./tpk.png";
 import icNotification from "./ic/icNotification_48.svg";
-import icLogout from "./ic/icUnknown_48.png";
-import icProfile from "./ic/icUnknown_48.png";
+import icLogout from "./ic/icLogout_48.svg";
+import icProfile from "./ic/icProfile_48.svg";
+import icOptions from "./ic/icOptions_48.svg";
 
-const TPK: TPKIconProps = {
+const TPK: Record<string, string> = {
   TPK: tpkIcon,
-  icNotification: icNotification,
-  icLogout: icLogout,
-  icProfile: icProfile,
+  icNotification,
+  icLogout,
+  icProfile,
+  icOptions,
 };
-
-export interface TPKIconProps {
-  TPK: string;
-  icNotification: string;
-  icLogout: string;
-  icProfile: string;
-}
 
 export default TPK;

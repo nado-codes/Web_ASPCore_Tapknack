@@ -124,40 +124,13 @@ const Welcome = () => {
             <TPKIcon size={45} icon={TPK.icNotification} />
           </TPKIconButton>
           <TPKIconButton>
-            <BlueCircle>
-              <p
-                style={{
-                  color: "white",
-                  margin: "auto",
-                }}
-              >
-                Logout
-              </p>
-            </BlueCircle>
+            <TPKIcon size={45} icon={TPK.icLogout} />
           </TPKIconButton>
           <TPKIconButton>
-            <BlueCircle>
-              <p
-                style={{
-                  color: "white",
-                  margin: "auto",
-                }}
-              >
-                Profile
-              </p>
-            </BlueCircle>
+            <TPKIcon size={45} icon={TPK.icProfile} />
           </TPKIconButton>
           <TPKIconButton>
-            <BlueCircle>
-              <p
-                style={{
-                  color: "white",
-                  margin: "auto",
-                }}
-              >
-                Options
-              </p>
-            </BlueCircle>
+            <TPKIcon size={45} icon={TPK.icOptions} />
           </TPKIconButton>
         </Grid>
       </Grid>
@@ -178,16 +151,18 @@ const Welcome = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "middle",
-            borderBottom: "2px solid rgba(40,172,217,.5)",
+            marginTop: 40,
             marginLeft: "auto",
             marginRight: "auto",
           }}
         >
-          <BlueCircle size={"72px"} />
+          <TPKIcon size={64} icon={TPK.icProfile} />
           <h1
             style={{
               color: "white",
               marginLeft: 20,
+              marginTop: "auto",
+              marginBottom: "auto",
             }}
           >
             Nathan - Welcome Back!
@@ -205,7 +180,19 @@ const Welcome = () => {
           <p style={{ color: "white", textAlign: "center" }}>
             Here's some stuff you missed...
           </p>
-          <Grid item style={{ display: "flex", justifyContent: "center" }}>
+          <Grid
+            item
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              borderBottom: "2px solid rgba(40,172,217,.5)",
+              borderTop: "2px solid rgba(40,172,217,.5)",
+              paddingTop: 10,
+              paddingBottom: 10,
+              width: "75%",
+              margin: "auto",
+            }}
+          >
             <TPKIconButton>
               <BorderBox width={150} height={100} style={{ marginRight: 10 }}>
                 <p style={{ color: "white", margin: "auto", fontSize: 22 }}>

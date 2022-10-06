@@ -12,7 +12,7 @@ import { useGlobalStyles } from "../Styles/GlobalStyles";
 import axios from "axios";
 
 import TPKIcon, { TPK } from "../res/iconTPK";
-import padlockIcon from "../res/ic/icPadlock_48.png";
+import padlockIcon from "../res/ic/icPadlock_48.svg";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 
 // TODO: will use later
@@ -23,15 +23,15 @@ const PadlockIcon = () => (
     src={padlockIcon}
     alt="Padlock"
     style={{
-      marginRight: "-10px",
-      width: "36px",
-      height: "36px",
+      marginRight: -5,
+      width: 32,
+      height: 32,
       objectFit: "contain",
     }}
   />
 );
 
-const Signin : React.FC<Props> = ({ theme, gotoUrl } : Props) => {
+const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
   const globalStyles = useGlobalStyles(theme);
 
   const [username, setUsername] = useState("");
@@ -63,7 +63,7 @@ const Signin : React.FC<Props> = ({ theme, gotoUrl } : Props) => {
         }
       );
 
-      console.log("data=",data);
+      console.log("data=", data);
     } catch (err) {
       // console.error("errObj=", err.response.data);
       throw err;
@@ -205,8 +205,8 @@ const Signin : React.FC<Props> = ({ theme, gotoUrl } : Props) => {
 };
 
 interface Props {
-  theme: ClassNameMap<"root" | "link">,
-  gotoUrl: (url: string) => void,
+  theme: ClassNameMap<"root" | "link">;
+  gotoUrl: (url: string) => void;
 }
 
 export default Signin;
