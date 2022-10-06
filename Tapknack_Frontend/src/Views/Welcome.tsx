@@ -229,13 +229,32 @@ const Welcome = () => {
             What would you like to do first?
           </p>
           <Grid item style={{ display: "flex", justifyContent: "center" }}>
-            <TPKIconButton>
-              <BorderCircle style={{ marginRight: 10 }} size={200}>
-                <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
+            <Grid
+              item
+              style={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <TPKIconButton>
+                <BorderCircle size={200}>
+                  <TPKIcon
+                    size={128}
+                    icon={TPK.icSuitcasePlus}
+                    style={{ margin: "auto" }}
+                  />
+                </BorderCircle>
+                <p
+                  style={{
+                    color: "white",
+                    fontSize: 22,
+                    margin: "auto",
+                  }}
+                >
                   List A Job
                 </p>
-              </BorderCircle>
-            </TPKIconButton>
+              </TPKIconButton>
+            </Grid>
             <TPKIconButton>
               <BorderCircle style={{ marginRight: 10 }} size={200}>
                 <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
