@@ -4,31 +4,6 @@ import { Grid } from "@material-ui/core";
 import TPKIcon, { TPK } from "../res/iconTPK";
 import { TPKIconButton } from "../Components/TPKIconButton";
 
-const BlueCircle: React.FC<IconCircleProps> = ({
-  size = "48px",
-  children,
-}: IconCircleProps) => (
-  <div
-    style={{
-      display: "flex",
-      alignItems: "middle",
-      justifyContent: "center",
-      width: size,
-      height: size,
-      margin: "auto",
-      background: "#28ACD9",
-      borderRadius: 100,
-    }}
-  >
-    {children}
-  </div>
-);
-
-interface IconCircleProps {
-  size?: string | number;
-  children?: React.ReactNode[] | React.ReactNode;
-}
-
 const BorderCircle: React.FC<BorderCircleProps> = ({
   size = 48,
   children,
@@ -229,44 +204,86 @@ const Welcome = () => {
             What would you like to do first?
           </p>
           <Grid item style={{ display: "flex", justifyContent: "center" }}>
-            <Grid
-              item
-              style={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <TPKIconButton>
-                <BorderCircle size={200}>
+            <TPKIconButton>
+              <BorderCircle size={200}>
+                <Grid
+                  item
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
                   <TPKIcon
                     size={128}
                     icon={TPK.icSuitcasePlus}
                     style={{ margin: "auto" }}
                   />
-                </BorderCircle>
-                <p
-                  style={{
-                    color: "white",
-                    fontSize: 22,
-                    margin: "auto",
-                  }}
-                >
-                  List A Job
-                </p>
-              </TPKIconButton>
-            </Grid>
+                  <p
+                    style={{
+                      color: "white",
+                      fontSize: 22,
+                      margin: "auto",
+                      marginTop: -20,
+                    }}
+                  >
+                    List A Job
+                  </p>
+                </Grid>
+              </BorderCircle>
+            </TPKIconButton>
+
             <TPKIconButton>
               <BorderCircle style={{ marginRight: 10 }} size={200}>
-                <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
-                  Find A Job
-                </p>
+                <Grid
+                  item
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <TPKIcon
+                    size={128}
+                    icon={TPK.icSuitcaseSearch}
+                    style={{ margin: "auto" }}
+                  />
+                  <p
+                    style={{
+                      color: "white",
+                      fontSize: 22,
+                      margin: "auto",
+                      marginTop: -20,
+                    }}
+                  >
+                    Find A Job
+                  </p>
+                </Grid>
               </BorderCircle>
             </TPKIconButton>
             <TPKIconButton>
               <BorderCircle style={{ marginRight: 10 }} size={200}>
-                <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
-                  Find A Person
-                </p>
+                <Grid
+                  item
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <TPKIcon
+                    size={128}
+                    icon={TPK.icPersonSearch}
+                    style={{ margin: "auto" }}
+                  />
+                  <p
+                    style={{
+                      color: "white",
+                      fontSize: 22,
+                      margin: "auto",
+                      marginTop: -20,
+                    }}
+                  >
+                    Find A Person
+                  </p>
+                </Grid>
               </BorderCircle>
             </TPKIconButton>
           </Grid>
