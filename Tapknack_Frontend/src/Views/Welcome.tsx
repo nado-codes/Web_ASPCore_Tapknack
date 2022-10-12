@@ -1,8 +1,11 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Link, makeStyles, Typography } from "@material-ui/core";
 
 import TPKIcon, { TPK } from "../res/iconTPK";
 import { TPKIconButton } from "../Components/TPKIconButton";
+import ndcIcon from "../res/nadocoLogo.png";
+
+import { ClassNameMap } from "@material-ui/styles";
 
 const BorderCircle: React.FC<BorderCircleProps> = ({
   size = 48,
@@ -60,7 +63,29 @@ interface BorderBoxProps {
   style?: object;
 }
 
-const Welcome = () => {
+const useStyles = makeStyles(() => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    position: "absolute",
+    width: "100%",
+    bottom: 0,
+    top: 0,
+  },
+  link: {
+    color: "#29E4FF",
+    cursor: "pointer",
+    textDecoration: "underline",
+    "&:active": {
+      color: "white",
+    },
+  },
+}));
+
+const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
+  // .. Styles
+  const classes = useStyles(theme);
+
   return (
     <Grid
       container
@@ -76,35 +101,39 @@ const Welcome = () => {
           display: "flex",
           flex: 0.125,
           height: "10px",
-          width: "75%",
-          marginLeft: "auto",
-          borderBottom: "2px solid rgba(40,172,217,.5)",
-          alignItems: "center",
+
+          justifyContent: "center",
         }}
       >
         {/* Logo - TapKnack */}
-        <Grid item style={{ flex: 0.5 }}>
-          <TPKIcon size={75} icon={TPK.TPK} />
-        </Grid>
-        {/* Button Notifications, Logout, Profile, Options */}
         <Grid
           item
           style={{
-            flex: 0.5,
+            flex: 1,
+          }}
+        />
+        {/* Button Notifications, Logout, Profile, Options */}
+        <TPKIcon size={75} icon={TPK.TPK} />
+        <Grid
+          item
+          style={{
+            flex: 1,
             display: "flex",
-            alignContent: "middle",
+            justifyContent: "end",
+            paddingTop: "auto",
+            borderBottom: "2px solid rgba(40,172,217,.5)",
           }}
         >
-          <TPKIconButton>
+          <TPKIconButton style={{ marginTop: "auto", marginBottom: "auto" }}>
             <TPKIcon size={45} icon={TPK.icNotification} />
           </TPKIconButton>
-          <TPKIconButton>
+          <TPKIconButton style={{ marginTop: "auto", marginBottom: "auto" }}>
             <TPKIcon size={45} icon={TPK.icLogout} />
           </TPKIconButton>
-          <TPKIconButton>
+          <TPKIconButton style={{ marginTop: "auto", marginBottom: "auto" }}>
             <TPKIcon size={45} icon={TPK.icProfile} />
           </TPKIconButton>
-          <TPKIconButton>
+          <TPKIconButton style={{ marginTop: "auto", marginBottom: "auto" }}>
             <TPKIcon size={45} icon={TPK.icOptions} />
           </TPKIconButton>
         </Grid>
@@ -221,7 +250,7 @@ const Welcome = () => {
                   <p
                     style={{
                       color: "white",
-                      fontSize: 22,
+                      fontSize: 20,
                       margin: "auto",
                       marginTop: -20,
                     }}
@@ -233,7 +262,7 @@ const Welcome = () => {
             </TPKIconButton>
 
             <TPKIconButton>
-              <BorderCircle style={{ marginRight: 10 }} size={200}>
+              <BorderCircle size={200}>
                 <Grid
                   item
                   style={{
@@ -249,7 +278,7 @@ const Welcome = () => {
                   <p
                     style={{
                       color: "white",
-                      fontSize: 22,
+                      fontSize: 20,
                       margin: "auto",
                       marginTop: -20,
                     }}
@@ -260,7 +289,7 @@ const Welcome = () => {
               </BorderCircle>
             </TPKIconButton>
             <TPKIconButton>
-              <BorderCircle style={{ marginRight: 10 }} size={200}>
+              <BorderCircle size={200}>
                 <Grid
                   item
                   style={{
@@ -276,7 +305,7 @@ const Welcome = () => {
                   <p
                     style={{
                       color: "white",
-                      fontSize: 22,
+                      fontSize: 20,
                       margin: "auto",
                       marginTop: -20,
                     }}
@@ -294,12 +323,95 @@ const Welcome = () => {
         item
         style={{
           flex: 0.125,
+          display: "flex",
+          flexDirection: "row",
           height: "10px",
-          backgroundColor: "blue",
         }}
-      ></Grid>
+      >
+        <Grid item style={{ flex: 3 / 4 }} />
+        <Grid
+          item
+          style={{
+            flex: 1 / 4,
+            display: "flex",
+          }}
+        >
+          <Grid
+            item
+            style={{
+              flex: 50,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              paddingLeft: 30,
+            }}
+          >
+            <Link
+              className={classes.link}
+              style={{ fontSize: 12 }}
+              onClick={() => gotoUrl("/privacy")}
+            >
+              Privacy and Terms
+            </Link>
+            <Link
+              className={classes.link}
+              style={{ fontSize: 12 }}
+              onClick={() => gotoUrl("/about")}
+            >
+              What is TPK?
+            </Link>
+            <Link
+              className={classes.link}
+              style={{ fontSize: 12 }}
+              onClick={() => gotoUrl("/careers")}
+            >
+              Join Us
+            </Link>
+          </Grid>
+          <Grid
+            item
+            style={{
+              flex: 70,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              paddingLeft: 10,
+              paddingRight: 30,
+              paddingBottom: 30,
+            }}
+          >
+            <Typography
+              style={{
+                color: "#29E4FF",
+                fontFamily: "Ubuntu",
+                textAlign: "center",
+                fontSize: 12,
+              }}
+            >
+              Brought to you by
+            </Typography>
+            <TPKIconButton>
+              <img
+                src={ndcIcon}
+                style={{
+                  display: "block",
+                  width: "auto",
+                  height: "auto",
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                }}
+              />
+            </TPKIconButton>
+          </Grid>
+        </Grid>
+      </Grid>
     </Grid>
   );
 };
+
+interface Props {
+  theme: ClassNameMap<"root" | "link">;
+  gotoUrl: (url: string) => void;
+}
 
 export default Welcome;

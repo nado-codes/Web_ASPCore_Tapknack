@@ -3,6 +3,7 @@ import React, { useState } from "react";
 export const TPKIconButton: React.FC<Props> = ({
   children,
   onClick = () => null,
+  style,
 }: Props) => {
   const [hover, setHover] = useState<boolean>();
   const [mouseDown, setMouseDown] = useState<boolean>();
@@ -24,6 +25,7 @@ export const TPKIconButton: React.FC<Props> = ({
         filter: `brightness(${hover && !mouseDown ? "130%" : "100%"})`,
         cursor: `${hover ? "pointer" : "default"}`,
         fontWeight: hover && !mouseDown ? "bold" : "normal",
+        ...style,
       }}
     >
       {children}
@@ -34,4 +36,5 @@ export const TPKIconButton: React.FC<Props> = ({
 interface Props {
   children: React.ReactNode | React.ReactNode[];
   onClick?: () => void;
+  style?: object;
 }
