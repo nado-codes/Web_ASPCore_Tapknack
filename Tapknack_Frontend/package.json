@@ -1,6 +1,5 @@
 {
   "name": "tapknack",
-  "proxy": "https://localhost:44326/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

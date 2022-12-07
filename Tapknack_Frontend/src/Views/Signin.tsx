@@ -53,6 +53,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
     try {
       const token = btoa(`${username}:${pass}`);
       console.log("token=", token);
+
       const { data } = await axios.post(
         `api/signin`,
         {},

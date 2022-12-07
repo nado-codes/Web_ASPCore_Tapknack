@@ -36,7 +36,7 @@ const App = () => {
     if (localStorage.prevPage === hrefNoHash)
       window.location = `${hrefNoHash}/#return`;
 
-    axios.defaults.baseURL = "http://localhost:3000";
+    axios.defaults.baseURL = "https://localhost:5001";
   }, []);
 
   // ANIMATIONS
