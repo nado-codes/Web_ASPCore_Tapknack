@@ -9,6 +9,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Diagnostics;
 using Newtonsoft.Json;
+using System.Data.SqlClient;
 
 namespace Tapknack_Server
 {
@@ -24,13 +25,11 @@ namespace Tapknack_Server
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-
       services.AddControllers();
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tapknack_Server", Version = "v1" });
       });
-
 
       services.AddCors(options =>
       {
@@ -65,8 +64,6 @@ namespace Tapknack_Server
 
       app.UseHttpsRedirection();
 
-
-
       app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>
@@ -79,17 +76,17 @@ namespace Tapknack_Server
 
     private static async Task HandleException(Exception exception, HttpContext context)
     {
-      // var response = context.Response;
 
       // .. TODO: Handle different signin and authorization exceptions here (change status codes)
 
-      /*if (exception is SqlException)
+      if (exception is SqlException)
       {
-          var sqlException = exception as SqlException;
+        var sqlException = exception as SqlException;
 
-          await context.Response.WriteAsJsonAsync(new
-              { Success = false, Message = sqlException.Message, Number= sqlException.Number });
-      }*/
+        await context.Response.WriteAsJsonAsync(new
+        { Success = false, Message = sqlException.Message, Number = sqlException.Number });
+        return;
+      }
 
       await context.Response.WriteAsJsonAsync(new
       { Success = false, Exception = exception.ToString(), exception.Message });

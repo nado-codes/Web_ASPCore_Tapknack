@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Layout from "./Layout";
@@ -16,6 +16,8 @@ const App = () => {
   ];
 
   const exitTimeout = 500;
+
+  const [error, setError] = useState(undefined);
 
   useEffect(() => {
     const {
@@ -77,7 +79,7 @@ const App = () => {
     const { headers } = request;
     const auth = `Bearer ${token}`;
 
-    console.log("pathname=", pathname);
+    /* console.log("pathname=", pathname);
     console.log(
       "request=",
       pathname === "/signin/" || pathname === "/"
@@ -86,7 +88,7 @@ const App = () => {
             ...request,
             headers: { ...headers, Authorization: auth },
           }
-    );
+    ); */
 
     return pathname === "/signin/" || pathname === "/"
       ? request
@@ -98,11 +100,14 @@ const App = () => {
 
   const responseHandler = (response) => {
     if (response.status === "401") window.location = "/signin";
-
     return response;
   };
 
-  const errorHandler = (err) => Promise.reject(err);
+  const errorHandler = (err) => {
+    Promise.reject(err);
+    console.error(err.response.data.message);
+    setError(err.response.data.message);
+  };
 
   axios.interceptors.request.use(requestHandler, errorHandler);
   axios.interceptors.response.use(responseHandler, errorHandler);

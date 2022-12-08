@@ -7,7 +7,7 @@ import axios from "axios";
 
 import FormField from "../FormField";
 
-const SignupForm = ({theme}) => {
+const SignupForm = ({ theme }) => {
   const globalStyles = useGlobalStyles(theme);
   const labelMinWidth = 185;
 
@@ -43,7 +43,7 @@ const SignupForm = ({theme}) => {
       return data;
     } catch (err) {
       // const errObj = JSON.parse(err.response.data);
-      console.error("errObj=", err.response.data);
+      // console.error("errObj=", err.response.data);
       throw err;
     } finally {
       setIsLoading(false);

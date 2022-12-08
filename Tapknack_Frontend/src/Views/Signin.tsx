@@ -37,6 +37,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
   const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSignupClicked = () => {
     gotoUrl("");
@@ -49,6 +50,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
   const handleSubmitClicked = async () => {
     console.log("you clicked submit!");
     setIsLoading(true);
+    setError("");
 
     try {
       const token = btoa(`${username}:${pass}`);
@@ -65,9 +67,9 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
       );
 
       console.log("data=", data);
+      localStorage.token = data.token;
     } catch (err) {
-      // console.error("errObj=", err.response.data);
-      throw err;
+      setError("Login Failed, unknown error");
     } finally {
       setIsLoading(false);
     }
@@ -130,7 +132,22 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
               style={{ position: "absolute", marginTop: "20px" }}
             />
           )}
-          <Grid item style={{ marginLeft: "0px" }}>
+          {error !== "" && (
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "middle",
+                background: "rgba(255,0,0,0.75)",
+              }}
+            >
+              <p className={globalStyles.white14} style={{ fontSize: 14 }}>
+                {error}
+              </p>
+            </div>
+          )}
+          <Grid item style={{ opacity: `${isLoading ? "0.5" : "1"}` }}>
             {" "}
             {/* -25px */}
             <FormField
