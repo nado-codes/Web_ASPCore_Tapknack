@@ -42,12 +42,25 @@ as
 		DateAdded,
 		LastModified
 	from [Sessions] where UserId=@userId
+go
+create procedure GetSessionByToken
+	@token uniqueidentifier
+as
+	select 
+		Id,
+		UserId,
+		Token,
+		Expiry,
+		DateAdded,
+		LastModified
+	from [Sessions] where Token=@token
 
 /* ROLLBACK
 
 drop procedure AddSession
 drop procedure GetSessionById
 drop procedure GetSessionByUserId
+drop procedure GetSessionByToken
 drop table Sessions
 
 */

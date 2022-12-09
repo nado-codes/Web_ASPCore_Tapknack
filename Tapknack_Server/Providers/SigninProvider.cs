@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,55 +8,55 @@ using Tapknack_Server.Repositories;
 
 namespace Tapknack_Server.Providers
 {
-    public class SigninProvider
+  public class SigninProvider
+  {
+    public async Task<SigninResponse> SigninAsync(HttpRequest request)
     {
-        public async Task<SigninResponse> SigninAsync(HttpRequest request)
-        {
-            // .. Probably wanna remove this stuff (try not to copy other projects)
-            // .. Or at least, make sure I properly understand what this code actually does rather than just copypasta everything
-            var authorization = request.Headers["Authorization"][0];
+      // .. Probably wanna remove this stuff (try not to copy other projects)
+      // .. Or at least, make sure I properly understand what this code actually does rather than just copypasta everything
+      var authorization = request.Headers["Authorization"][0];
 
-            if(authorization == "")
-                throw new BadHttpRequestException("Authorization header cannot be empty");
+      if (authorization == "")
+        throw new BadHttpRequestException("Authorization header cannot be empty");
 
-            var encoded = Convert.FromBase64String(authorization);
-            var text = Encoding.ASCII.GetString(encoded);
-            var userPass = text.Split(':');
-            
-            if(userPass.Length != 2)
-                throw new BadHttpRequestException("Authorization parameter must contain a JSON-encoded string in the format: user:password");
+      var encoded = Convert.FromBase64String(authorization);
+      var text = Encoding.ASCII.GetString(encoded);
+      var userPass = text.Split(':');
 
-            var userName = userPass[0];
-            var password = userPass[1];
+      if (userPass.Length != 2)
+        throw new BadHttpRequestException("Authorization parameter must contain a JSON-encoded string in the format: user:password");
 
-            var usersProvider = new UsersProvider();
-            var user = await usersProvider.GetByUsernameAsync(userName);
+      var userName = userPass[0];
+      var password = userPass[1];
 
-            if(user == null) 
-                throw new AuthenticationException($"User {userName} does not exist");
+      var usersProvider = new UsersProvider();
+      var user = await usersProvider.GetByUsernameAsync(userName);
 
-            var passwordProvider = new PasswordProvider();
-            var isValid = passwordProvider.Verify(password, user.Password);
+      if (user == null)
+        throw new AuthenticationException($"User {userName} does not exist");
 
-            if(!isValid)
-                throw new AuthenticationException("Passwords do not match");
+      var passwordProvider = new PasswordProvider();
+      var isValid = passwordProvider.Verify(password, user.Password);
 
-            var sessionsRepo = new SessionsRepository();
-            var session = await sessionsRepo.AddAsync(new Session()
-            {
-                UserId = user.Id,
-                Token = Guid.NewGuid(),
-                Expiry = DateTime.UtcNow.AddSeconds(5),
-            });
+      if (!isValid)
+        throw new AuthenticationException("Passwords do not match");
 
-            if (session == null)
-                throw new ApplicationException("Login failed. Please try again later.");
+      var sessionsRepo = new SessionsRepository();
+      var session = await sessionsRepo.AddAsync(new Session()
+      {
+        UserId = user.Id,
+        Token = Guid.NewGuid(),
+        Expiry = DateTime.UtcNow.AddSeconds(5),
+      });
 
-            return new SigninResponse()
-            {
-                UserId = user.Id,
-                Token = Guid.NewGuid(),
-            };
-        }
+      if (session == null)
+        throw new ApplicationException("Login failed. Please try again later.");
+
+      return new SigninResponse()
+      {
+        UserId = user.Id,
+        Token = Guid.NewGuid(),
+      };
     }
+  }
 }

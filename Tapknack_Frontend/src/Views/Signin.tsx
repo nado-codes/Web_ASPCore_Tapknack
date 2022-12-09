@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   CircularProgress,
   Grid,
@@ -39,6 +39,20 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    const loadAsync = async () => {
+      try {
+        if (localStorage.token === undefined) return;
+
+        await axios.get(`api/signin/authenticate`);
+      } catch (err) {
+        gotoUrl("/signin");
+      }
+    };
+
+    loadAsync();
+  }, []);
+
   const handleSignupClicked = () => {
     gotoUrl("");
   };
@@ -68,6 +82,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
 
       console.log("data=", data);
       localStorage.token = data.token;
+      gotoUrl("/welcome");
     } catch (err) {
       setError("Login Failed, unknown error");
     } finally {
