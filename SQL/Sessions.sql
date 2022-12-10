@@ -1,8 +1,9 @@
 create table [Sessions] (
 	Id int not null primary key identity,
-	UserId int not null foreign key references Users(Id) constraint SessionsUserIdUniqueConstraint unique, 
+	UserId int not null foreign key references Users(Id),
 	Token uniqueidentifier not null constraint SessionsTokenUniqueConstraint unique,
 	Expiry datetime2 not null,
+	IsExpired bit not null,
 	DateAdded datetime2 not null constraint SessionsDateAddedDefaultConstraint default(getutcdate()),
 	LastModified timestamp not null
 )

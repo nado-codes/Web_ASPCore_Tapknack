@@ -44,7 +44,9 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
       try {
         if (localStorage.token === undefined) return;
 
-        await axios.get(`api/signin/authenticate`);
+        await axios.get(`/api/authentication`);
+
+        gotoUrl("/welcome");
       } catch (err) {
         gotoUrl("/signin");
       }
@@ -82,7 +84,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
 
       console.log("data=", data);
       localStorage.token = data.token;
-      gotoUrl("/welcome");
+      // gotoUrl("/welcome");
     } catch (err) {
       setError("Login Failed, unknown error");
     } finally {

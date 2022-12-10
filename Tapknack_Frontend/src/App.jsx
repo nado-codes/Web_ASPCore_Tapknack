@@ -79,17 +79,6 @@ const App = () => {
     const { headers } = request;
     const auth = `Bearer ${token}`;
 
-    /* console.log("pathname=", pathname);
-    console.log(
-      "request=",
-      pathname === "/signin/" || pathname === "/"
-        ? request
-        : {
-            ...request,
-            headers: { ...headers, Authorization: auth },
-          }
-    ); */
-
     return pathname === "/signin/" || pathname === "/"
       ? request
       : {
@@ -104,9 +93,9 @@ const App = () => {
   };
 
   const errorHandler = (err) => {
-    Promise.reject(err);
     console.error(err.response.data.message);
     setError(err.response.data.message);
+    return Promise.reject(err);
   };
 
   axios.interceptors.request.use(requestHandler, errorHandler);
