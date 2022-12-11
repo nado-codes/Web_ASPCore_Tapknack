@@ -3,9 +3,21 @@
   "tasks": [
     {
       "type": "shell",
-      "label": "run tests",
+      "label": "test backend",
       "group": "test",
       "command": "dotnet test ${workspaceFolder}\\Tapknack_Tests",
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build backend",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/Tapknack_Server/Tapknack_Server.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
       "problemMatcher": "$msCompile"
     },
     {
@@ -31,18 +43,6 @@
       "dependsOn": ["start backend", "start frontend"]
     },
     {
-      "label": "build",
-      "command": "dotnet",
-      "type": "process",
-      "args": [
-        "build",
-        "${workspaceFolder}/Tapknack_Server/Tapknack_Server.csproj",
-        "/property:GenerateFullPaths=true",
-        "/consoleloggerparameters:NoSummary"
-      ],
-      "problemMatcher": "$msCompile"
-    },
-    {
       "label": "publish",
       "command": "dotnet",
       "type": "process",
@@ -51,18 +51,6 @@
         "${workspaceFolder}/Tapknack_Server/Tapknack_Server.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
-      ],
-      "problemMatcher": "$msCompile"
-    },
-    {
-      "label": "watch",
-      "command": "dotnet",
-      "type": "process",
-      "args": [
-        "watch",
-        "run",
-        "--project",
-        "${workspaceFolder}/Tapknack_Server/Tapknack_Server.csproj"
       ],
       "problemMatcher": "$msCompile"
     }

@@ -12,5 +12,8 @@ namespace Tapknack_Server.Repositories
 
     public Task<Session> GetByTokenAsync(Guid token)
         => GetSingleAsync("token", token);
+
+    public Task<Session> GetByAccessTokenAsync(Guid accessToken)
+        => GetSingleAsync("accesstoken", accessToken);
   }
 }

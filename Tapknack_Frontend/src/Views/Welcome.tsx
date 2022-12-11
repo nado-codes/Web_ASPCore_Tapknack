@@ -1,9 +1,20 @@
-import React, { useEffect } from "react";
-import { Grid, Link, makeStyles, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Link,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 
 import TPKIcon, { TPK } from "../res/iconTPK";
 import { TPKIconButton } from "../Components/TPKIconButton";
 import ndcIcon from "../res/nadocoLogo.png";
+import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 import { ClassNameMap } from "@material-ui/styles";
 import axios from "axios";
@@ -87,6 +98,9 @@ const useStyles = makeStyles(() => ({
 const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
   // .. Styles
   const classes = useStyles(theme);
+  const globalStyles = useGlobalStyles(theme);
+
+  const [logoutPromptIsOpen, setLogoutPromptIsOpen] = useState(false);
 
   useEffect(() => {
     const loadAsync = async () => {
@@ -97,8 +111,16 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
       }
     };
 
+    document.title = "Tapknack - Welcome";
+
     loadAsync();
   }, []);
+
+  const handleLogout = () => {
+    delete localStorage.token;
+    PageHelpers().GotoUrl("/signin");
+    setLogoutPromptIsOpen(false);
+  };
 
   return (
     <Grid
@@ -109,6 +131,49 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
         flexDirection: "column",
       }}
     >
+      <Dialog
+        open={logoutPromptIsOpen}
+        PaperProps={{
+          style: {
+            backgroundColor: "#000919AA",
+            boxShadow: "none",
+            width: 500,
+            padding: 5,
+          },
+        }}
+      >
+        <DialogTitle>Title</DialogTitle>
+        <DialogContent style={{ display: "flex", justifyContent: "center" }}>
+          <Typography
+            className={globalStyles.white14}
+            style={{ userSelect: "none", fontSize: 20 }}
+          >
+            Are you sure you want to log out?
+          </Typography>
+        </DialogContent>
+        <DialogActions style={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            className={globalStyles.genericButton}
+            onClick={() => handleLogout()}
+            style={{
+              marginTop: "50px",
+              width: "150px",
+            }}
+          >
+            Yes
+          </Button>
+          <Button
+            className={globalStyles.genericButton}
+            onClick={() => setLogoutPromptIsOpen(false)}
+            style={{
+              marginTop: "50px",
+              width: "150px",
+            }}
+          >
+            No
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Grid
         item
         style={{
@@ -141,7 +206,10 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
           <TPKIconButton style={{ marginTop: "auto", marginBottom: "auto" }}>
             <TPKIcon size={45} icon={TPK.icNotification} />
           </TPKIconButton>
-          <TPKIconButton style={{ marginTop: "auto", marginBottom: "auto" }}>
+          <TPKIconButton
+            style={{ marginTop: "auto", marginBottom: "auto" }}
+            onClick={() => setLogoutPromptIsOpen(true)}
+          >
             <TPKIcon size={45} icon={TPK.icLogout} />
           </TPKIconButton>
           <TPKIconButton style={{ marginTop: "auto", marginBottom: "auto" }}>

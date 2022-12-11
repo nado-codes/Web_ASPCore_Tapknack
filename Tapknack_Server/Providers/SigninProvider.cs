@@ -46,7 +46,7 @@ namespace Tapknack_Server.Providers
       {
         UserId = user.Id,
         Token = Guid.NewGuid(),
-        Expiry = DateTime.UtcNow.AddSeconds(5),
+        Expiry = DateTime.UtcNow.AddDays(1),
       });
 
       if (session == null)

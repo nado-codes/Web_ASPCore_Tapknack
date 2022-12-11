@@ -93,6 +93,7 @@ const App = () => {
   };
 
   const errorHandler = (err) => {
+    console.log(Object.keys(err));
     console.error(err.response.data.message);
     setError(err.response.data.message);
     return Promise.reject(err);

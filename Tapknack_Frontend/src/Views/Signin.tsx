@@ -15,6 +15,7 @@ import TPKIcon, { TPK } from "../res/iconTPK";
 import padlockIcon from "../res/ic/icPadlock_48.svg";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import { PageHelpers } from "../Helpers/PageHelpers";
+import { ErrorHelpers } from "../Helpers/ErrorHelpers";
 
 // TODO: will use later
 // import ndcIcon from "../res/nadocoLogo.png";
@@ -31,10 +32,6 @@ const PadlockIcon = () => (
     }}
   />
 );
-
-interface IError {
-  response: { data: { message: string } };
-}
 
 const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
   const globalStyles = useGlobalStyles(theme);
@@ -58,18 +55,23 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
         });
 
         gotoUrl("/welcome");
-      } catch (_e) {
-        const {
-          response: {
-            data: { message },
-          },
-        } = _e as IError;
+      } catch (err) {
+        const message = ErrorHelpers().GetErrorMessage(err);
         // .. if validation fails, stay on the signin page
+
+        switch (message) {
+          case "SESSION_EXPIRED":
+            setError("Session expired. Please login again.");
+            return;
+        }
+
+        setError("Unknown error");
         console.log(message);
         delete localStorage.token;
       }
     };
 
+    document.title = "Tapknack - Signin";
     loadAsync();
   }, []);
 
@@ -101,7 +103,9 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
       localStorage.token = data.token;
       PageHelpers().GotoUrl("/welcome");
     } catch (err) {
-      setError("Login Failed, unknown error");
+      console.log(err.response);
+      const message = ErrorHelpers().GetErrorMessage(err);
+      console.log("message=", message);
     } finally {
       setIsLoading(false);
     }
