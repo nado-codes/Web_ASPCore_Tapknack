@@ -14,6 +14,7 @@ import axios from "axios";
 import TPKIcon, { TPK } from "../res/iconTPK";
 import padlockIcon from "../res/ic/icPadlock_48.svg";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
+import { PageHelpers } from "../Helpers/PageHelpers";
 
 // TODO: will use later
 // import ndcIcon from "../res/nadocoLogo.png";
@@ -31,6 +32,10 @@ const PadlockIcon = () => (
   />
 );
 
+interface IError {
+  response: { data: { message: string } };
+}
+
 const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
   const globalStyles = useGlobalStyles(theme);
 
@@ -40,15 +45,28 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    // .. try to signin with a prexisting token by validating it
     const loadAsync = async () => {
       try {
-        if (localStorage.token === undefined) return;
+        const { token } = localStorage;
+        if (token === undefined) return;
 
-        await axios.get(`/api/authentication`);
+        await axios.get(`/api/authentication`, {
+          headers: {
+            Authorization: token,
+          },
+        });
 
         gotoUrl("/welcome");
-      } catch (err) {
-        gotoUrl("/signin");
+      } catch (_e) {
+        const {
+          response: {
+            data: { message },
+          },
+        } = _e as IError;
+        // .. if validation fails, stay on the signin page
+        console.log(message);
+        delete localStorage.token;
       }
     };
 
@@ -64,13 +82,11 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
   };
 
   const handleSubmitClicked = async () => {
-    console.log("you clicked submit!");
     setIsLoading(true);
     setError("");
 
     try {
       const token = btoa(`${username}:${pass}`);
-      console.log("token=", token);
 
       const { data } = await axios.post(
         `api/signin`,
@@ -82,9 +98,8 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
         }
       );
 
-      console.log("data=", data);
       localStorage.token = data.token;
-      // gotoUrl("/welcome");
+      PageHelpers().GotoUrl("/welcome");
     } catch (err) {
       setError("Login Failed, unknown error");
     } finally {

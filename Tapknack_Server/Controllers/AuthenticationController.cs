@@ -15,6 +15,10 @@ namespace Tapknack_Server.Controllers
       try
       {
         var authHeader = Request.Headers["Authorization"].ToString();
+
+        if (authHeader == "")
+          throw new ApplicationException("Authorization header must be provided");
+
         var authToken = Guid.Parse(authHeader.Split(" ")[1]);
 
         var authProv = new AuthenticationProvider();

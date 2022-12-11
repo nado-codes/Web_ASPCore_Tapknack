@@ -43,7 +43,7 @@ const App = () => {
 
   // ANIMATIONS
 
-  const GetHrefNoHash = () => {
+  const getHrefNoHash = () => {
     const {
       location: { href: locationHref },
     } = window;
@@ -52,7 +52,7 @@ const App = () => {
   };
 
   const GotoUrl = (url) => {
-    const hrefNoHash = GetHrefNoHash();
+    const hrefNoHash = getHrefNoHash();
 
     localStorage.prevPage = hrefNoHash;
 
@@ -61,7 +61,7 @@ const App = () => {
   };
 
   const ReturnToPrevUrl = () => {
-    const hrefNoHash = GetHrefNoHash();
+    const hrefNoHash = getHrefNoHash();
 
     window.location = `${localStorage.prevPage}/#return`;
     localStorage.prevPage = hrefNoHash;
@@ -79,7 +79,7 @@ const App = () => {
     const { headers } = request;
     const auth = `Bearer ${token}`;
 
-    return pathname === "/signin/" || pathname === "/"
+    return token === undefined
       ? request
       : {
           ...request,

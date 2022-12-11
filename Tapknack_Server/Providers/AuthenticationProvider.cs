@@ -19,10 +19,10 @@ namespace Tapknack_Server.Providers
       var session = await sessionsRepo.GetByTokenAsync(authToken);
 
       if (session == null)
-        throw new AuthenticationException("No session found for given token");
+        throw new AuthenticationException("SESSION_INVALID");
 
       if (session.Expiry < DateTime.UtcNow)
-        throw new AuthenticationException("Session expired");
+        throw new AuthenticationException("SESSION_EXPIRED");
     }
   }
 }

@@ -55,7 +55,7 @@ namespace Tapknack_Server.Providers
       return new SigninResponse()
       {
         UserId = user.Id,
-        Token = Guid.NewGuid(),
+        Token = session.Token,
       };
     }
   }

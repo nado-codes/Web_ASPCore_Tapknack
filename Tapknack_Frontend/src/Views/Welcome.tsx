@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, Link, makeStyles, Typography } from "@material-ui/core";
 
 import TPKIcon, { TPK } from "../res/iconTPK";
@@ -6,6 +6,8 @@ import { TPKIconButton } from "../Components/TPKIconButton";
 import ndcIcon from "../res/nadocoLogo.png";
 
 import { ClassNameMap } from "@material-ui/styles";
+import axios from "axios";
+import { PageHelpers } from "../Helpers/PageHelpers";
 
 const BorderCircle: React.FC<BorderCircleProps> = ({
   size = 48,
@@ -85,6 +87,18 @@ const useStyles = makeStyles(() => ({
 const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
   // .. Styles
   const classes = useStyles(theme);
+
+  useEffect(() => {
+    const loadAsync = async () => {
+      try {
+        await axios.get(`/api/authentication`);
+      } catch (err) {
+        PageHelpers().GotoUrl("/signin");
+      }
+    };
+
+    loadAsync();
+  }, []);
 
   return (
     <Grid
