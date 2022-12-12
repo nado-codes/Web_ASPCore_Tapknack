@@ -16,9 +16,9 @@ import ndcIcon from "../res/nadocoLogo.png";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 import { ClassNameMap } from "@material-ui/styles";
-import axios from "axios";
 import { PageHelpers } from "../Helpers/PageHelpers";
 import { TPKButton } from "../Components/TPKButton";
+import { AuthenticationHelpers } from "../Helpers/AuthenticationHelpers";
 
 const BorderCircle: React.FC<BorderCircleProps> = ({
   size = 48,
@@ -105,7 +105,8 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
   useEffect(() => {
     const loadAsync = async () => {
       try {
-        await axios.get(`/api/authentication`);
+        const isAuthorized = await AuthenticationHelpers().Authenticate();
+        !isAuthorized && PageHelpers().GotoUrl("/signin");
       } catch (err) {
         PageHelpers().GotoUrl("/signin");
       }

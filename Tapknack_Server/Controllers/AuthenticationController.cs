@@ -10,7 +10,7 @@ namespace Tapknack_Server.Controllers
   public class AuthenticationController : ControllerBase
   {
     [HttpGet]
-    public async Task AuthenticateAsync()
+    public async Task<object> AuthenticateAsync()
     {
       try
       {
@@ -19,16 +19,19 @@ namespace Tapknack_Server.Controllers
         if (authHeader == "")
           throw new ApplicationException("Authorization header must be provided");
 
-        var authToken = Guid.Parse(authHeader.Split(" ")[1]);
+        var token = authHeader.Split(" ")[1];
+
+        if (token == "undefined")
+          throw new ApplicationException("Token cannot be undefined");
+
+        var authToken = Guid.Parse(token);
 
         var authProv = new AuthenticationProvider();
-        await authProv.AuthenticateAsync(authToken);
-
-        // return Task.CompletedTask;
+        return await authProv.AuthenticateAsync(authToken);
       }
       catch (Exception e)
       {
-        Console.WriteLine(e);
+        Console.WriteLine(e.Message);
         throw;
       }
     }

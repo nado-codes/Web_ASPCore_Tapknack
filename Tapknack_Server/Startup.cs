@@ -79,14 +79,14 @@ namespace Tapknack_Server
 
       // .. TODO: Handle different signin and authorization exceptions here (change status codes)
 
-      if (exception is SqlException)
+      /* if (exception is SqlException)
       {
         var sqlException = exception as SqlException;
 
         await context.Response.WriteAsJsonAsync(new
         { Success = false, Message = sqlException.Message, Number = sqlException.Number });
         return;
-      }
+      } */
 
       await context.Response.WriteAsJsonAsync(new
       { Success = false, Exception = exception.ToString(), exception.Message });

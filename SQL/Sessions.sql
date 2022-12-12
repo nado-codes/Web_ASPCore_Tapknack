@@ -92,15 +92,21 @@ begin
 	from [Sessions] where AccessToken=@accessToken
 end
 go
-create procedure UpdateSessionAccessToken
+create procedure UpdateSession
 	@id int,
-	@accessTokenNew uniqueidentifier,
+	@token uniqueidentifier,
+	@tokenExpiry datetime2,
+	@accessToken uniqueidentifier,
+	@accessExpiry datetime2,
 	@lastModified binary(8)
 as
 begin
 	set nocount off;
 	update Sessions SET 
-		AccessToken	= @accessTokenNew
+		Token=@token,
+		Expiry=@tokenExpiry,
+		AccessToken	= @accessToken,
+		AccessExpiry=@accessExpiry
 	where Id=@id and LastModified=@lastModified
 end
 
@@ -111,7 +117,7 @@ drop procedure GetSessionById
 drop procedure GetSessionByUserId
 drop procedure GetSessionByToken
 drop procedure GetSessionByAccessToken
-drop procedure UpdateSessionAccessToken
+drop procedure UpdateSession
 drop table Sessions
 
 */

@@ -48,7 +48,7 @@ namespace Tapknack_Server.Providers
       {
         UserId = user.Id,
         Token = Guid.NewGuid(),
-        Expiry = DateTime.UtcNow.AddSeconds(10),
+        Expiry = DateTime.UtcNow.AddSeconds(30),
         AccessToken = Guid.NewGuid(),
         AccessExpiry = DateTime.UtcNow.AddSeconds(5)
       });

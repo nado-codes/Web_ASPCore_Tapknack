@@ -11,6 +11,7 @@ import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import { PageHelpers } from "../Helpers/PageHelpers";
 import { ErrorHelpers } from "../Helpers/ErrorHelpers";
 import { TPKButton } from "../Components/TPKButton";
+import { AuthenticationHelpers } from "../Helpers/AuthenticationHelpers";
 
 // TODO: will use later
 // import ndcIcon from "../res/nadocoLogo.png";
@@ -40,16 +41,8 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
     // .. try to signin with a prexisting token by validating it
     const loadAsync = async () => {
       try {
-        const { token } = localStorage;
-        if (token === undefined) return;
-
-        await axios.get(`/api/authentication`, {
-          headers: {
-            Authorization: token,
-          },
-        });
-
-        gotoUrl("/welcome");
+        const isAuthorized = await AuthenticationHelpers().Authenticate();
+        isAuthorized && gotoUrl("/welcome");
       } catch (err) {
         const message = ErrorHelpers().GetErrorMessage(err);
         // .. if validation fails, stay on the signin page
@@ -85,19 +78,21 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
     setError("");
 
     try {
-      const token = btoa(`${username}:${pass}`);
+      const signinToken = btoa(`${username}:${pass}`);
 
-      const { data } = await axios.post(
+      const {
+        data: { token },
+      } = await axios.post(
         `api/signin`,
         {},
         {
           headers: {
-            Authorization: token,
+            Authorization: signinToken,
           },
         }
       );
 
-      localStorage.token = data.token;
+      localStorage.token = token;
       PageHelpers().GotoUrl("/welcome");
     } catch (err) {
       const message = ErrorHelpers().GetErrorMessage(err);
@@ -138,6 +133,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          justifyContent: "center",
           width: "35%",
           position: "absolute",
           paddingTop: "50px",

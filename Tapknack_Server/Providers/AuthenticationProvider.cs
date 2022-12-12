@@ -13,7 +13,7 @@ namespace Tapknack_Server.Providers
 {
   public class AuthenticationProvider
   {
-    public async Task<SigninResponse> AuthenticateAsync(Guid accessToken)
+    public async Task<object> AuthenticateAsync(Guid accessToken)
     {
       var sessionsRepo = new SessionsRepository();
       var session = await sessionsRepo.GetByAccessTokenAsync(accessToken);
@@ -32,9 +32,8 @@ namespace Tapknack_Server.Providers
       }
 
       var updatedSession = await sessionsRepo.GetSingleAsync(session.Id);
-      return new SigninResponse()
+      return new
       {
-        UserId = session.UserId,
         Token = updatedSession.AccessToken
       };
     }
