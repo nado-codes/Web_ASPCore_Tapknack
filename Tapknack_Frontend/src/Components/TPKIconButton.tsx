@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import click1 from "../res/click_1.mp3";
+import click2 from "../res/click_2.mp3";
+import click4 from "../res/click_4.mp3";
+import clickGeneric from "../res/click_generic.mp3";
 
 export const TPKIconButton: React.FC<Props> = ({
   children,
@@ -8,13 +12,27 @@ export const TPKIconButton: React.FC<Props> = ({
   const [hover, setHover] = useState<boolean>();
   const [mouseDown, setMouseDown] = useState<boolean>();
 
+  const handleHover = () => {
+    const clicks = [click1, click2, click4];
+    const click = clicks[Math.floor(Math.random() * clicks.length)];
+    const _audio = new Audio(click);
+    _audio.play();
+    setHover(true);
+  };
+
+  const handleClick = () => {
+    const _audio = new Audio(clickGeneric);
+    _audio.play();
+    onClick();
+  };
+
   return (
     <button
-      onMouseEnter={() => setHover(true)}
+      onMouseEnter={handleHover}
       onMouseLeave={() => setHover(false)}
       onMouseDown={() => setMouseDown(true)}
       onMouseUp={() => setMouseDown(false)}
-      onClick={onClick}
+      onClick={handleClick}
       style={{
         display: "flex",
         alignItems: "middle",

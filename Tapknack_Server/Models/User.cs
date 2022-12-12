@@ -7,21 +7,21 @@ using Newtonsoft.Json;
 
 namespace Tapknack_Server.Models
 {
-    public class User : ModelBase
+  public record User : ModelBase
+  {
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+
+    public User WithoutPassword()
     {
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+      var copy = this.Copy<User>();
+      copy.Password = "";
 
-        public User WithoutPassword()
-        {
-            var copy = this.Copy<User>();
-            copy.Password = "";
-
-            return copy;
-        }
-
-        public T Copy<T>() where T : User
-            => JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(this));
+      return copy;
     }
+
+    public T Copy<T>() where T : User
+        => JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(this));
+  }
 }

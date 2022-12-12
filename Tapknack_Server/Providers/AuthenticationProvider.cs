@@ -28,7 +28,7 @@ namespace Tapknack_Server.Providers
       {
         // .. generate and return new access token
         var newAccess = Guid.NewGuid();
-        await sessionsRepo.UpdateSessionAccessToken(session.Id, newAccess, session.LastModified);
+        await sessionsRepo.UpdateAsync(session with { AccessToken = newAccess, AccessExpiry = DateTime.UtcNow.AddSeconds(5) });
       }
 
       var updatedSession = await sessionsRepo.GetSingleAsync(session.Id);

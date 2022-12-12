@@ -95,16 +95,16 @@ go
 create procedure UpdateSession
 	@id int,
 	@token uniqueidentifier,
-	@tokenExpiry datetime2,
+	@expiry datetime2,
 	@accessToken uniqueidentifier,
 	@accessExpiry datetime2,
 	@lastModified binary(8)
 as
 begin
 	set nocount off;
-	update Sessions SET 
+	update Sessions SET
 		Token=@token,
-		Expiry=@tokenExpiry,
+		Expiry=@expiry,
 		AccessToken	= @accessToken,
 		AccessExpiry=@accessExpiry
 	where Id=@id and LastModified=@lastModified

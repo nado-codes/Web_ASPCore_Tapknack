@@ -7,6 +7,11 @@ namespace Tapknack_Server.Repositories
 {
   public class SessionsRepository : TPKRepoBase<Session>
   {
+    public SessionsRepository()
+    {
+      PropertyConventions.Add(new IgnoreUserIdDuringUpdatePropertyConvention());
+    }
+
     public Task<Session> GetByUserIdAsync(int userId)
         => GetSingleAsync("userid", userId);
 
@@ -16,12 +21,12 @@ namespace Tapknack_Server.Repositories
     public Task<Session> GetByAccessTokenAsync(Guid accessToken)
         => GetSingleAsync("accesstoken", accessToken);
 
-    public Task<long> UpdateSessionAccessToken(int id, Guid accessTokenNew, byte[] lastModified)
+    /* public Task<long> UpdateSessionAccessToken(int id, Guid accessTokenNew, byte[] lastModified)
         => ExecuteNonQueryAsync("UpdateSessionAccessToken", new Dictionary<string, object>{
           {"id",id},
           {"accessTokenNew",accessTokenNew},
           {"lastModified",lastModified}
-        });
+        }); */
 
   }
 }

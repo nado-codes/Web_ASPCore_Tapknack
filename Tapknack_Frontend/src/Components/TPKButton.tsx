@@ -16,6 +16,7 @@ export const TPKButton: React.FC<Props> = ({
 
   const handleHover = () => {
     const _audio = new Audio(selectGeneric);
+    _audio.volume = 0.25;
     _audio.play();
   };
 
