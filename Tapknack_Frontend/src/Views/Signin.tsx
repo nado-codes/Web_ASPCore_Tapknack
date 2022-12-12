@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  CircularProgress,
-  Grid,
-  Button,
-  Link,
-  Typography,
-} from "@material-ui/core";
+import { CircularProgress, Grid, Link, Typography } from "@material-ui/core";
 import FormField from "../Components/FormField";
 import Footer from "../Components/FooterA";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
@@ -16,6 +10,7 @@ import padlockIcon from "../res/ic/icPadlock_48.svg";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 import { PageHelpers } from "../Helpers/PageHelpers";
 import { ErrorHelpers } from "../Helpers/ErrorHelpers";
+import { TPKButton } from "../Components/TPKButton";
 
 // TODO: will use later
 // import ndcIcon from "../res/nadocoLogo.png";
@@ -62,12 +57,14 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
         switch (message) {
           case "SESSION_EXPIRED":
             setError("Session expired. Please login again.");
+            delete localStorage.token;
             return;
+          default: {
+            setError("Unknown error. Please try again.");
+            console.log(message);
+            delete localStorage.token;
+          }
         }
-
-        setError("Unknown error");
-        console.log(message);
-        delete localStorage.token;
       }
     };
 
@@ -103,9 +100,20 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
       localStorage.token = data.token;
       PageHelpers().GotoUrl("/welcome");
     } catch (err) {
-      console.log(err.response);
       const message = ErrorHelpers().GetErrorMessage(err);
-      console.log("message=", message);
+
+      switch (message) {
+        case "USER_INVALID":
+          setError(`No account exists for that username`);
+          return;
+        case "PASSWORD_FAIL":
+          setError("Incorrect login credentials");
+          return;
+        default:
+          setError("Unknown error. Please try again.");
+      }
+
+      console.error(message);
     } finally {
       setIsLoading(false);
     }
@@ -204,8 +212,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
               onChange={setPass}
             />
           </Grid>
-          <Button
-            className={globalStyles.genericButton}
+          <TPKButton
             disabled={isLoading}
             onClick={handleSubmitClicked}
             style={{
@@ -214,7 +221,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
             }}
           >
             Login
-          </Button>
+          </TPKButton>
         </Grid>
 
         {/* Links */}

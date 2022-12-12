@@ -13,16 +13,30 @@ namespace Tapknack_Server.Providers
 {
   public class AuthenticationProvider
   {
-    public async Task AuthenticateAsync(Guid authToken)
+    public async Task<SigninResponse> AuthenticateAsync(Guid accessToken)
     {
       var sessionsRepo = new SessionsRepository();
-      var session = await sessionsRepo.GetByTokenAsync(authToken);
+      var session = await sessionsRepo.GetByAccessTokenAsync(accessToken);
 
       if (session == null)
         throw new AuthenticationException("SESSION_INVALID");
 
       if (session.Expiry < DateTime.UtcNow)
         throw new AuthenticationException("SESSION_EXPIRED");
+
+      if (session.AccessExpiry < DateTime.UtcNow)
+      {
+        // .. generate and return new access token
+        var newAccess = Guid.NewGuid();
+        await sessionsRepo.UpdateSessionAccessToken(session.Id, newAccess, session.LastModified);
+      }
+
+      var updatedSession = await sessionsRepo.GetSingleAsync(session.Id);
+      return new SigninResponse()
+      {
+        UserId = session.UserId,
+        Token = updatedSession.AccessToken
+      };
     }
   }
 }

@@ -1,7 +1,7 @@
-﻿using NadoMapper;
-using Tapknack_Server.Models;
+﻿using Tapknack_Server.Models;
 using System.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 
 namespace Tapknack_Server.Repositories
 {
@@ -15,5 +15,13 @@ namespace Tapknack_Server.Repositories
 
     public Task<Session> GetByAccessTokenAsync(Guid accessToken)
         => GetSingleAsync("accesstoken", accessToken);
+
+    public Task<long> UpdateSessionAccessToken(int id, Guid accessTokenNew, byte[] lastModified)
+        => ExecuteNonQueryAsync("UpdateSessionAccessToken", new Dictionary<string, object>{
+          {"id",id},
+          {"accessTokenNew",accessTokenNew},
+          {"lastModified",lastModified}
+        });
+
   }
 }

@@ -16,15 +16,17 @@ namespace Tapknack_Server.Providers
       // .. Or at least, make sure I properly understand what this code actually does rather than just copypasta everything
       var authorization = request.Headers["Authorization"][0];
 
+      // .. Authorization header cannot be empty
       if (authorization == "")
-        throw new BadHttpRequestException("Authorization header cannot be empty");
+        throw new BadHttpRequestException("AUTH_MISSING");
 
       var encoded = Convert.FromBase64String(authorization);
       var text = Encoding.ASCII.GetString(encoded);
       var userPass = text.Split(':');
 
+      // .. Authorization parameter must contain a JSON-encoded string in the format: user:password
       if (userPass.Length != 2)
-        throw new BadHttpRequestException("Authorization parameter must contain a JSON-encoded string in the format: user:password");
+        throw new BadHttpRequestException("AUTH_PARAM_FAIL");
 
       var userName = userPass[0];
       var password = userPass[1];
@@ -33,29 +35,31 @@ namespace Tapknack_Server.Providers
       var user = await usersProvider.GetByUsernameAsync(userName);
 
       if (user == null)
-        throw new AuthenticationException($"User {userName} does not exist");
+        throw new AuthenticationException("USER_INVALID");
 
       var passwordProvider = new PasswordProvider();
       var isValid = passwordProvider.Verify(password, user.Password);
 
       if (!isValid)
-        throw new AuthenticationException("Passwords do not match");
+        throw new AuthenticationException("PASSWORD_FAIL");
 
       var sessionsRepo = new SessionsRepository();
       var session = await sessionsRepo.AddAsync(new Session()
       {
         UserId = user.Id,
         Token = Guid.NewGuid(),
-        Expiry = DateTime.UtcNow.AddDays(1),
+        Expiry = DateTime.UtcNow.AddSeconds(10),
+        AccessToken = Guid.NewGuid(),
+        AccessExpiry = DateTime.UtcNow.AddSeconds(5)
       });
 
       if (session == null)
-        throw new ApplicationException("Login failed. Please try again later.");
+        throw new ApplicationException("SESSION_INVALID");
 
       return new SigninResponse()
       {
         UserId = user.Id,
-        Token = session.Token,
+        Token = session.AccessToken,
       };
     }
   }

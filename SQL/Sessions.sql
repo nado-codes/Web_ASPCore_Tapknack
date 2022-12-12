@@ -89,9 +89,20 @@ begin
 		AccessExpiry,
 		DateAdded,
 		LastModified
-	from [Sessions] where Token=@accessToken
+	from [Sessions] where AccessToken=@accessToken
 end
-	
+go
+create procedure UpdateSessionAccessToken
+	@id int,
+	@accessTokenNew uniqueidentifier,
+	@lastModified binary(8)
+as
+begin
+	set nocount off;
+	update Sessions SET 
+		AccessToken	= @accessTokenNew
+	where Id=@id and LastModified=@lastModified
+end
 
 /* ROLLBACK
 
@@ -100,6 +111,7 @@ drop procedure GetSessionById
 drop procedure GetSessionByUserId
 drop procedure GetSessionByToken
 drop procedure GetSessionByAccessToken
+drop procedure UpdateSessionAccessToken
 drop table Sessions
 
 */

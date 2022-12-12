@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 
 import FormField from "../FormField";
+import { TPKButton } from "../TPKButton";
 
 const SignupForm = ({ theme }) => {
   const globalStyles = useGlobalStyles(theme);
@@ -143,8 +144,7 @@ const SignupForm = ({ theme }) => {
       </Grid>
       {/* Bottom - Submit */}
       <Grid item>
-        <Button
-          className={globalStyles.genericButton}
+        <TPKButton
           disabled={isLoading}
           onClick={handleSubmitClicked}
           style={{
@@ -152,7 +152,7 @@ const SignupForm = ({ theme }) => {
           }}
         >
           Submit
-        </Button>
+        </TPKButton>
       </Grid>
     </Grid>
   );

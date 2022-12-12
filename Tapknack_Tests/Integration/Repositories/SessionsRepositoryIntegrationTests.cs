@@ -47,10 +47,23 @@ namespace Tapknack_Tests.Integration.Repositories
       Assert.Equal(testUser.Id, sessionByToken.UserId);
       Assert.Equal(token, sessionByToken.Token);
 
-      var sessionByAccessToken = await sessionsRepo.GetByAccessTokenAsync(token);
+      var sessionByAccessToken = await sessionsRepo.GetByAccessTokenAsync(accessToken);
       Assert.NotNull(sessionByAccessToken);
       Assert.Equal(testUser.Id, sessionByAccessToken.UserId);
       Assert.Equal(accessToken, sessionByAccessToken.AccessToken);
+
+      var accessTokenNew = Guid.NewGuid();
+      var updatedSessionsAccessTokens = await sessionsRepo.UpdateSessionAccessToken(
+        sessionByAccessToken.Id,
+        accessTokenNew,
+        sessionByAccessToken.LastModified
+      );
+      Assert.Equal(1, updatedSessionsAccessTokens);
+
+      var updatedAccessTokenSession = await sessionsRepo.GetSingleAsync(sessionByAccessToken.Id);
+      Assert.NotNull(updatedAccessTokenSession);
+      Assert.Equal(testUser.Id, updatedAccessTokenSession.UserId);
+      Assert.Equal(accessTokenNew, updatedAccessTokenSession.AccessToken);
     }
   }
 }

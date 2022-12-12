@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -19,6 +18,7 @@ import { useGlobalStyles } from "../Styles/GlobalStyles";
 import { ClassNameMap } from "@material-ui/styles";
 import axios from "axios";
 import { PageHelpers } from "../Helpers/PageHelpers";
+import { TPKButton } from "../Components/TPKButton";
 
 const BorderCircle: React.FC<BorderCircleProps> = ({
   size = 48,
@@ -152,8 +152,7 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
           </Typography>
         </DialogContent>
         <DialogActions style={{ display: "flex", justifyContent: "center" }}>
-          <Button
-            className={globalStyles.genericButton}
+          <TPKButton
             onClick={() => handleLogout()}
             style={{
               marginTop: "50px",
@@ -161,9 +160,8 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
             }}
           >
             Yes
-          </Button>
-          <Button
-            className={globalStyles.genericButton}
+          </TPKButton>
+          <TPKButton
             onClick={() => setLogoutPromptIsOpen(false)}
             style={{
               marginTop: "50px",
@@ -171,7 +169,7 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
             }}
           >
             No
-          </Button>
+          </TPKButton>
         </DialogActions>
       </Dialog>
       <Grid
