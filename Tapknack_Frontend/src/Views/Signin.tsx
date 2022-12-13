@@ -65,14 +65,6 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
     loadAsync();
   }, []);
 
-  const handleSignupClicked = () => {
-    gotoUrl("");
-  };
-
-  const handlePrivacyClicked = () => {
-    gotoUrl("/privacy");
-  };
-
   const handleSubmitClicked = async () => {
     setIsLoading(true);
     setError("");
@@ -100,12 +92,13 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
       switch (message) {
         case "USER_INVALID":
           setError(`No account exists for that username`);
-          return;
+          break;
         case "PASSWORD_FAIL":
           setError("Incorrect login credentials");
-          return;
+          break;
         default:
           setError("Unknown error. Please try again.");
+          break;
       }
 
       console.error(message);
@@ -234,7 +227,10 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
           <Grid item>
             <Typography className={globalStyles.white14}>
               No account?{" "}
-              <Link className={globalStyles.link} onClick={handleSignupClicked}>
+              <Link
+                className={globalStyles.link}
+                onClick={() => PageHelpers().GotoUrl("")}
+              >
                 Sign Up!
               </Link>
             </Typography>
@@ -245,7 +241,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
               View our{" "}
               <Link
                 className={globalStyles.link}
-                onClick={handlePrivacyClicked}
+                onClick={() => PageHelpers().GotoUrl("/privacy")}
               >
                 Privacy Policy
               </Link>

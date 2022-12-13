@@ -9,22 +9,23 @@ using Tapknack_Server.Repositories;
 
 namespace Tapknack_Tests
 {
-    public static class TestHelpers
+  public static class TestHelpers
+  {
+    public static Task<User> CreateTestUser()
     {
-        public static Task<User> CreateTestUser()
-        {
-            var usersProvider = new UsersProvider();
+      var usersProvider = new UsersProvider();
 
-            // .. add a user
-            var newUsername = $"TestUser~{Guid.NewGuid()}";
-            var newEmail = $"TestMail@mail.com~{Guid.NewGuid()}";
-            var newPassword = $"123";
+      // .. add a user
+      var newUsername = $"TestUser~{Guid.NewGuid()}";
+      var newEmail = $"TestMail@mail.com~{Guid.NewGuid()}";
+      var newPassword = $"123";
 
-            return usersProvider.AddUserAsync(new User()
-            {
-                Username = newUsername,
-                Email = newEmail
-            }, newPassword);
-        }
+      return usersProvider.AddUserAsync(new User()
+      {
+        Username = newUsername,
+        Email = newEmail,
+        Password = newPassword
+      });
     }
+  }
 }

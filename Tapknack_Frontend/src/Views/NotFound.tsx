@@ -4,6 +4,7 @@ import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 import tpkIcon from "../res/tpk.png";
 import { ClassNameMap } from "@material-ui/styles";
+import { PageHelpers } from "../Helpers/PageHelpers";
 
 const TPKIcon = () => (
   <img
@@ -13,7 +14,7 @@ const TPKIcon = () => (
   />
 );
 
-const NotFound : React.FC<Props> = ({ theme, returnToPrevUrl } : Props) => {
+const NotFound: React.FC<Props> = ({ theme }: Props) => {
   const globalStyles = useGlobalStyles(theme);
 
   return (
@@ -48,7 +49,7 @@ const NotFound : React.FC<Props> = ({ theme, returnToPrevUrl } : Props) => {
         <Button
           className={globalStyles.genericButton}
           style={{ width: "300px", marginTop: "20px" }}
-          onClick={returnToPrevUrl}
+          onClick={() => PageHelpers().ReturnToPrevUrl()}
         >
           Take me back!
         </Button>
@@ -58,8 +59,7 @@ const NotFound : React.FC<Props> = ({ theme, returnToPrevUrl } : Props) => {
 };
 
 interface Props {
-  theme: ClassNameMap<"root" | "link">,
-  returnToPrevUrl: () => void,
+  theme: ClassNameMap<"root" | "link">;
 }
 
 export default NotFound;

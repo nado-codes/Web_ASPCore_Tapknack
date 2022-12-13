@@ -9,10 +9,8 @@ namespace Tapknack_Server.Repositories
     //TODO: This should be encrypted in somewhere like AppConfig ... not hardcoded here!!
     const string connectionString = "Server=localhost;Database=Tapknack;Trusted_Connection=True;";
 
-    public TPKRepoBase() : base(connectionString)
-    {
+    public TPKRepoBase() : base(connectionString) { }
 
-    }
 
     public new async Task<T> AddAsync(T entity)
     {

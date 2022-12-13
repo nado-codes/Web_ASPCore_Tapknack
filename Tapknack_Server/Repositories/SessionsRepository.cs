@@ -21,12 +21,5 @@ namespace Tapknack_Server.Repositories
     public Task<Session> GetByAccessTokenAsync(Guid accessToken)
         => GetSingleAsync("accesstoken", accessToken);
 
-    /* public Task<long> UpdateSessionAccessToken(int id, Guid accessTokenNew, byte[] lastModified)
-        => ExecuteNonQueryAsync("UpdateSessionAccessToken", new Dictionary<string, object>{
-          {"id",id},
-          {"accessTokenNew",accessTokenNew},
-          {"lastModified",lastModified}
-        }); */
-
   }
 }

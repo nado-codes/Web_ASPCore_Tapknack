@@ -31,8 +31,8 @@ namespace Tapknack_Server.Providers
       var userName = userPass[0];
       var password = userPass[1];
 
-      var usersProvider = new UsersProvider();
-      var user = await usersProvider.GetByUsernameAsync(userName);
+      var usersRepo = new UsersRepository();
+      var user = await usersRepo.GetByUsernameAsync(userName);
 
       if (user == null)
         throw new AuthenticationException("USER_INVALID");

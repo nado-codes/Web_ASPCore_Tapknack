@@ -52,6 +52,7 @@ namespace Tapknack_Tests.Integration.Repositories
       Assert.Equal(testUser.Id, sessionByAccessToken.UserId);
       Assert.Equal(accessToken, sessionByAccessToken.AccessToken);
 
+      // .. also tests the "Update" method
       var accessTokenNew = Guid.NewGuid();
       var updatedSessionCount = await sessionsRepo.UpdateAsync(sessionByAccessToken with
       {

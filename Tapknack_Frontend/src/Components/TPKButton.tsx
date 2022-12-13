@@ -22,6 +22,7 @@ export const TPKButton: React.FC<Props> = ({
 
   const handleClick = () => {
     const _audio = new Audio(clickGeneric);
+    _audio.volume = 0.5;
     _audio.play();
     onClick();
   };

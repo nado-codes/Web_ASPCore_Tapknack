@@ -16,12 +16,14 @@ export const TPKIconButton: React.FC<Props> = ({
     const clicks = [click1, click2, click4];
     const click = clicks[Math.floor(Math.random() * clicks.length)];
     const _audio = new Audio(click);
+    _audio.volume = 0.25;
     _audio.play();
     setHover(true);
   };
 
   const handleClick = () => {
     const _audio = new Audio(clickGeneric);
+    _audio.volume = 0.5;
     _audio.play();
     onClick();
   };

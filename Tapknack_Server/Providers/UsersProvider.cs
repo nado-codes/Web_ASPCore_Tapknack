@@ -7,31 +7,36 @@ using Tapknack_Server.Repositories;
 
 namespace Tapknack_Server.Providers
 {
-    public class UsersProvider
+  public class UsersProvider
+  {
+    private UsersRepository _repo = new UsersRepository();
+
+    public Task<IEnumerable<User>> SearchByUsernameEmailAsync(string username, string email)
+      => _repo.SearchByUsernameEmailAsync(username, email);
+
+    public async Task<User> AddUserAsync(User user)
     {
-        public async Task<User> GetByUsernameAsync(string username)
-        {
-            var usersRepo = new UsersRepository();
-            return await usersRepo.GetByUsernameAsync(username);
-        }
+      if (user.Password == string.Empty)
+        throw new ArgumentException("PASS_NULL");
 
-        public async Task<User> AddUserAsync(User user, string password)
-        {
-            if (password == string.Empty)
-                throw new ArgumentException("password cannot be empty");
+      var passwordProv = new PasswordProvider();
+      var hashedPassword = passwordProv.Encrypt(user.Password);
 
-            var passwordProv = new PasswordProvider();
-            var hashedPassword = passwordProv.Encrypt(password);
+      var userToAdd = user.Copy<User>();
+      userToAdd.Password = hashedPassword;
 
-            var userToAdd = user.Copy<User>();
-            userToAdd.Password = hashedPassword;
+      var existingUser = await _repo.GetByUsernameAsync(user.Username);
+      if (existingUser != null)
+        throw new ApplicationException("USERNAME_DUPLICATE");
 
-            var usersRepo = new UsersRepository();
-            var newUser = await usersRepo.AddAsync(userToAdd);
+      if (user.Email != string.Empty)
+      {
+        existingUser = await _repo.GetByEmailAsync(user.Email);
+        if (existingUser != null)
+          throw new ApplicationException("EMAIL_DUPLICATE");
+      }
 
-            if(newUser == null) throw new NullReferenceException("Expected a user to be created, got null");
-
-            return newUser;
-        }
+      return await _repo.AddAsync(userToAdd);
     }
+  }
 }

@@ -1,11 +1,12 @@
 import React from "react";
 import { Grid, Typography, makeStyles, Link } from "@material-ui/core";
-import SignupForm from "../Components/Landing/SignupForm";
+import { SignupForm } from "../Components/Landing/SignupForm";
 import Footer from "../Components/FooterA";
 import TPKIcon, { TPK } from "../res/iconTPK";
 
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 import { ClassNameMap } from "@material-ui/styles";
+import { PageHelpers } from "../Helpers/PageHelpers";
 
 // TODO: Make these into inline styles
 const useStyles = makeStyles(() => ({
@@ -31,15 +32,10 @@ const useStyles = makeStyles(() => ({
 
   Created by Nathan Linsley 08/08/2021
 */
-const Landing : React.FC<Props> = ({ theme, gotoUrl } : Props) => {
+const Landing: React.FC<Props> = ({ theme }: Props) => {
   // .. Styles
   const classes = useStyles(theme);
   const globalClasses = useGlobalStyles(theme);
-
-  // .. Link behaviour
-  const handleSigninClicked = () => gotoUrl("/signin");
-  const handleUseLiabilityClicked = () => gotoUrl("/liability");
-  const handlePrivacyClicked = () => gotoUrl("/privacy");
 
   return (
     <Grid container className={classes.root}>
@@ -205,7 +201,10 @@ const Landing : React.FC<Props> = ({ theme, gotoUrl } : Props) => {
               <Grid item>
                 <Typography className={globalClasses.white14}>
                   Already a member?{" "}
-                  <Link className={classes.link} onClick={handleSigninClicked}>
+                  <Link
+                    className={classes.link}
+                    onClick={() => PageHelpers().GotoUrl("/signin")}
+                  >
                     Sign In!
                   </Link>
                 </Typography>
@@ -216,7 +215,7 @@ const Landing : React.FC<Props> = ({ theme, gotoUrl } : Props) => {
                   Please read our{" "}
                   <Link
                     className={classes.link}
-                    onClick={handleUseLiabilityClicked}
+                    onClick={() => PageHelpers().GotoUrl("/legal")}
                   >
                     {"Use & Liability"}
                   </Link>{" "}
@@ -236,7 +235,10 @@ const Landing : React.FC<Props> = ({ theme, gotoUrl } : Props) => {
               <Grid item style={{ marginTop: 10 }}>
                 <Typography className={globalClasses.white14}>
                   View our{" "}
-                  <Link className={classes.link} onClick={handlePrivacyClicked}>
+                  <Link
+                    className={classes.link}
+                    onClick={() => PageHelpers().GotoUrl("/privacy")}
+                  >
                     Privacy Policy
                   </Link>
                 </Typography>
@@ -252,8 +254,8 @@ const Landing : React.FC<Props> = ({ theme, gotoUrl } : Props) => {
 };
 
 interface Props {
-  theme: ClassNameMap<"root" | "link">,
-  gotoUrl: (url: string) => void,
+  theme: ClassNameMap<"root" | "link">;
+  gotoUrl: (url: string) => void;
 }
 
 export default Landing;

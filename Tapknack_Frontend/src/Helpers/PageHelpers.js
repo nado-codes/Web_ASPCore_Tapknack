@@ -25,5 +25,5 @@ export const PageHelpers = () => {
     localStorage.prevPage = hrefNoHash;
   };
 
-  return { GotoUrl };
+  return { GotoUrl, ReturnToPrevUrl };
 };

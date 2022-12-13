@@ -1,7 +1,7 @@
 create table Users (
 	Id int not null primary key identity,
 	Username nvarchar(128) not null constraint UsersUsernameUniqueConstraint unique,
-	Email nvarchar(256) not null constraint UsersEmailUniqueConstraint unique,
+	Email nvarchar(256) not null,
 	[Password] nvarchar(256) not null,
 	DateAdded datetime2 not null constraint UsersDateAddedDefaultConstraint default(getutcdate()),
 	LastModified timestamp not null
@@ -43,11 +43,36 @@ as
 		LastModified
 	from Users where Username=@username
 go
-
+create procedure GetUserByEmail
+	@email nvarchar(128)
+as
+	select 
+		Id,
+		Username,
+		Email,
+		[Password],
+		DateAdded,
+		LastModified
+	from Users where Email=@email
+go
+create procedure SearchUserByUsernameEmail
+	@username nvarchar(256),
+	@email nvarchar(128)
+as
+	select 
+		Id,
+		Username,
+		Email,
+		[Password],
+		DateAdded,
+		LastModified
+	from Users where Username like @username OR Email like @email
 -- ROLLBACK
 /*
 drop procedure AddUser
 drop procedure GetUserById
 drop procedure GetUserByUsername
+drop procedure GetUserByEmail
+drop procedure SearchUserByUsernameEmail
 drop table Users
 */

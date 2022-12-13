@@ -108,18 +108,13 @@ const App = () => {
         <Layout exitTimeout={exitTimeout}>
           <Switch>
             {paths.map(({ path, View }) => (
-              <Route
-                key={path}
-                exact
-                path={path}
-                render={() => <View gotoUrl={GotoUrl} />}
-              />
+              <Route key={path} exact path={path} render={() => <View />} />
             ))}
             <Route
               key={window.location.pathname}
               exact
               path={window.location.pathname}
-              render={() => <NotFound returnToPrevUrl={ReturnToPrevUrl} />}
+              render={() => <NotFound />}
             />
           </Switch>
         </Layout>

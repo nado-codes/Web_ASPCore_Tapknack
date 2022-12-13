@@ -1,14 +1,27 @@
 import React, { useState } from "react";
-import { Grid, Button, CircularProgress, Snackbar } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
+import { Grid, CircularProgress } from "@material-ui/core";
 import { useGlobalStyles } from "../../Styles/GlobalStyles";
-import PropTypes from "prop-types";
 import axios from "axios";
+import * as DOMPurify from "dompurify";
 
 import FormField from "../FormField";
 import { TPKButton } from "../TPKButton";
+import { ErrorHelpers } from "../../Helpers/ErrorHelpers";
+import { ClassNameMap } from "@material-ui/styles";
 
-const SignupForm = ({ theme }) => {
+interface User {
+  username: string;
+  pass: string;
+  email: string;
+}
+interface Props {
+  theme?: ClassNameMap<"root" | "link">;
+  onFinish?: () => void;
+}
+export const SignupForm: React.FC<Props> = ({
+  theme,
+  onFinish = () => null,
+}: Props) => {
   const globalStyles = useGlobalStyles(theme);
   const labelMinWidth = 185;
 
@@ -16,20 +29,30 @@ const SignupForm = ({ theme }) => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [passConfirm, setPassConfirm] = useState("");
+  const [error, setError] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
-  const [snackbarIsOpen, setSnackbarIsOpen] = useState(false);
-  const [snackbarText, setSnackbarText] = useState("New Notification");
-  const [snackbarSeverity, setSnackbarSeverity] = useState("info");
-  const [snackbarDetailText, setSnackbarDetailText] = useState("");
 
   const handleSubmitClicked = () => {
     setIsLoading(true);
     handleSubmit({ username, pass, email });
   };
 
-  const handleSubmit = async ({ username, pass, email }) => {
+  const handleSubmit = async ({ username, pass, email }: User) => {
     try {
+      setError("");
+
+      if (username === "") throw Error(`USERNAME_NULL`);
+      if (pass === "") throw Error(`PASS_NULL`);
+      if (passConfirm === "") throw Error(`CONFPASS_NULL`);
+      if (pass !== passConfirm) throw Error(`PASS_NO_MATCH`);
+      if (username !== DOMPurify.sanitize(username)) {
+        throw Error(`USERNAME_HTML`);
+      }
+      if (email !== DOMPurify.sanitize(email)) {
+        throw Error(`EMAIL_HTML`);
+      }
+
       const { data } = await axios.post(`api/users`, {
         Username: username,
         Password: pass,
@@ -41,26 +64,47 @@ const SignupForm = ({ theme }) => {
           `Expected 1 row to be updated in call to AddUser, got ${data}`
         );
 
+      onFinish();
+
       return data;
     } catch (err) {
-      // const errObj = JSON.parse(err.response.data);
-      // console.error("errObj=", err.response.data);
-      throw err;
+      const message = ErrorHelpers().GetErrorMessage(err);
+      switch (message) {
+        case "USERNAME_NULL":
+          setError(`Please provide a username`);
+          break;
+        case "PASS_NULL":
+          setError(`Please provide a password`);
+          break;
+        case "CONFPASS_NULL":
+          setError(`Please confirm your password`);
+          break;
+        case "USERNAME_HTML":
+          setError(`Please enter a valid username`);
+          break;
+        case "EMAIL_HTML":
+          setError(`Please enter a valid email`);
+          break;
+        case "PASS_NO_MATCH":
+          setError(`The passwords do not match`);
+          break;
+        case "USERNAME_DUPLICATE":
+          setError(`That username is already in use`);
+          break;
+        case "EMAIL_DUPLICATE":
+          setError(`That email is already in use`);
+          break;
+        default:
+          setError(message.includes("_") ? message : "Unknown Error");
+      }
+
+      console.error(err);
+      console.error(message);
     } finally {
       setIsLoading(false);
     }
 
     // .. TODO: Goto "Dashboard"
-  };
-
-  const handleSnackbarDetail = () => {
-    snackbarSeverity === "error" && console.error(snackbarDetailText);
-    snackbarSeverity === "success" && console.log(snackbarDetailText);
-    setSnackbarDetailText("");
-
-    setSnackbarText(`Check the console for further details`);
-    setSnackbarSeverity("info");
-    setSnackbarIsOpen(true);
   };
 
   return (
@@ -73,21 +117,6 @@ const SignupForm = ({ theme }) => {
         paddingTop: "10px",
       }}
     >
-      <Snackbar
-        onClose={setSnackbarIsOpen}
-        autoHideDuration={3000}
-        open={snackbarIsOpen}
-        anchorOrigin={{ horizontal: "center", vertical: "top" }}
-      >
-        <Alert
-          severity={snackbarSeverity}
-          onClick={() => {
-            snackbarDetailText && handleSnackbarDetail();
-          }}
-        >
-          {snackbarText}
-        </Alert>
-      </Snackbar>
       <Grid
         item
         style={{
@@ -108,6 +137,21 @@ const SignupForm = ({ theme }) => {
             opacity: isLoading ? 0.5 : 1,
           }}
         >
+          {error !== "" && (
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "middle",
+                background: "rgba(255,0,0,0.75)",
+              }}
+            >
+              <p className={globalStyles.white14} style={{ fontSize: 14 }}>
+                {error}
+              </p>
+            </div>
+          )}
           <FormField
             label="Create Your Username"
             disabled={isLoading}
@@ -157,9 +201,3 @@ const SignupForm = ({ theme }) => {
     </Grid>
   );
 };
-
-SignupForm.propTypes = {
-  theme: PropTypes.shape({}),
-};
-
-export default SignupForm;
