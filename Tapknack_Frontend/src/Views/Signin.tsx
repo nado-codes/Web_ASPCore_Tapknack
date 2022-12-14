@@ -4,6 +4,7 @@ import FormField from "../Components/FormField";
 import Footer from "../Components/FooterA";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 import axios from "axios";
+import * as DOMPurify from "dompurify";
 
 import TPKIcon, { TPK } from "../res/iconTPK";
 import padlockIcon from "../res/ic/icPadlock_48.svg";
@@ -54,7 +55,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
             return;
           default: {
             setError("Unknown error. Please try again.");
-            console.log(message);
+            console.error(message);
             delete localStorage.token;
           }
         }
@@ -65,15 +66,24 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
     loadAsync();
   }, []);
 
-  const handleSubmitClicked = async () => {
+  const handleSubmit = async () => {
     setIsLoading(true);
     setError("");
 
     try {
+      if (username === "") throw Error(`USERNAME_NULL`);
+      if (pass === "") throw Error(`PASS_NULL`);
+      if (username !== DOMPurify.sanitize(username)) {
+        throw Error(`USERNAME_HTML`);
+      }
+      if (pass !== DOMPurify.sanitize(pass)) {
+        throw Error(`PASS_HTML`);
+      }
+
       const signinToken = btoa(`${username}:${pass}`);
 
       const {
-        data: { token },
+        data,
       } = await axios.post(
         `api/signin`,
         {},
@@ -83,13 +93,30 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
           },
         }
       );
+      const { token, userId, Username: _username } = data;
 
       localStorage.token = token;
-      PageHelpers().GotoUrl("/welcome");
+      localStorage.userId = userId;
+      localStorage.username = _username;
+
+      console.log("data=",data);
+      // PageHelpers().GotoUrl("/welcome");
     } catch (err) {
       const message = ErrorHelpers().GetErrorMessage(err);
 
       switch (message) {
+        case "USERNAME_NULL":
+          setError(`Please provide a username`);
+          break;
+        case "PASS_NULL":
+          setError(`Please provide a password`);
+          break;
+        case "USERNAME_HTML":
+          setError(`Please enter a valid username`);
+          break;
+        case "PASS_HTML":
+          setError(`Please enter a valid password`);
+          break;
         case "USER_INVALID":
           setError(`No account exists for that username`);
           break;
@@ -181,7 +208,6 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
             </div>
           )}
           <Grid item style={{ opacity: `${isLoading ? "0.5" : "1"}` }}>
-            {" "}
             {/* -25px */}
             <FormField
               label="abc"
@@ -203,7 +229,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
           </Grid>
           <TPKButton
             disabled={isLoading}
-            onClick={handleSubmitClicked}
+            onClick={handleSubmit}
             style={{
               marginTop: "50px",
               width: "150px",

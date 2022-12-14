@@ -8,6 +8,7 @@ namespace Tapknack_Server.Models
     public class SigninResponse
     {
         public int UserId { get; set; }
+        public string Username { get; set; }
         public Guid Token { get; set; }
     }
 }

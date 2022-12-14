@@ -101,6 +101,7 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
   const globalStyles = useGlobalStyles(theme);
 
   const [logoutPromptIsOpen, setLogoutPromptIsOpen] = useState(false);
+  const {username} = localStorage;
 
   useEffect(() => {
     const loadAsync = async () => {
@@ -250,7 +251,7 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
               marginBottom: "auto",
             }}
           >
-            Nathan - Welcome Back!
+            {username} - Welcome Back!
           </h1>
         </Grid>
 
