@@ -1,10 +1,11 @@
 import React from "react";
-import { Grid, Typography, Button } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 import tpkIcon from "../res/tpk.png";
 import { ClassNameMap } from "@material-ui/styles";
 import { PageHelpers } from "../Helpers/PageHelpers";
+import { TPKButton } from "../Components/TPKButton";
 
 const TPKIcon = () => (
   <img
@@ -46,13 +47,12 @@ const NotFound: React.FC<Props> = ({ theme }: Props) => {
         >
           Page Not Found
         </Typography>
-        <Button
-          className={globalStyles.genericButton}
+        <TPKButton
           style={{ width: "300px", marginTop: "20px" }}
           onClick={() => PageHelpers().ReturnToPrevUrl()}
         >
           Take me back!
-        </Button>
+        </TPKButton>
       </Grid>
     </Grid>
   );

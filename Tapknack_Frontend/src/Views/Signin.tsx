@@ -13,6 +13,8 @@ import { PageHelpers } from "../Helpers/PageHelpers";
 import { ErrorHelpers } from "../Helpers/ErrorHelpers";
 import { TPKButton } from "../Components/TPKButton";
 import { AuthenticationHelpers } from "../Helpers/AuthenticationHelpers";
+import Pop1 from "../res/pop_1.mp3";
+import Pop2 from "../res/pop_2.mp3";
 
 // TODO: will use later
 // import ndcIcon from "../res/nadocoLogo.png";
@@ -37,6 +39,15 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
   const [pass, setPass] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // .. store a variety of sounds to use in an array to index one by one
+  // at random when a link is hovered
+  const handleLinkHover = () => {
+    const pops = [Pop1, Pop2];
+    const pop = pops[Math.floor(Math.random() * pops.length)];
+    const audio = new Audio(pop);
+    audio.play();
+  };
 
   useEffect(() => {
     // .. try to signin with a prexisting token by validating it
@@ -256,6 +267,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
               <Link
                 className={globalStyles.link}
                 onClick={() => PageHelpers().GotoUrl("")}
+                onMouseEnter={handleLinkHover}
               >
                 Sign Up!
               </Link>
@@ -268,6 +280,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
               <Link
                 className={globalStyles.link}
                 onClick={() => PageHelpers().GotoUrl("/privacy")}
+                onMouseEnter={handleLinkHover}
               >
                 Privacy Policy
               </Link>

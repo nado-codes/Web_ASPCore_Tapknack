@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, Typography, makeStyles, Link } from "@material-ui/core";
 import { SignupForm } from "../Components/Landing/SignupForm";
 import Footer from "../Components/FooterA";
@@ -7,6 +7,8 @@ import TPKIcon, { TPK } from "../res/iconTPK";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 import { ClassNameMap } from "@material-ui/styles";
 import { PageHelpers } from "../Helpers/PageHelpers";
+import Pop1 from "../res/pop_1.mp3";
+import Pop2 from "../res/pop_2.mp3";
 
 // TODO: Make these into inline styles
 const useStyles = makeStyles(() => ({
@@ -36,6 +38,23 @@ const Landing: React.FC<Props> = ({ theme }: Props) => {
   // .. Styles
   const classes = useStyles(theme);
   const globalClasses = useGlobalStyles(theme);
+
+  // .. whether the user has just created an account or not
+  const [isRegistered, setIsRegistered] = useState(false);
+
+  const handleSigninClicked = () => {
+    delete localStorage.token;
+    PageHelpers().GotoUrl("/signin");
+  };
+
+  // .. store a variety of sounds to use in an array to index one by one
+  // at random when a link is hovered
+  const handleLinkHover = () => {
+    const pops = [Pop1, Pop2];
+    const pop = pops[Math.floor(Math.random() * pops.length)];
+    const audio = new Audio(pop);
+    audio.play();
+  };
 
   return (
     <Grid container className={classes.root}>
@@ -170,9 +189,11 @@ const Landing: React.FC<Props> = ({ theme }: Props) => {
           >
             {/* Sign Up Now! */}
             <Grid item style={{ flex: 0.1 }}>
-              <Typography className={globalClasses.whiteTitle}>
-                Sign Up Now!
-              </Typography>
+              {!isRegistered && (
+                <Typography className={globalClasses.whiteTitle}>
+                  Sign Up Now!
+                </Typography>
+              )}
             </Grid>
 
             {/* Form */}
@@ -184,7 +205,9 @@ const Landing: React.FC<Props> = ({ theme }: Props) => {
                 flex: 0.9,
               }}
             >
-              <SignupForm />
+              {!isRegistered && (
+                <SignupForm onFinish={() => setIsRegistered(true)} />
+              )}
             </Grid>
 
             {/* Sign-in, Use & Liability + Privacy Policy */}
@@ -199,23 +222,58 @@ const Landing: React.FC<Props> = ({ theme }: Props) => {
             >
               {/* Sign In */}
               <Grid item>
-                <Typography className={globalClasses.white14}>
-                  Already a member?{" "}
-                  <Link
-                    className={classes.link}
-                    onClick={() => PageHelpers().GotoUrl("/signin")}
-                  >
-                    Sign In!
-                  </Link>
-                </Typography>
+                {!isRegistered && (
+                  <Typography className={globalClasses.white14}>
+                    Already a member?{" "}
+                    <Link
+                      className={classes.link}
+                      onClick={() => PageHelpers().GotoUrl("/signin")}
+                      onMouseEnter={handleLinkHover}
+                    >
+                      Sign In!
+                    </Link>
+                  </Typography>
+                )}
+                {isRegistered && (
+                  <div style={{ height: 75 }}>
+                    <Typography
+                      className={globalClasses.white14}
+                      style={{
+                        fontSize: 22,
+                        color: "#66FF33",
+                        textAlign: "center",
+                      }}
+                    >
+                      Thank you for registering!
+                    </Typography>
+                    <Typography
+                      className={globalClasses.white14}
+                      style={{ fontSize: 12, textAlign: "center" }}
+                    >
+                      {"You're all good to "}
+                      <Link
+                        className={classes.link}
+                        onClick={handleSigninClicked}
+                        onMouseEnter={handleLinkHover}
+                      >
+                        sign in
+                      </Link>{" "}
+                      using the details you provided!
+                    </Typography>
+                  </div>
+                )}
               </Grid>
               {/* Use & Liability */}
               <Grid item style={{ marginTop: 10 }}>
-                <Typography className={globalClasses.white14}>
+                <Typography
+                  className={globalClasses.white14}
+                  style={{ textAlign: "center" }}
+                >
                   Please read our{" "}
                   <Link
                     className={classes.link}
                     onClick={() => PageHelpers().GotoUrl("/legal")}
+                    onMouseEnter={handleLinkHover}
                   >
                     {"Use & Liability"}
                   </Link>{" "}
@@ -226,18 +284,22 @@ const Landing: React.FC<Props> = ({ theme }: Props) => {
               <Grid item>
                 <Typography
                   className={globalClasses.white14}
-                  style={{ fontSize: 11 }}
+                  style={{ fontSize: 11, textAlign: "center" }}
                 >
                   By using Tapknack, you automatically agree to these terms!
                 </Typography>
               </Grid>
               {/* Privacy Policy */}
               <Grid item style={{ marginTop: 10 }}>
-                <Typography className={globalClasses.white14}>
+                <Typography
+                  className={globalClasses.white14}
+                  style={{ textAlign: "center" }}
+                >
                   View our{" "}
                   <Link
                     className={classes.link}
                     onClick={() => PageHelpers().GotoUrl("/privacy")}
+                    onMouseEnter={handleLinkHover}
                   >
                     Privacy Policy
                   </Link>

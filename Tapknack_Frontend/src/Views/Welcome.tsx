@@ -8,6 +8,9 @@ import {
   Link,
   makeStyles,
   Typography,
+  Menu,
+  MenuItem,
+  ClickAwayListener,
 } from "@material-ui/core";
 
 import TPKIcon, { TPK } from "../res/iconTPK";
@@ -100,8 +103,13 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
   const classes = useStyles(theme);
   const globalStyles = useGlobalStyles(theme);
 
+  const [notificationsAnchorEl, setNotificationsAnchorEl] = useState<Element>();
+  const [optionsAnchorEl, setOptionsAnchorEl] = useState<Element>();
+
   const [logoutPromptIsOpen, setLogoutPromptIsOpen] = useState(false);
-  const {username} = localStorage;
+  const [notificationsIsOpen, setNotificationsIsOpen] = useState(false);
+  const [optionsIsOpen, setOptionsIsOpen] = useState(false);
+  const { username } = localStorage;
 
   useEffect(() => {
     const loadAsync = async () => {
@@ -122,6 +130,20 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
     delete localStorage.token;
     PageHelpers().GotoUrl("/signin");
     setLogoutPromptIsOpen(false);
+  };
+
+  const handleListAJobClicked = () => {
+    alert("List a job ya pleb");
+  };
+
+  const handleNotificationsClicked = (e: React.MouseEvent) => {
+    setNotificationsAnchorEl(e.currentTarget);
+    setNotificationsIsOpen(true);
+  };
+
+  const handleOptionsClicked = (e: React.MouseEvent) => {
+    setOptionsAnchorEl(e.currentTarget);
+    setOptionsIsOpen(true);
   };
 
   return (
@@ -203,21 +225,54 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
             borderBottom: "2px solid rgba(40,172,217,.5)",
           }}
         >
-          <TPKIconButton style={{ marginTop: "auto", marginBottom: "auto" }}>
+          <TPKIconButton
+            onClick={handleNotificationsClicked}
+            style={{ marginTop: "auto", marginBottom: "auto" }}
+          >
             <TPKIcon size={45} icon={TPK.icNotification} />
           </TPKIconButton>
+          <Menu
+            open={notificationsIsOpen}
+            anchorEl={notificationsAnchorEl}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <ClickAwayListener
+              onClickAway={() => setNotificationsIsOpen(false)}
+            >
+              <MenuItem>Nado Is The Best Developer In History</MenuItem>
+            </ClickAwayListener>
+          </Menu>
+
           <TPKIconButton
             style={{ marginTop: "auto", marginBottom: "auto" }}
             onClick={() => setLogoutPromptIsOpen(true)}
           >
             <TPKIcon size={45} icon={TPK.icLogout} />
           </TPKIconButton>
-          <TPKIconButton style={{ marginTop: "auto", marginBottom: "auto" }}>
+          <TPKIconButton
+            onClick={() => PageHelpers().GotoUrl(`/profile/nadotornado`)}
+            style={{ marginTop: "auto", marginBottom: "auto" }}
+          >
             <TPKIcon size={45} icon={TPK.icProfile} />
           </TPKIconButton>
-          <TPKIconButton style={{ marginTop: "auto", marginBottom: "auto" }}>
+          <TPKIconButton
+            onClick={handleOptionsClicked}
+            style={{ marginTop: "auto", marginBottom: "auto" }}
+          >
             <TPKIcon size={45} icon={TPK.icOptions} />
           </TPKIconButton>
+
+          <Menu
+            open={optionsIsOpen}
+            anchorEl={optionsAnchorEl}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <ClickAwayListener onClickAway={() => setOptionsIsOpen(false)}>
+              <MenuItem>Nado Is The Best Developer In History</MenuItem>
+            </ClickAwayListener>
+          </Menu>
         </Grid>
       </Grid>
       {/* Center panel*/}
@@ -315,7 +370,7 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
             What would you like to do first?
           </p>
           <Grid item style={{ display: "flex", justifyContent: "center" }}>
-            <TPKIconButton>
+            <TPKIconButton onClick={handleListAJobClicked}>
               <BorderCircle size={200}>
                 <Grid
                   item
@@ -343,7 +398,7 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
               </BorderCircle>
             </TPKIconButton>
 
-            <TPKIconButton>
+            <TPKIconButton onClick={() => PageHelpers().GotoUrl("/search")}>
               <BorderCircle size={200}>
                 <Grid
                   item
@@ -370,7 +425,7 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
                 </Grid>
               </BorderCircle>
             </TPKIconButton>
-            <TPKIconButton>
+            <TPKIconButton onClick={() => PageHelpers().GotoUrl("/search")}>
               <BorderCircle size={200}>
                 <Grid
                   item

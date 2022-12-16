@@ -21,11 +21,11 @@ export const TPKIconButton: React.FC<Props> = ({
     setHover(true);
   };
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
     const _audio = new Audio(clickGeneric);
     _audio.volume = 0.5;
     _audio.play();
-    onClick();
+    onClick(e);
   };
 
   return (
@@ -55,6 +55,6 @@ export const TPKIconButton: React.FC<Props> = ({
 
 interface Props {
   children: React.ReactNode | React.ReactNode[];
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
   style?: object;
 }
