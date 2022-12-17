@@ -104,14 +104,12 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
           },
         }
       );
-      const { token, userId, Username: _username } = data;
+      const { token, userId, username: _username } = data;
 
       localStorage.token = token;
       localStorage.userId = userId;
       localStorage.username = _username;
-
-      console.log("data=",data);
-      // PageHelpers().GotoUrl("/welcome");
+      PageHelpers().GotoUrl("/welcome");
     } catch (err) {
       const message = ErrorHelpers().GetErrorMessage(err);
 

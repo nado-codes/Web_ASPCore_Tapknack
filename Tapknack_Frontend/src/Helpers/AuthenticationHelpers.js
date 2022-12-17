@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const AuthenticationHelpers = () => {
   const Authenticate = async () => {
+    return true;
     const { token } = localStorage;
 
     if (token === undefined) return false;

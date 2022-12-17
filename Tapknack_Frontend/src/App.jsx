@@ -7,12 +7,15 @@ import Landing from "./Views/Landing";
 import Signin from "./Views/Signin";
 import Welcome from "./Views/Welcome";
 import axios from "axios";
+import { Profile } from "./Views/Profile";
 
 const App = () => {
   const paths = [
     { path: "/", View: Landing },
     { path: "/signin", View: Signin },
     { path: "/welcome", View: Welcome },
+    { path: "/profile/*", View: Profile},
+    { path: "/search", View: NotFound},
   ];
 
   const exitTimeout = 500;

@@ -1,27 +1,15 @@
-import React, { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  Link,
-  makeStyles,
-  Typography,
-  Menu,
-  MenuItem,
-  ClickAwayListener,
-} from "@material-ui/core";
+import React, { useEffect } from "react";
+import { Grid, Link, makeStyles, Typography } from "@material-ui/core";
 
 import TPKIcon, { TPK } from "../res/iconTPK";
 import { TPKIconButton } from "../Components/TPKIconButton";
 import ndcIcon from "../res/nadocoLogo.png";
-import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 import { ClassNameMap } from "@material-ui/styles";
 import { PageHelpers } from "../Helpers/PageHelpers";
-import { TPKButton } from "../Components/TPKButton";
 import { AuthenticationHelpers } from "../Helpers/AuthenticationHelpers";
+import { TPKHeader } from "../Components/TPKHeader";
+import { BorderBox } from "../Components/BorderBox";
 
 const BorderCircle: React.FC<BorderCircleProps> = ({
   size = 48,
@@ -50,35 +38,6 @@ interface BorderCircleProps {
   style?: object;
 }
 
-const BorderBox: React.FC<BorderBoxProps> = ({
-  width,
-  height,
-  children,
-  style,
-}: BorderBoxProps) => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "middle",
-      width,
-      height,
-      border: "2px solid #28ACD9",
-      borderRadius: 10,
-      ...style,
-    }}
-  >
-    {children}
-  </div>
-);
-
-interface BorderBoxProps {
-  width: string | number;
-  height: string | number;
-  children?: React.ReactNode[] | React.ReactNode;
-  style?: object;
-}
-
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
@@ -101,14 +60,7 @@ const useStyles = makeStyles(() => ({
 const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
   // .. Styles
   const classes = useStyles(theme);
-  const globalStyles = useGlobalStyles(theme);
 
-  const [notificationsAnchorEl, setNotificationsAnchorEl] = useState<Element>();
-  const [optionsAnchorEl, setOptionsAnchorEl] = useState<Element>();
-
-  const [logoutPromptIsOpen, setLogoutPromptIsOpen] = useState(false);
-  const [notificationsIsOpen, setNotificationsIsOpen] = useState(false);
-  const [optionsIsOpen, setOptionsIsOpen] = useState(false);
   const { username } = localStorage;
 
   useEffect(() => {
@@ -126,423 +78,308 @@ const Welcome: React.FC<Props> = ({ theme, gotoUrl = () => null }: Props) => {
     loadAsync();
   }, []);
 
-  const handleLogout = () => {
-    delete localStorage.token;
-    PageHelpers().GotoUrl("/signin");
-    setLogoutPromptIsOpen(false);
-  };
-
   const handleListAJobClicked = () => {
     alert("List a job ya pleb");
   };
 
-  const handleNotificationsClicked = (e: React.MouseEvent) => {
-    setNotificationsAnchorEl(e.currentTarget);
-    setNotificationsIsOpen(true);
-  };
-
-  const handleOptionsClicked = (e: React.MouseEvent) => {
-    setOptionsAnchorEl(e.currentTarget);
-    setOptionsIsOpen(true);
-  };
-
   return (
-    <Grid
-      container
-      style={{
-        display: "flex",
-        height: "100%",
-        flexDirection: "column",
-      }}
-    >
-      <Dialog
-        open={logoutPromptIsOpen}
-        PaperProps={{
-          style: {
-            backgroundColor: "#000919AA",
-            boxShadow: "none",
-            width: 500,
-            padding: 5,
-          },
-        }}
-      >
-        <DialogTitle>Title</DialogTitle>
-        <DialogContent style={{ display: "flex", justifyContent: "center" }}>
-          <Typography
-            className={globalStyles.white14}
-            style={{ userSelect: "none", fontSize: 20 }}
-          >
-            Are you sure you want to log out?
-          </Typography>
-        </DialogContent>
-        <DialogActions style={{ display: "flex", justifyContent: "center" }}>
-          <TPKButton
-            onClick={() => handleLogout()}
-            style={{
-              marginTop: "50px",
-              width: "150px",
-            }}
-          >
-            Yes
-          </TPKButton>
-          <TPKButton
-            onClick={() => setLogoutPromptIsOpen(false)}
-            style={{
-              marginTop: "50px",
-              width: "150px",
-            }}
-          >
-            No
-          </TPKButton>
-        </DialogActions>
-      </Dialog>
+    <>
+      <TPKHeader />
       <Grid
-        item
+        container
         style={{
           display: "flex",
-          flex: 0.125,
-          height: "10px",
-
-          justifyContent: "center",
-        }}
-      >
-        {/* Logo - TapKnack */}
-        <Grid
-          item
-          style={{
-            flex: 1,
-          }}
-        />
-        {/* Button Notifications, Logout, Profile, Options */}
-        <TPKIcon size={75} icon={TPK.TPK} />
-        <Grid
-          item
-          style={{
-            flex: 1,
-            display: "flex",
-            justifyContent: "end",
-            paddingTop: "auto",
-            borderBottom: "2px solid rgba(40,172,217,.5)",
-          }}
-        >
-          <TPKIconButton
-            onClick={handleNotificationsClicked}
-            style={{ marginTop: "auto", marginBottom: "auto" }}
-          >
-            <TPKIcon size={45} icon={TPK.icNotification} />
-          </TPKIconButton>
-          <Menu
-            open={notificationsIsOpen}
-            anchorEl={notificationsAnchorEl}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-            transformOrigin={{ vertical: "top", horizontal: "right" }}
-          >
-            <ClickAwayListener
-              onClickAway={() => setNotificationsIsOpen(false)}
-            >
-              <MenuItem>Nado Is The Best Developer In History</MenuItem>
-            </ClickAwayListener>
-          </Menu>
-
-          <TPKIconButton
-            style={{ marginTop: "auto", marginBottom: "auto" }}
-            onClick={() => setLogoutPromptIsOpen(true)}
-          >
-            <TPKIcon size={45} icon={TPK.icLogout} />
-          </TPKIconButton>
-          <TPKIconButton
-            onClick={() => PageHelpers().GotoUrl(`/profile/nadotornado`)}
-            style={{ marginTop: "auto", marginBottom: "auto" }}
-          >
-            <TPKIcon size={45} icon={TPK.icProfile} />
-          </TPKIconButton>
-          <TPKIconButton
-            onClick={handleOptionsClicked}
-            style={{ marginTop: "auto", marginBottom: "auto" }}
-          >
-            <TPKIcon size={45} icon={TPK.icOptions} />
-          </TPKIconButton>
-
-          <Menu
-            open={optionsIsOpen}
-            anchorEl={optionsAnchorEl}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-            transformOrigin={{ vertical: "top", horizontal: "right" }}
-          >
-            <ClickAwayListener onClickAway={() => setOptionsIsOpen(false)}>
-              <MenuItem>Nado Is The Best Developer In History</MenuItem>
-            </ClickAwayListener>
-          </Menu>
-        </Grid>
-      </Grid>
-      {/* Center panel*/}
-      <Grid
-        item
-        style={{
-          flex: 1,
-          display: "flex",
+          height: "100%",
           flexDirection: "column",
-          height: "10px",
         }}
       >
-        {/* Welcome message */}
         <Grid
           item
           style={{
             display: "flex",
-            justifyContent: "center",
-            alignItems: "middle",
-            marginTop: 40,
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        >
-          <TPKIcon size={64} icon={TPK.icProfile} />
-          <h1
-            style={{
-              color: "white",
-              marginLeft: 20,
-              marginTop: "auto",
-              marginBottom: "auto",
-            }}
-          >
-            {username} - Welcome Back!
-          </h1>
-        </Grid>
+            flex: 0.125,
+            height: "10px",
 
-        {/* News */}
-        <Grid
-          item
-          style={{
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <p style={{ color: "white", textAlign: "center" }}>
-            Here's some stuff you missed...
-          </p>
-          <Grid
-            item
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              borderBottom: "2px solid rgba(40,172,217,.5)",
-              borderTop: "2px solid rgba(40,172,217,.5)",
-              paddingTop: 10,
-              paddingBottom: 10,
-              width: "75%",
-              margin: "auto",
-            }}
-          >
-            <TPKIconButton>
-              <BorderBox width={150} height={100} style={{ marginRight: 10 }}>
-                <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
-                  News 1
-                </p>
-              </BorderBox>
-            </TPKIconButton>
-            <TPKIconButton>
-              <BorderBox width={150} height={100} style={{ marginRight: 10 }}>
-                <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
-                  News 2
-                </p>
-              </BorderBox>
-            </TPKIconButton>
-            <TPKIconButton>
-              <BorderBox width={150} height={100}>
-                <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
-                  News 3
-                </p>
-              </BorderBox>
-            </TPKIconButton>
-          </Grid>
-        </Grid>
-        {/* Button List Job, Find Job, Find Person */}
-        <Grid
-          item
-          style={{
-            display: "flex",
-            flexDirection: "column",
             justifyContent: "center",
           }}
         >
-          <p style={{ color: "white", textAlign: "center" }}>
-            What would you like to do first?
-          </p>
-          <Grid item style={{ display: "flex", justifyContent: "center" }}>
-            <TPKIconButton onClick={handleListAJobClicked}>
-              <BorderCircle size={200}>
-                <Grid
-                  item
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <TPKIcon
-                    size={128}
-                    icon={TPK.icSuitcasePlus}
-                    style={{ margin: "auto" }}
-                  />
-                  <p
-                    style={{
-                      color: "white",
-                      fontSize: 20,
-                      margin: "auto",
-                      marginTop: -20,
-                    }}
-                  >
-                    List A Job
-                  </p>
-                </Grid>
-              </BorderCircle>
-            </TPKIconButton>
-
-            <TPKIconButton onClick={() => PageHelpers().GotoUrl("/search")}>
-              <BorderCircle size={200}>
-                <Grid
-                  item
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <TPKIcon
-                    size={128}
-                    icon={TPK.icSuitcaseSearch}
-                    style={{ margin: "auto" }}
-                  />
-                  <p
-                    style={{
-                      color: "white",
-                      fontSize: 20,
-                      margin: "auto",
-                      marginTop: -20,
-                    }}
-                  >
-                    Find A Job
-                  </p>
-                </Grid>
-              </BorderCircle>
-            </TPKIconButton>
-            <TPKIconButton onClick={() => PageHelpers().GotoUrl("/search")}>
-              <BorderCircle size={200}>
-                <Grid
-                  item
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <TPKIcon
-                    size={128}
-                    icon={TPK.icPersonSearch}
-                    style={{ margin: "auto" }}
-                  />
-                  <p
-                    style={{
-                      color: "white",
-                      fontSize: 20,
-                      margin: "auto",
-                      marginTop: -20,
-                    }}
-                  >
-                    Find A Person
-                  </p>
-                </Grid>
-              </BorderCircle>
-            </TPKIconButton>
-          </Grid>
+          {/* Logo - TapKnack */}
+          <Grid
+            item
+            style={{
+              flex: 1,
+            }}
+          />
         </Grid>
-      </Grid>
-      {/* Footer */}
-      <Grid
-        item
-        style={{
-          flex: 0.125,
-          display: "flex",
-          flexDirection: "row",
-          height: "10px",
-        }}
-      >
-        <Grid item style={{ flex: 3 / 4 }} />
+        {/* Center panel*/}
         <Grid
           item
           style={{
-            flex: 1 / 4,
+            flex: 1,
             display: "flex",
+            flexDirection: "column",
+            height: "10px",
           }}
         >
+          {/* Welcome message */}
           <Grid
             item
             style={{
-              flex: 50,
               display: "flex",
-              flexDirection: "column",
               justifyContent: "center",
-              paddingLeft: 30,
+              alignItems: "middle",
+              marginTop: 40,
+              marginLeft: "auto",
+              marginRight: "auto",
             }}
           >
-            <Link
-              className={classes.link}
-              style={{ fontSize: 12 }}
-              onClick={() => gotoUrl("/privacy")}
-            >
-              Privacy and Terms
-            </Link>
-            <Link
-              className={classes.link}
-              style={{ fontSize: 12 }}
-              onClick={() => gotoUrl("/about")}
-            >
-              What is TPK?
-            </Link>
-            <Link
-              className={classes.link}
-              style={{ fontSize: 12 }}
-              onClick={() => gotoUrl("/careers")}
-            >
-              Join Us
-            </Link>
-          </Grid>
-          <Grid
-            item
-            style={{
-              flex: 70,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              paddingLeft: 10,
-              paddingRight: 30,
-              paddingBottom: 30,
-            }}
-          >
-            <Typography
+            <TPKIcon size={64} icon={TPK.icProfile} />
+            <h1
               style={{
-                color: "#29E4FF",
-                fontFamily: "Ubuntu",
-                textAlign: "center",
-                fontSize: 12,
+                color: "white",
+                marginLeft: 20,
+                marginTop: "auto",
+                marginBottom: "auto",
               }}
             >
-              Brought to you by
-            </Typography>
-            <TPKIconButton>
-              <img
-                src={ndcIcon}
+              {username} - Welcome Back!
+            </h1>
+          </Grid>
+
+          {/* News */}
+          <Grid
+            item
+            style={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <p style={{ color: "white", textAlign: "center" }}>
+              Here's some stuff you missed...
+            </p>
+            <Grid
+              item
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                borderBottom: "2px solid rgba(40,172,217,.5)",
+                borderTop: "2px solid rgba(40,172,217,.5)",
+                paddingTop: 10,
+                paddingBottom: 10,
+                width: "75%",
+                margin: "auto",
+              }}
+            >
+              <TPKIconButton>
+                <BorderBox width={150} height={100} style={{ marginRight: 10 }}>
+                  <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
+                    News 1
+                  </p>
+                </BorderBox>
+              </TPKIconButton>
+              <TPKIconButton>
+                <BorderBox width={150} height={100} style={{ marginRight: 10 }}>
+                  <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
+                    News 2
+                  </p>
+                </BorderBox>
+              </TPKIconButton>
+              <TPKIconButton>
+                <BorderBox width={150} height={100}>
+                  <p style={{ color: "white", margin: "auto", fontSize: 22 }}>
+                    News 3
+                  </p>
+                </BorderBox>
+              </TPKIconButton>
+            </Grid>
+          </Grid>
+          {/* Button List Job, Find Job, Find Person */}
+          <Grid
+            item
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <p style={{ color: "white", textAlign: "center" }}>
+              What would you like to do first?
+            </p>
+            <Grid item style={{ display: "flex", justifyContent: "center" }}>
+              <TPKIconButton onClick={handleListAJobClicked}>
+                <BorderCircle size={200}>
+                  <Grid
+                    item
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <TPKIcon
+                      size={128}
+                      icon={TPK.icSuitcasePlus}
+                      style={{ margin: "auto" }}
+                    />
+                    <p
+                      style={{
+                        color: "white",
+                        fontSize: 20,
+                        margin: "auto",
+                        marginTop: -20,
+                      }}
+                    >
+                      List A Job
+                    </p>
+                  </Grid>
+                </BorderCircle>
+              </TPKIconButton>
+
+              <TPKIconButton onClick={() => PageHelpers().GotoUrl("/search")}>
+                <BorderCircle size={200}>
+                  <Grid
+                    item
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <TPKIcon
+                      size={128}
+                      icon={TPK.icSuitcaseSearch}
+                      style={{ margin: "auto" }}
+                    />
+                    <p
+                      style={{
+                        color: "white",
+                        fontSize: 20,
+                        margin: "auto",
+                        marginTop: -20,
+                      }}
+                    >
+                      Find A Job
+                    </p>
+                  </Grid>
+                </BorderCircle>
+              </TPKIconButton>
+              <TPKIconButton onClick={() => PageHelpers().GotoUrl("/search")}>
+                <BorderCircle size={200}>
+                  <Grid
+                    item
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <TPKIcon
+                      size={128}
+                      icon={TPK.icPersonSearch}
+                      style={{ margin: "auto" }}
+                    />
+                    <p
+                      style={{
+                        color: "white",
+                        fontSize: 20,
+                        margin: "auto",
+                        marginTop: -20,
+                      }}
+                    >
+                      Find A Person
+                    </p>
+                  </Grid>
+                </BorderCircle>
+              </TPKIconButton>
+            </Grid>
+          </Grid>
+        </Grid>
+        {/* Footer */}
+        <Grid
+          item
+          style={{
+            flex: 0.125,
+            display: "flex",
+            flexDirection: "row",
+            height: "10px",
+          }}
+        >
+          <Grid item style={{ flex: 3 / 4 }} />
+          <Grid
+            item
+            style={{
+              flex: 1 / 4,
+              display: "flex",
+            }}
+          >
+            <Grid
+              item
+              style={{
+                flex: 50,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                paddingLeft: 30,
+              }}
+            >
+              <Link
+                className={classes.link}
+                style={{ fontSize: 12 }}
+                onClick={() => gotoUrl("/privacy")}
+              >
+                Privacy and Terms
+              </Link>
+              <Link
+                className={classes.link}
+                style={{ fontSize: 12 }}
+                onClick={() => gotoUrl("/about")}
+              >
+                What is TPK?
+              </Link>
+              <Link
+                className={classes.link}
+                style={{ fontSize: 12 }}
+                onClick={() => gotoUrl("/careers")}
+              >
+                Join Us
+              </Link>
+            </Grid>
+            <Grid
+              item
+              style={{
+                flex: 70,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                paddingLeft: 10,
+                paddingRight: 30,
+                paddingBottom: 30,
+              }}
+            >
+              <Typography
                 style={{
-                  display: "block",
-                  width: "auto",
-                  height: "auto",
-                  maxWidth: "100%",
-                  maxHeight: "100%",
+                  color: "#29E4FF",
+                  fontFamily: "Ubuntu",
+                  textAlign: "center",
+                  fontSize: 12,
                 }}
-              />
-            </TPKIconButton>
+              >
+                Brought to you by
+              </Typography>
+              <TPKIconButton>
+                <img
+                  src={ndcIcon}
+                  style={{
+                    display: "block",
+                    width: "auto",
+                    height: "auto",
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                  }}
+                />
+              </TPKIconButton>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 
