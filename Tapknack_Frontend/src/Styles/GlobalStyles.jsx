@@ -1,10 +1,11 @@
 import { makeStyles } from "@material-ui/core";
 
 export const useGlobalStyles = makeStyles((theme) => ({
-  white14: {
+  white16: {
     fontFamily: "Ubuntu",
     color: "white",
     fontSize: 16,
+    userSelect: "none",
   },
   whiteTitle: {
     color: "white",
@@ -12,6 +13,7 @@ export const useGlobalStyles = makeStyles((theme) => ({
     fontSize: 28,
     fontWeight: "bold",
     fontFamily: "Ubuntu",
+    userSelect: "none",
   },
   genericButton: {
     color: "#29E4FF",

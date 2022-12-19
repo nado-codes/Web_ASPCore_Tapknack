@@ -141,7 +141,7 @@ const Landing: React.FC<Props> = ({ theme }: Props) => {
               >
                 {/* Description - "Tapknack is..." */}
                 <Typography
-                  className={globalClasses.white14}
+                  className={globalClasses.white16}
                   style={{
                     textAlign: "center",
                   }}
@@ -223,7 +223,7 @@ const Landing: React.FC<Props> = ({ theme }: Props) => {
               {/* Sign In */}
               <Grid item>
                 {!isRegistered && (
-                  <Typography className={globalClasses.white14}>
+                  <Typography className={globalClasses.white16}>
                     Already a member?{" "}
                     <Link
                       className={classes.link}
@@ -237,7 +237,7 @@ const Landing: React.FC<Props> = ({ theme }: Props) => {
                 {isRegistered && (
                   <div style={{ height: 75 }}>
                     <Typography
-                      className={globalClasses.white14}
+                      className={globalClasses.white16}
                       style={{
                         fontSize: 22,
                         color: "#66FF33",
@@ -247,7 +247,7 @@ const Landing: React.FC<Props> = ({ theme }: Props) => {
                       Thank you for registering!
                     </Typography>
                     <Typography
-                      className={globalClasses.white14}
+                      className={globalClasses.white16}
                       style={{ fontSize: 12, textAlign: "center" }}
                     >
                       {"You're all good to "}
@@ -266,7 +266,7 @@ const Landing: React.FC<Props> = ({ theme }: Props) => {
               {/* Use & Liability */}
               <Grid item style={{ marginTop: 10 }}>
                 <Typography
-                  className={globalClasses.white14}
+                  className={globalClasses.white16}
                   style={{ textAlign: "center" }}
                 >
                   Please read our{" "}
@@ -283,7 +283,7 @@ const Landing: React.FC<Props> = ({ theme }: Props) => {
               {/* Disclaimer */}
               <Grid item>
                 <Typography
-                  className={globalClasses.white14}
+                  className={globalClasses.white16}
                   style={{ fontSize: 11, textAlign: "center" }}
                 >
                   By using Tapknack, you automatically agree to these terms!
@@ -292,7 +292,7 @@ const Landing: React.FC<Props> = ({ theme }: Props) => {
               {/* Privacy Policy */}
               <Grid item style={{ marginTop: 10 }}>
                 <Typography
-                  className={globalClasses.white14}
+                  className={globalClasses.white16}
                   style={{ textAlign: "center" }}
                 >
                   View our{" "}

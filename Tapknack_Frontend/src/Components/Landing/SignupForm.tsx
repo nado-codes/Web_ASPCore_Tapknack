@@ -147,7 +147,7 @@ export const SignupForm: React.FC<Props> = ({
                 background: "rgba(255,0,0,0.75)",
               }}
             >
-              <p className={globalStyles.white14} style={{ fontSize: 14 }}>
+              <p className={globalStyles.white16} style={{ fontSize: 14 }}>
                 {error}
               </p>
             </div>

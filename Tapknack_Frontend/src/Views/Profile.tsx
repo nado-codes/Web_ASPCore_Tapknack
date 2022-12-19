@@ -1,18 +1,25 @@
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import React from "react";
 import { BorderBox } from "../Components/BorderBox";
+import { SkillButton } from "../Components/SkillButton";
 import { TPKHeader } from "../Components/TPKHeader";
 import { TPKIconButton } from "../Components/TPKIconButton";
 import { PageHelpers } from "../Helpers/PageHelpers";
 import TPKIcon, { TPK } from "../res/iconTPK";
+import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 export const Profile: React.FC = () => {
+  const globalClasses = useGlobalStyles();
   const { username } = localStorage;
+
+  const skills = Array.from(Array(6).keys()).map((n) => ({
+    name: `Unity 3D ${n}`,
+  }));
 
   return (
     <>
       <TPKHeader />
-      <Grid container style={{ display: "flex", height: "100%" }}>
+      <Grid container style={{ display: "flex", paddingTop: 75 }}>
         <Grid
           item
           style={{
@@ -22,8 +29,9 @@ export const Profile: React.FC = () => {
             alignItems: "center",
           }}
         >
+          {/* Back (Return) Button */}
           <TPKIconButton onClick={() => PageHelpers().ReturnToPrevUrl()}>
-            <TPKIcon size={45} icon={TPK.icProfile} />
+            <TPKIcon size={75} icon={TPK.icProfile} />
           </TPKIconButton>
         </Grid>
         <Grid
@@ -36,18 +44,29 @@ export const Profile: React.FC = () => {
         >
           {/* Avatar + Skills*/}
           <BorderBox width={500} height={500} borderRadius={25}>
-            <Grid container direction={"column"}>
-              <Grid item direction={"row"} style={{ backgroundColor: "red" }}>
+            <Grid
+              container
+              direction={"column"}
+              style={{ display: "flex", padding: 20 }}
+            >
+              {/* Avatar + Username */}
+              <Grid container style={{ flex: 1 / 3 }}>
                 <Grid item>
-                  <TPKIcon size={100} icon={TPK.icProfile} />
+                  <TPKIcon size={125} icon={TPK.icProfile} />
                 </Grid>
-                <Grid item>
+                <Grid
+                  item
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    paddingLeft: 10,
+                  }}
+                >
                   <h1
                     style={{
+                      fontSize: 50,
                       color: "white",
-                      background: "yellow",
-                      marginTop: "auto",
-                      marginBottom: "auto",
+                      marginTop: 20,
                       width: 50,
                     }}
                   >
@@ -55,7 +74,37 @@ export const Profile: React.FC = () => {
                   </h1>
                 </Grid>
               </Grid>
-              <Grid item></Grid>
+              {/* Skills */}
+              <Grid
+                container
+                direction={"column"}
+                style={{ flex: 2 / 3, display: "flex" }}
+              >
+                <Grid item style={{ height: 30, width: "100%" }}>
+                  <Typography
+                    className={globalClasses.white16}
+                    style={{
+                      fontSize: 20,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Your Skills
+                  </Typography>
+                </Grid>
+                <Grid
+                  container
+                  style={{
+                    maxHeight: 300,
+                    overflow: "hidden",
+                  }}
+                >
+                  {skills.map((s) => (
+                    <Grid item style={{ marginTop: 10 }}>
+                      <SkillButton name={s.name} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Grid>
             </Grid>
           </BorderBox>
         </Grid>

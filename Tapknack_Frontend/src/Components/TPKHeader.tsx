@@ -60,7 +60,7 @@ export const TPKHeader: React.FC = () => {
         <DialogTitle>Title</DialogTitle>
         <DialogContent style={{ display: "flex", justifyContent: "center" }}>
           <Typography
-            className={globalStyles.white14}
+            className={globalStyles.white16}
             style={{ userSelect: "none", fontSize: 20 }}
           >
             Are you sure you want to log out?

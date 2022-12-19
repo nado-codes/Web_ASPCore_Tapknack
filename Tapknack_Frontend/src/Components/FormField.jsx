@@ -62,7 +62,7 @@ const FormField = ({
       >
         {icon && icon}
         {label && (
-          <InputLabel className={globalStyles.white14}>{label}</InputLabel>
+          <InputLabel className={globalStyles.white16}>{label}</InputLabel>
         )}
       </Grid>
       <Grid

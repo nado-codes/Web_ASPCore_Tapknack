@@ -93,9 +93,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
 
       const signinToken = btoa(`${username}:${pass}`);
 
-      const {
-        data,
-      } = await axios.post(
+      const { data } = await axios.post(
         `api/signin`,
         {},
         {
@@ -211,7 +209,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
                 background: "rgba(255,0,0,0.75)",
               }}
             >
-              <p className={globalStyles.white14} style={{ fontSize: 14 }}>
+              <p className={globalStyles.white16} style={{ fontSize: 14 }}>
                 {error}
               </p>
             </div>
@@ -260,7 +258,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
         >
           {/* Sign In */}
           <Grid item>
-            <Typography className={globalStyles.white14}>
+            <Typography className={globalStyles.white16}>
               No account?{" "}
               <Link
                 className={globalStyles.link}
@@ -273,7 +271,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
           </Grid>
           {/* Privacy Policy */}
           <Grid item style={{ marginTop: 10 }}>
-            <Typography className={globalStyles.white14}>
+            <Typography className={globalStyles.white16}>
               View our{" "}
               <Link
                 className={globalStyles.link}
