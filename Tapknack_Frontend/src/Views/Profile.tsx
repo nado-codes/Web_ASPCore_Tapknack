@@ -1,15 +1,15 @@
 import { Grid, Typography } from "@material-ui/core";
 import React from "react";
 import { BorderBox } from "../Components/BorderBox";
+import { BtnBack } from "../Components/Profile/BtnBack";
 import { SkillButton } from "../Components/SkillButton";
 import { TPKHeader } from "../Components/TPKHeader";
-import { TPKIconButton } from "../Components/TPKIconButton";
 import { PageHelpers } from "../Helpers/PageHelpers";
 import TPKIcon, { TPK } from "../res/iconTPK";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 export const Profile: React.FC = () => {
-  const globalClasses = useGlobalStyles();
+  const globalStyles = useGlobalStyles();
   const { username } = localStorage;
 
   const skills = Array.from(Array(6).keys()).map((n) => ({
@@ -19,31 +19,36 @@ export const Profile: React.FC = () => {
   return (
     <>
       <TPKHeader />
-      <Grid container style={{ display: "flex", paddingTop: 75 }}>
+      <Grid
+        container
+        style={{
+          display: "flex",
+          paddingTop: 75,
+        }}
+      >
         <Grid
           item
           style={{
-            flex: 1 / 5,
+            flex: 1 / 3,
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "end",
             alignItems: "center",
           }}
         >
           {/* Back (Return) Button */}
-          <TPKIconButton onClick={() => PageHelpers().ReturnToPrevUrl()}>
-            <TPKIcon size={75} icon={TPK.icProfile} />
-          </TPKIconButton>
+          <BtnBack onClick={() => PageHelpers().ReturnToPrevUrl()} />
         </Grid>
         <Grid
           item
           style={{
-            flex: 4 / 5,
+            flex: 1 / 3,
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
           }}
         >
           {/* Avatar + Skills*/}
-          <BorderBox width={500} height={500} borderRadius={25}>
+          <BorderBox width={500} height={600} borderRadius={25}>
             <Grid
               container
               direction={"column"}
@@ -60,18 +65,22 @@ export const Profile: React.FC = () => {
                     display: "flex",
                     alignItems: "center",
                     paddingLeft: 10,
+                    textOverflow: "ellipsis",
                   }}
                 >
-                  <h1
+                  <Typography
+                    className={globalStyles.whiteTitle}
                     style={{
                       fontSize: 50,
-                      color: "white",
-                      marginTop: 20,
-                      width: 50,
+                      marginTop: 0,
+                      maxWidth: 50,
+                      whiteSpace: "nowrap",
                     }}
                   >
                     {username}
-                  </h1>
+                    {/* TODO: need to be able to handle 60-character long strings without overflowing (use ellipsis) Sixty Sixty Sixty Sixty Sixty Sixty Sixty Sixty
+                    Sixty Sixty Sixty */}
+                  </Typography>
                 </Grid>
               </Grid>
               {/* Skills */}
@@ -82,7 +91,7 @@ export const Profile: React.FC = () => {
               >
                 <Grid item style={{ height: 30, width: "100%" }}>
                   <Typography
-                    className={globalClasses.white16}
+                    className={globalStyles.white16}
                     style={{
                       fontSize: 20,
                       fontWeight: "bold",
@@ -108,6 +117,12 @@ export const Profile: React.FC = () => {
             </Grid>
           </BorderBox>
         </Grid>
+        <Grid
+          item
+          style={{
+            flex: 1 / 3,
+          }}
+        />
       </Grid>
     </>
   );

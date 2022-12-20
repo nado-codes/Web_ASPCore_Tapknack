@@ -6,19 +6,34 @@ import clickGeneric from "../res/click_generic.mp3";
 
 export const TPKIconButton: React.FC<Props> = ({
   children,
+  onMouseEnter = () => null,
+  onMouseDown = () => null,
   onClick = () => null,
+  onMouseUp = () => null,
+  onMouseLeave = () => null,
   style,
 }: Props) => {
   const [hover, setHover] = useState<boolean>();
   const [mouseDown, setMouseDown] = useState<boolean>();
 
-  const handleHover = () => {
+  const handleUp = (e: React.MouseEvent) => {
+    setMouseDown(false);
+    onMouseUp(e);
+  };
+
+  const handleHover = (e: React.MouseEvent) => {
     const clicks = [click1, click2, click4];
     const click = clicks[Math.floor(Math.random() * clicks.length)];
     const _audio = new Audio(click);
     _audio.volume = 0.25;
     _audio.play();
     setHover(true);
+    onMouseEnter(e);
+  };
+
+  const handleDown = (e: React.MouseEvent) => {
+    setMouseDown(true);
+    onMouseDown(e);
   };
 
   const handleClick = (e: React.MouseEvent) => {
@@ -28,12 +43,17 @@ export const TPKIconButton: React.FC<Props> = ({
     onClick(e);
   };
 
+  const handleLeave = (e: React.MouseEvent) => {
+    setHover(false);
+    onMouseLeave(e);
+  };
+
   return (
     <button
       onMouseEnter={handleHover}
-      onMouseLeave={() => setHover(false)}
-      onMouseDown={() => setMouseDown(true)}
-      onMouseUp={() => setMouseDown(false)}
+      onMouseLeave={handleLeave}
+      onMouseDown={handleDown}
+      onMouseUp={handleUp}
       onClick={handleClick}
       style={{
         display: "flex",
@@ -55,6 +75,10 @@ export const TPKIconButton: React.FC<Props> = ({
 
 interface Props {
   children: React.ReactNode | React.ReactNode[];
+  onMouseEnter?: (e: React.MouseEvent) => void;
+  onMouseDown?: (e: React.MouseEvent) => void;
   onClick?: (e: React.MouseEvent) => void;
+  onMouseUp?: (e: React.MouseEvent) => void;
+  onMouseLeave?: (e: React.MouseEvent) => void;
   style?: object;
 }
