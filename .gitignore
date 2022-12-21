@@ -24,7 +24,5 @@ yarn-debug.log*
 yarn-error.log*
 .vs/Tapknack
 Tapknack_Frontend/node_modules
-Tapknack_Server/bin
 Tapknack_Server/obj
-Tapknack_Tests/bin
 Tapknack_Tests/obj

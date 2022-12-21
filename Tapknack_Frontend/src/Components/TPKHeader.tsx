@@ -3,9 +3,7 @@ import {
   Menu,
   ClickAwayListener,
   MenuItem,
-  Dialog,
   DialogActions,
-  DialogContent,
   DialogTitle,
   Typography,
 } from "@material-ui/core";
@@ -17,6 +15,8 @@ import TPKIcon from "../res/iconTPK";
 import TPK from "../res/_iconTPK";
 import { TPKButton } from "./TPKButton";
 import { TPKIconButton } from "./TPKIconButton";
+import { TPKDialog } from "./TPKDialog";
+import { TPKDialogContent } from "./TPKDialogContent";
 
 export const TPKHeader: React.FC = () => {
   const globalStyles = useGlobalStyles();
@@ -46,28 +46,16 @@ export const TPKHeader: React.FC = () => {
 
   return (
     <>
-      <Dialog
-        open={logoutPromptIsOpen}
-        PaperProps={{
-          style: {
-            backgroundColor: "#000919AA",
-            boxShadow: "none",
-            width: 500,
-            padding: 5,
-          },
-        }}
-      >
+      <TPKDialog open={logoutPromptIsOpen}>
         <DialogTitle>Title</DialogTitle>
-        <ClickAwayListener onClickAway={() => setLogoutPromptIsOpen(false)}>
-          <DialogContent style={{ display: "flex", justifyContent: "center" }}>
-            <Typography
-              className={globalStyles.white16}
-              style={{ userSelect: "none", fontSize: 20 }}
-            >
-              Are you sure you want to log out?
-            </Typography>
-          </DialogContent>
-        </ClickAwayListener>
+        <TPKDialogContent
+          onClickAway={() => setLogoutPromptIsOpen(false)}
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <Typography className={globalStyles.white16} style={{ fontSize: 20 }}>
+            Are you sure you want to log out?
+          </Typography>
+        </TPKDialogContent>
         <DialogActions style={{ display: "flex", justifyContent: "center" }}>
           <TPKButton
             onClick={() => handleLogout()}
@@ -88,7 +76,7 @@ export const TPKHeader: React.FC = () => {
             No
           </TPKButton>
         </DialogActions>
-      </Dialog>
+      </TPKDialog>
       <Grid
         container
         style={{
