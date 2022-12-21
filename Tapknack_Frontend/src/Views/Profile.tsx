@@ -81,9 +81,6 @@ export const Profile: React.FC = () => {
           onClickAway={() => setChangeUsernameDialogIsOpen(false)}
           style={{ height: 100 }}
         >
-          <Typography className={globalStyles.white16} style={{ fontSize: 20 }}>
-            Nado is the best developer in history
-          </Typography>
           <TPKFormField
             label="Create Your Username"
             type="text"
@@ -102,11 +99,19 @@ export const Profile: React.FC = () => {
       </TPKDialog>
       {/* Change Password Dialog */}
       <TPKDialog open={changePassDialogIsOpen}>
-        <DialogTitle>Enter A New Password</DialogTitle>
-        <TPKDialogContent onClickAway={() => setChangePassDialogIsOpen(false)}>
-          <Typography className={globalStyles.white16} style={{ fontSize: 20 }}>
-            Nado is the best developer in history
+        <DialogTitle>
+          <Typography className={globalStyles.whiteTitle}>
+            Enter A New Password
           </Typography>
+        </DialogTitle>
+        <TPKDialogContent
+          onClickAway={() => setChangePassDialogIsOpen(false)}
+          style={{
+            display: "flex",
+            justifyContent: "start",
+            flexDirection: "column",
+          }}
+        >
           <TPKFormField
             label="Enter Your Old Password"
             type="password"
@@ -114,6 +119,7 @@ export const Profile: React.FC = () => {
             value={oldPass}
             labelMinWidth={labelMinWidth}
             onChange={setOldPass}
+            style={{ fontSize: 20 }}
           />
           <TPKFormField
             label="Create Your Password"
@@ -122,6 +128,7 @@ export const Profile: React.FC = () => {
             value={newPass}
             labelMinWidth={labelMinWidth}
             onChange={setNewPass}
+            style={{ fontSize: 20 }}
           />
           <TPKFormField
             label="Confirm Your Password"
@@ -130,6 +137,7 @@ export const Profile: React.FC = () => {
             value={confPass}
             labelMinWidth={labelMinWidth}
             onChange={setConfPass}
+            style={{ fontSize: 20 }}
           />
         </TPKDialogContent>
         <TPKDialogActions>

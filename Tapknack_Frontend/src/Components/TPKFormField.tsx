@@ -53,16 +53,20 @@ const TPKFormField: React.FC<Props> = ({
   ...props
 }) => {
   const globalStyles = useGlobalStyles();
+  const { style } = props;
+  const { fontSize } = style ?? { fontSize: undefined };
 
   return (
-    <Grid container style={styles.formField}>
+    <Grid container style={{ ...styles.formField }}>
       <Grid
         item
         style={{ ...styles.formFieldLabelContainer, minWidth: labelMinWidth }}
       >
         {icon && icon}
         {label && (
-          <InputLabel className={globalStyles.white16}>{label}</InputLabel>
+          <InputLabel className={globalStyles.white16} style={{ fontSize }}>
+            {label}
+          </InputLabel>
         )}
       </Grid>
       <Grid
@@ -80,7 +84,10 @@ const TPKFormField: React.FC<Props> = ({
           disabled={disabled}
           onChange={({ target: { value } }) => onChange(value)}
           InputProps={{
-            style: styles.formFieldTextField,
+            style: {
+              ...styles.formFieldTextField,
+              fontSize,
+            },
           }}
           InputLabelProps={{
             style: { color: "white" },

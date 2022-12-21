@@ -135,6 +135,7 @@ export const SignupForm: React.FC<Props> = ({
             display: "flex",
             width: "75%",
             opacity: isLoading ? 0.5 : 1,
+            background: "Red",
           }}
         >
           {error !== "" && (
