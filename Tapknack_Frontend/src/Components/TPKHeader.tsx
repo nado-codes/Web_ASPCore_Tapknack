@@ -3,7 +3,6 @@ import {
   Menu,
   ClickAwayListener,
   MenuItem,
-  DialogActions,
   DialogTitle,
   Typography,
 } from "@material-ui/core";
@@ -15,8 +14,9 @@ import TPKIcon from "../res/iconTPK";
 import TPK from "../res/_iconTPK";
 import { TPKButton } from "./TPKButton";
 import { TPKIconButton } from "./TPKIconButton";
-import { TPKDialog } from "./TPKDialog";
-import { TPKDialogContent } from "./TPKDialogContent";
+import { TPKDialog } from "./TPKDialog/TPKDialog";
+import { TPKDialogContent } from "./TPKDialog/TPKDialogContent";
+import { TPKDialogActions } from "./TPKDialog/TPKDialogActions";
 
 export const TPKHeader: React.FC = () => {
   const globalStyles = useGlobalStyles();
@@ -56,7 +56,7 @@ export const TPKHeader: React.FC = () => {
             Are you sure you want to log out?
           </Typography>
         </TPKDialogContent>
-        <DialogActions style={{ display: "flex", justifyContent: "center" }}>
+        <TPKDialogActions>
           <TPKButton
             onClick={() => handleLogout()}
             style={{
@@ -75,7 +75,7 @@ export const TPKHeader: React.FC = () => {
           >
             No
           </TPKButton>
-        </DialogActions>
+        </TPKDialogActions>
       </TPKDialog>
       <Grid
         container

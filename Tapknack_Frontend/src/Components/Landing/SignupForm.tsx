@@ -4,7 +4,7 @@ import { useGlobalStyles } from "../../Styles/GlobalStyles";
 import axios from "axios";
 import * as DOMPurify from "dompurify";
 
-import FormField from "../FormField";
+import TPKFormField from "../TPKFormField";
 import { TPKButton } from "../TPKButton";
 import { ErrorHelpers } from "../../Helpers/ErrorHelpers";
 import { ClassNameMap } from "@material-ui/styles";
@@ -152,14 +152,14 @@ export const SignupForm: React.FC<Props> = ({
               </p>
             </div>
           )}
-          <FormField
+          <TPKFormField
             label="Create Your Username"
             disabled={isLoading}
             value={username}
             labelMinWidth={labelMinWidth}
             onChange={setUsername}
           />
-          <FormField
+          <TPKFormField
             label="Create Your Password"
             type="password"
             disabled={isLoading}
@@ -168,7 +168,7 @@ export const SignupForm: React.FC<Props> = ({
             onChange={setPass}
           />
 
-          <FormField
+          <TPKFormField
             label="Confirm Your Password"
             type="password"
             disabled={isLoading}
@@ -177,7 +177,7 @@ export const SignupForm: React.FC<Props> = ({
             onChange={setPassConfirm}
           />
 
-          <FormField
+          <TPKFormField
             label="Enter Your Email"
             disabled={isLoading}
             value={email}

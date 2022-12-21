@@ -1,17 +1,13 @@
-import {
-  DialogActions,
-  DialogTitle,
-  Grid,
-  Typography,
-} from "@material-ui/core";
+import { DialogTitle, Grid, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import { BorderBox } from "../Components/BorderBox";
-import FormField from "../Components/FormField";
+import TPKFormField from "../Components/TPKFormField";
 import { BtnBack } from "../Components/Profile/BtnBack";
 import { SkillButton } from "../Components/SkillButton";
 import { TPKButton } from "../Components/TPKButton";
-import { TPKDialog } from "../Components/TPKDialog";
-import { TPKDialogContent } from "../Components/TPKDialogContent";
+import { TPKDialog } from "../Components/TPKDialog/TPKDialog";
+import { TPKDialogActions } from "../Components/TPKDialog/TPKDialogActions";
+import { TPKDialogContent } from "../Components/TPKDialog/TPKDialogContent";
 import { TPKHeader } from "../Components/TPKHeader";
 import { PageHelpers } from "../Helpers/PageHelpers";
 import TPKIcon, { TPK } from "../res/iconTPK";
@@ -88,7 +84,7 @@ export const Profile: React.FC = () => {
           <Typography className={globalStyles.white16} style={{ fontSize: 20 }}>
             Nado is the best developer in history
           </Typography>
-          <FormField
+          <TPKFormField
             label="Create Your Username"
             type="text"
             disabled={changeUsernameIsLoading}
@@ -97,12 +93,12 @@ export const Profile: React.FC = () => {
             onChange={setNewUsername}
           />
         </TPKDialogContent>
-        <DialogActions>
+        <TPKDialogActions>
           <TPKButton onClick={handleChangeUsername}>Accept</TPKButton>
           <TPKButton onClick={() => setChangeUsernameDialogIsOpen(false)}>
             Cancel
           </TPKButton>
-        </DialogActions>
+        </TPKDialogActions>
       </TPKDialog>
       {/* Change Password Dialog */}
       <TPKDialog open={changePassDialogIsOpen}>
@@ -111,7 +107,7 @@ export const Profile: React.FC = () => {
           <Typography className={globalStyles.white16} style={{ fontSize: 20 }}>
             Nado is the best developer in history
           </Typography>
-          <FormField
+          <TPKFormField
             label="Enter Your Old Password"
             type="password"
             disabled={changePassIsLoading}
@@ -119,7 +115,7 @@ export const Profile: React.FC = () => {
             labelMinWidth={labelMinWidth}
             onChange={setOldPass}
           />
-          <FormField
+          <TPKFormField
             label="Create Your Password"
             type="password"
             disabled={changePassIsLoading}
@@ -127,7 +123,7 @@ export const Profile: React.FC = () => {
             labelMinWidth={labelMinWidth}
             onChange={setNewPass}
           />
-          <FormField
+          <TPKFormField
             label="Confirm Your Password"
             type="password"
             disabled={changePassIsLoading}
@@ -136,12 +132,17 @@ export const Profile: React.FC = () => {
             onChange={setConfPass}
           />
         </TPKDialogContent>
-        <DialogActions>
-          <TPKButton onClick={handleChangePassword}>Accept</TPKButton>
-          <TPKButton onClick={() => setChangePassDialogIsOpen(false)}>
+        <TPKDialogActions>
+          <TPKButton onClick={handleChangePassword} style={{ width: 75 }}>
+            Accept
+          </TPKButton>
+          <TPKButton
+            onClick={() => setChangePassDialogIsOpen(false)}
+            style={{ width: 75 }}
+          >
             Cancel
           </TPKButton>
-        </DialogActions>
+        </TPKDialogActions>
       </TPKDialog>
       {/* Change Avatar Dialog */}
       <TPKDialog open={changeAvatarDialogIsOpen}>
@@ -153,12 +154,12 @@ export const Profile: React.FC = () => {
             Nado is the best developer in history
           </Typography>
         </TPKDialogContent>
-        <DialogActions>
+        <TPKDialogActions>
           <TPKButton onClick={handleChangeAvatar}>Accept</TPKButton>
           <TPKButton onClick={() => setChangeAvatarDialogIsOpen(false)}>
             Cancel
           </TPKButton>
-        </DialogActions>
+        </TPKDialogActions>
       </TPKDialog>
       <TPKHeader />
       <Grid

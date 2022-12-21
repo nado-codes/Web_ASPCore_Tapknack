@@ -1,11 +1,15 @@
 import React from "react";
-import { makeStyles, Grid, TextField, InputLabel } from "@material-ui/core";
-import PropTypes from "prop-types";
+import {
+  Grid,
+  TextField,
+  InputLabel,
+  StandardTextFieldProps,
+} from "@material-ui/core";
 
 import { useGlobalStyles } from "../Styles/GlobalStyles";
 
 // TODO: Make some of these into inline styles
-const useStyles = makeStyles((theme) => ({
+const styles = {
   formField: {
     display: "flex",
     justifyContent: "center",
@@ -37,28 +41,24 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "Ubuntu",
     color: "white",
   },
-}));
+};
 
-const FormField = ({
+const TPKFormField: React.FC<Props> = ({
   label,
   icon,
-  type,
   disabled,
-  value,
   labelMinWidth,
   textFieldMinWidth,
-  onChange,
-  theme,
+  onChange = () => null,
+  ...props
 }) => {
-  const classes = useStyles(theme);
-  const globalStyles = useGlobalStyles(theme);
+  const globalStyles = useGlobalStyles();
 
   return (
-    <Grid container className={classes.formField}>
+    <Grid container style={styles.formField}>
       <Grid
         item
-        className={classes.formFieldLabelContainer}
-        style={{ minWidth: labelMinWidth }}
+        style={{ ...styles.formFieldLabelContainer, minWidth: labelMinWidth }}
       >
         {icon && icon}
         {label && (
@@ -67,21 +67,20 @@ const FormField = ({
       </Grid>
       <Grid
         item
-        className={classes.formFieldTextFieldContainer}
         style={{
+          ...styles.formFieldTextFieldContainer,
+          minWidth: textFieldMinWidth,
           border: disabled
             ? "1px solid #AAAAAA"
-            : classes.formFieldTextFieldContainer.border,
-          minWidth: textFieldMinWidth,
+            : styles.formFieldTextFieldContainer.border,
         }}
       >
         <TextField
+          {...props}
           disabled={disabled}
-          value={value}
-          type={type}
-          onChange={({ target: { value } }) => onChange?.(value)}
+          onChange={({ target: { value } }) => onChange(value)}
           InputProps={{
-            className: classes.formFieldTextField,
+            style: styles.formFieldTextField,
           }}
           InputLabelProps={{
             style: { color: "white" },
@@ -92,27 +91,12 @@ const FormField = ({
   );
 };
 
-FormField.propTypes = {
-  label: PropTypes.string,
-  icon: PropTypes.shape({}),
-  type: PropTypes.string,
-  disabled: PropTypes.bool,
-  value: PropTypes.string.isRequired,
-  labelMinWidth: PropTypes.number,
-  textFieldMinWidth: PropTypes.number,
-  onChange: PropTypes.func,
-  theme: PropTypes.shape({}),
-};
+interface Props extends Omit<StandardTextFieldProps, "onChange"> {
+  label?: string;
+  icon?: any;
+  labelMinWidth: number;
+  textFieldMinWidth?: number;
+  onChange?: (val: string) => void;
+}
 
-FormField.defaultProps = {
-  label: "",
-  icon: undefined,
-  type: undefined,
-  disabled: false,
-  labelMinWidth: undefined,
-  textFieldMinWidth: undefined,
-  onChange: () => {},
-  theme: {},
-};
-
-export default FormField;
+export default TPKFormField;

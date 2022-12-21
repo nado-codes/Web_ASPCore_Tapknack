@@ -4,13 +4,13 @@ import { ClassNameMap } from "@material-ui/styles";
 import selectGeneric from "../res/select_generic.mp3";
 import clickGeneric from "../res/click_generic.mp3";
 import { useGlobalStyles } from "../Styles/GlobalStyles";
+import { ButtonProps } from "@material-ui/core/Button";
 
 export const TPKButton: React.FC<Props> = ({
   children,
   theme,
-  disabled,
   onClick = () => null,
-  style,
+  ...props
 }: Props) => {
   const globalStyles = useGlobalStyles(theme);
 
@@ -29,21 +29,18 @@ export const TPKButton: React.FC<Props> = ({
 
   return (
     <Button
+      {...props}
       className={globalStyles.genericButton}
-      disabled={disabled}
       onMouseEnter={handleHover}
       onClick={handleClick}
-      style={style}
     >
       {children}
     </Button>
   );
 };
 
-interface Props {
+interface Props extends ButtonProps {
   theme?: ClassNameMap<"root" | "link">;
   children?: React.ReactNode | React.ReactNode[];
-  disabled?: boolean;
   onClick?: () => void;
-  style?: object;
 }
