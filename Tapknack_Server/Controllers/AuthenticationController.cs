@@ -27,7 +27,8 @@ namespace Tapknack_Server.Controllers
         var authToken = Guid.Parse(token);
 
         var authProv = new AuthenticationProvider();
-        return await authProv.AuthenticateAsync(authToken);
+        var newToken = await authProv.AuthenticateAsync(authToken);
+        return new { Token = newToken };
       }
       catch (Exception e)
       {

@@ -20,6 +20,7 @@ import { TPKDialogActions } from "./TPKDialog/TPKDialogActions";
 
 export const TPKHeader: React.FC = () => {
   const globalStyles = useGlobalStyles();
+  const { username } = localStorage;
 
   const [notificationsAnchorEl, setNotificationsAnchorEl] = useState<Element>();
   const [optionsAnchorEl, setOptionsAnchorEl] = useState<Element>();
@@ -141,7 +142,7 @@ export const TPKHeader: React.FC = () => {
               <TPKIcon size={45} icon={TPK.icLogout} />
             </TPKIconButton>
             <TPKIconButton
-              onClick={() => PageHelpers().GotoUrl(`/profile/nadotornado`)}
+              onClick={() => PageHelpers().GotoUrl(`/profile/${username}`)}
               style={{ marginTop: "auto", marginBottom: "auto" }}
             >
               <TPKIcon size={45} icon={TPK.icProfile} />

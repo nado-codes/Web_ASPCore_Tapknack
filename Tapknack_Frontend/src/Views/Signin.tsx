@@ -91,6 +91,8 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
         throw Error(`PASS_HTML`);
       }
 
+      delete localStorage.token;
+
       const signinToken = btoa(`${username}:${pass}`);
 
       const { data } = await axios.post(

@@ -13,7 +13,24 @@ namespace Tapknack_Server.Providers
 {
   public class AuthenticationProvider
   {
-    public async Task<object> AuthenticateAsync(Guid accessToken)
+    public async Task<string> AuthenticateAsync(HttpRequest request)
+    {
+      var authHeader = request.Headers["Authorization"].ToString();
+
+      if (authHeader == "")
+        throw new ApplicationException("Authorization header must be provided");
+
+      var token = authHeader.Split(" ")[1];
+
+      if (token == "undefined")
+        throw new ApplicationException("Token cannot be undefined");
+
+      var authToken = Guid.Parse(token);
+
+      var authProv = new AuthenticationProvider();
+      return await authProv.AuthenticateAsync(authToken);
+    }
+    public async Task<string> AuthenticateAsync(Guid accessToken)
     {
       var sessionsRepo = new SessionsRepository();
       var session = await sessionsRepo.GetByAccessTokenAsync(accessToken);
@@ -32,10 +49,7 @@ namespace Tapknack_Server.Providers
       }
 
       var updatedSession = await sessionsRepo.GetSingleAsync(session.Id);
-      return new
-      {
-        Token = updatedSession.AccessToken
-      };
+      return updatedSession.AccessToken.ToString();
     }
   }
 }

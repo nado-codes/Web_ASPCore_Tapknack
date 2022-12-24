@@ -11,6 +11,7 @@ export const TPKDialog: React.FC<DialogProps> = ({ children, ...props }) => {
           boxShadow: "none",
           width: 500,
           padding: 5,
+          overflow: "clip",
         },
       }}
     >

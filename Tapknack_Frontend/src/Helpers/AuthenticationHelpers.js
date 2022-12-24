@@ -6,16 +6,20 @@ export const AuthenticationHelpers = () => {
 
     if (token === undefined) return false;
 
-    const {
-      data: { token: newToken },
-    } = await axios.get(`/api/authentication`, {
-      headers: {
-        Authorization: token,
-      },
-    });
+    try {
+      const {
+        data: { token: newToken },
+      } = await axios.get(`/api/authentication`, {
+        headers: {
+          Authorization: token,
+        },
+      });
 
-    console.log("newToken=", newToken);
-    localStorage.token = newToken;
+      console.log("newToken=", newToken);
+      localStorage.token = newToken;
+    } catch (err) {
+      return false;
+    }
 
     return true;
   };

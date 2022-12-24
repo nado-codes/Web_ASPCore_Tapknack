@@ -8,7 +8,6 @@ using Tapknack_Server.Providers;
 
 namespace Tapknack_Server.Controllers
 {
-  [Authorize]
   [Route("api/signin")]
   public class SigninController : ControllerBase
   {

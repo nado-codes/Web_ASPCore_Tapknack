@@ -1,28 +1,22 @@
 import React, { useState } from "react";
 import { Grid, CircularProgress } from "@material-ui/core";
-import { useGlobalStyles } from "../../Styles/GlobalStyles";
 import axios from "axios";
 import * as DOMPurify from "dompurify";
 
 import TPKFormField from "../TPKFormField";
 import { TPKButton } from "../TPKButton";
 import { ErrorHelpers } from "../../Helpers/ErrorHelpers";
-import { ClassNameMap } from "@material-ui/styles";
+import { TPKDialogError } from "../TPKDialog/TPKDialogError";
 
 interface User {
   username: string;
   pass: string;
   email: string;
 }
-interface Props {
-  theme?: ClassNameMap<"root" | "link">;
-  onFinish?: () => void;
-}
+
 export const SignupForm: React.FC<Props> = ({
-  theme,
   onFinish = () => null,
 }: Props) => {
-  const globalStyles = useGlobalStyles(theme);
   const labelMinWidth = 185;
 
   const [username, setUsername] = useState("");
@@ -135,24 +129,9 @@ export const SignupForm: React.FC<Props> = ({
             display: "flex",
             width: "75%",
             opacity: isLoading ? 0.5 : 1,
-            background: "Red",
           }}
         >
-          {error !== "" && (
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "middle",
-                background: "rgba(255,0,0,0.75)",
-              }}
-            >
-              <p className={globalStyles.white16} style={{ fontSize: 14 }}>
-                {error}
-              </p>
-            </div>
-          )}
+          <TPKDialogError value={error} />
           <TPKFormField
             label="Create Your Username"
             disabled={isLoading}
@@ -202,3 +181,7 @@ export const SignupForm: React.FC<Props> = ({
     </Grid>
   );
 };
+
+interface Props {
+  onFinish?: () => void;
+}

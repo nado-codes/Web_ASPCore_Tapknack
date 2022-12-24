@@ -1,4 +1,4 @@
-import { ClickAwayListener } from "@material-ui/core";
+// import { ClickAwayListener } from "@material-ui/core";
 import DialogContent, {
   DialogContentProps,
 } from "@material-ui/core/DialogContent";
@@ -9,14 +9,12 @@ export const TPKDialogContent: React.FC<Props> = ({
   onClickAway = () => null,
   ...props
 }) => {
-  const handleClickAway = (_: React.MouseEvent<Document, MouseEvent>) =>
-    onClickAway();
+  // TODO: re-add the clickaway listener once we have more time..
+  // commenting out due to time constraints
+  /* const handleClickAway = (_: React.MouseEvent<Document, MouseEvent>) =>
+    onClickAway(); */
 
-  return (
-    <ClickAwayListener onClickAway={handleClickAway}>
-      <DialogContent {...props}>{children}</DialogContent>
-    </ClickAwayListener>
-  );
+  return <DialogContent {...props}>{children}</DialogContent>;
 };
 
 interface Props extends DialogContentProps {
