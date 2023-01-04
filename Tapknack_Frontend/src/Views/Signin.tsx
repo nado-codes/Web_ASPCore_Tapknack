@@ -38,6 +38,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
   const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isReturnToPrevURL, setIsReturnToPrevURL] = useState(false);
   const [error, setError] = useState("");
 
   // .. store a variety of sounds to use in an array to index one by one
@@ -62,6 +63,7 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
         switch (message) {
           case "SESSION_EXPIRED":
             setError("Session expired. Please login again.");
+            setIsReturnToPrevURL(true);
             delete localStorage.token;
             return;
           default: {
@@ -109,7 +111,9 @@ const Signin: React.FC<Props> = ({ theme, gotoUrl }: Props) => {
       localStorage.token = token;
       localStorage.userId = userId;
       localStorage.username = _username;
-      PageHelpers().GotoUrl("/welcome");
+
+      !isReturnToPrevURL && PageHelpers().GotoUrl("/welcome");
+      isReturnToPrevURL && PageHelpers().ReturnToPrevUrl();
     } catch (err) {
       const message = ErrorHelpers().GetErrorMessage(err);
 

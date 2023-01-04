@@ -101,7 +101,7 @@ export const Profile: React.FC = () => {
 
       if (newUsername === "") throw Error(`USERNAME_NULL`);
 
-      if (newUsername !== DOMPurify.sanitize(username)) {
+      if (newUsername !== DOMPurify.sanitize(newUsername)) {
         throw Error(`USERNAME_HTML`);
       }
 

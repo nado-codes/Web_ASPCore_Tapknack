@@ -59,6 +59,15 @@ namespace Tapknack_Tests.Integration.Repositories
       Assert.Equal(newUsername, getUserByUsername.Username);
       Assert.Equal(newEmail, getUserByUsername.Email);
 
+      // .. update user
+      newUsername = $"UsersRepositoryIntegration~{Guid.NewGuid()}";
+      newEmail = $"UsersRepositoryIntegration~{Guid.NewGuid()}";
+      var rowsUpdated = await usersRepo.UpdateAsync(getUserByUsername with { Username = newUsername, Email = newEmail });
+      var updatedUser = await usersRepo.GetSingleAsync(newUser.Id);
+
+      Assert.NotEqual(0, rowsUpdated);
+      Assert.Equal(newUsername, updatedUser.Username);
+      Assert.Equal(newEmail, updatedUser.Email);
       // .. finally, cleanup!
 
       // TODO: Add cleanup code here later

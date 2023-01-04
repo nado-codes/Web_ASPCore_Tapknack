@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Diagnostics;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
+using System.Security.Authentication;
 
 namespace Tapknack_Server
 {
@@ -87,6 +88,14 @@ namespace Tapknack_Server
         { Success = false, Message = sqlException.Message, Number = sqlException.Number });
         return;
       } */
+
+      if (exception is AuthenticationException)
+      {
+        context.Response.StatusCode = 401;
+        await context.Response.WriteAsJsonAsync(new
+        { Success = false, Exception = exception.ToString(), exception.Message });
+        return;
+      }
 
       await context.Response.WriteAsJsonAsync(new
       { Success = false, Exception = exception.ToString(), exception.Message });
