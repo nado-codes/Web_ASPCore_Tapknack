@@ -19,9 +19,13 @@ import { ErrorHelpers } from "../Helpers/ErrorHelpers";
 import { TPKDialogError } from "../Components/TPKDialog/TPKDialogError";
 import { AuthenticationHelpers } from "../Helpers/AuthenticationHelpers";
 
+interface User {
+  username: string;
+}
 export const Profile: React.FC = () => {
   const globalStyles = useGlobalStyles();
-  const { username } = localStorage;
+  const [user, setUser] = useState<User>();
+  const { username } = user ?? {};
   const labelMinWidth = 185;
 
   const [changeUsernameDialogIsOpen, setChangeUsernameDialogIsOpen] =
@@ -52,8 +56,22 @@ export const Profile: React.FC = () => {
       try {
         const isAuthorized = await AuthenticationHelpers().Authenticate();
         !isAuthorized && PageHelpers().GotoUrl("/signin");
+
+        const { pathname } = window.location;
+        const queryEnd = pathname.lastIndexOf("profile/") + 8;
+        const queryUsername = pathname.substring(queryEnd).replace("/", "");
+
+        const { data: userData } = await axios.get(
+          `api/users/username/${queryUsername}`
+        );
+
+        console.log("userData=", userData);
+        /* if(data === undefined)
+          throw Error(`USER_NULL`); */
+
+        setUser(userData);
       } catch (err) {
-        PageHelpers().GotoUrl("/signin");
+        // PageHelpers().GotoUrl("/signin");
       }
     };
 
@@ -105,7 +123,9 @@ export const Profile: React.FC = () => {
         throw Error(`USERNAME_HTML`);
       }
 
-      const { data: rowsUpdated } = await axios.put(`api/users/`, {});
+      const { data: rowsUpdated } = await axios.put(`api/users/`, {
+        username: newUsername,
+      });
 
       if (rowsUpdated < 1) throw Error(`NO_UPDATE`);
 

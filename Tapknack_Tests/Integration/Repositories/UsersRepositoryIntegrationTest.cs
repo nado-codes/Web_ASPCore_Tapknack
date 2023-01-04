@@ -16,8 +16,8 @@ namespace Tapknack_Tests.Integration.Repositories
       var usersProv = new UsersProvider();
 
       // .. add a user
-      var newUsername = $"UsersRepositoryIntegration~{Guid.NewGuid()}";
-      var newEmail = $"UsersRepositoryIntegration~{Guid.NewGuid()}";
+      var newUsername = $"UsersRepositoryIntegration~{Guid.NewGuid().ToString().Substring(0, 32)}";
+      var newEmail = $"UsersRepositoryIntegration~{Guid.NewGuid().ToString().Substring(0, 32)}";
       var newPassword = $"123";
 
       var newUser = await usersProv.AddUserAsync(new User()
@@ -28,8 +28,8 @@ namespace Tapknack_Tests.Integration.Repositories
       });
 
       Assert.NotNull(newUser);
-      Assert.Equal(newUsername, newUser.Username);
-      Assert.Equal(newEmail, newUser.Email);
+      Assert.Equal(newUsername.ToLower(), newUser.Username);
+      Assert.Equal(newEmail.ToLower(), newUser.Email);
 
       // .. try to use the same username and email twice
       // .. we expect a "USER_DUPLICATE" error message
@@ -48,26 +48,26 @@ namespace Tapknack_Tests.Integration.Repositories
 
       Assert.NotNull(getUserById);
       Assert.Equal(newUser.Id, getUserById.Id);
-      Assert.Equal(newUsername, getUserById.Username);
-      Assert.Equal(newEmail, getUserById.Email);
+      Assert.Equal(newUsername.ToLower(), getUserById.Username);
+      Assert.Equal(newEmail.ToLower(), getUserById.Email);
 
       // .. get by username
       var getUserByUsername = await usersRepo.GetByUsernameAsync(newUsername);
 
       Assert.NotNull(getUserByUsername);
       Assert.Equal(newUser.Id, getUserByUsername.Id);
-      Assert.Equal(newUsername, getUserByUsername.Username);
-      Assert.Equal(newEmail, getUserByUsername.Email);
+      Assert.Equal(newUsername.ToLower(), getUserByUsername.Username);
+      Assert.Equal(newEmail.ToLower(), getUserByUsername.Email);
 
       // .. update user
-      newUsername = $"UsersRepositoryIntegration~{Guid.NewGuid()}";
-      newEmail = $"UsersRepositoryIntegration~{Guid.NewGuid()}";
-      var rowsUpdated = await usersRepo.UpdateAsync(getUserByUsername with { Username = newUsername, Email = newEmail });
-      var updatedUser = await usersRepo.GetSingleAsync(newUser.Id);
+      newUsername = $"UsersRepositoryIntegration~{Guid.NewGuid().ToString().Substring(0, 32)}";
+      newEmail = $"UsersRepositoryIntegration~{Guid.NewGuid().ToString().Substring(0, 32)}";
+      var rowsUpdated = await usersProv.UpdateUserAsync(getUserByUsername with { Username = newUsername, Email = newEmail });
+      var updatedUser = await usersRepo.GetSingleAsync(getUserByUsername.Id);
 
       Assert.NotEqual(0, rowsUpdated);
-      Assert.Equal(newUsername, updatedUser.Username);
-      Assert.Equal(newEmail, updatedUser.Email);
+      Assert.Equal(newUsername.ToLower(), updatedUser.Username);
+      Assert.Equal(newEmail.ToLower(), updatedUser.Email);
       // .. finally, cleanup!
 
       // TODO: Add cleanup code here later

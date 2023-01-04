@@ -36,7 +36,28 @@ namespace Tapknack_Server.Providers
       return await _repo.AddAsync(user with
       {
         Password = hashedPassword,
-        Username = user.Username.ToLower()
+        Username = user.Username.ToLower(),
+        Email = user.Email.ToLower()
+      });
+    }
+
+    public async Task<long> UpdateUserAsync(User user)
+    {
+      var existingUser = await _repo.GetByUsernameAsync(user.Username);
+      if (existingUser != null)
+        throw new ApplicationException("USERNAME_DUPLICATE");
+
+      if (user.Email != string.Empty)
+      {
+        existingUser = await _repo.GetByEmailAsync(user.Email);
+        if (existingUser != null)
+          throw new ApplicationException("EMAIL_DUPLICATE");
+      }
+
+      return await _repo.UpdateAsync(user with
+      {
+        Username = user.Username.ToLower(),
+        Email = user.Email.ToLower()
       });
     }
 
