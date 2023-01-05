@@ -18,6 +18,7 @@ import { useGlobalStyles } from "../Styles/GlobalStyles";
 import { ErrorHelpers } from "../Helpers/ErrorHelpers";
 import { TPKDialogError } from "../Components/TPKDialog/TPKDialogError";
 import { AuthenticationHelpers } from "../Helpers/AuthenticationHelpers";
+import { UserNotFound } from "../Components/UserNotFound";
 
 interface User {
   username: string;
@@ -27,6 +28,7 @@ export const Profile: React.FC = () => {
   const [user, setUser] = useState<User>();
   const { username } = user ?? {};
   const labelMinWidth = 185;
+  const [isUserNotFound, setIsUserNotFound] = useState(false);
 
   const [changeUsernameDialogIsOpen, setChangeUsernameDialogIsOpen] =
     useState(false);
@@ -65,13 +67,21 @@ export const Profile: React.FC = () => {
           `api/users/username/${queryUsername}`
         );
 
-        console.log("userData=", userData);
-        /* if(data === undefined)
-          throw Error(`USER_NULL`); */
-
         setUser(userData);
       } catch (err) {
-        // PageHelpers().GotoUrl("/signin");
+        const message = ErrorHelpers().GetErrorMessage(err);
+        switch (message) {
+          case "USER_INVALID":
+            setIsUserNotFound(true);
+            break;
+          case "SESSION_EXPIRED":
+          case "SESSION_INVALID":
+            PageHelpers().GotoUrl("/signin");
+            break;
+        }
+
+        console.error(err);
+        console.error(message);
       }
     };
 
@@ -124,6 +134,7 @@ export const Profile: React.FC = () => {
       }
 
       const { data: rowsUpdated } = await axios.put(`api/users/`, {
+        ...user,
         username: newUsername,
       });
 
@@ -163,6 +174,7 @@ export const Profile: React.FC = () => {
 
       console.error(err);
       console.error(message);
+      throw err;
     } finally {
       setChangeUsernameIsLoading(false);
     }
@@ -228,7 +240,7 @@ export const Profile: React.FC = () => {
           style={{
             flex: 1 / 3,
             display: "flex",
-            justifyContent: "end",
+            justifyContent: "center",
             alignItems: "center",
           }}
         >
@@ -246,77 +258,85 @@ export const Profile: React.FC = () => {
         >
           {/* Avatar + Skills*/}
           <BorderBox width={500} height={600} borderRadius={25}>
-            <Grid
-              container
-              direction={"column"}
-              style={{ display: "flex", padding: 20 }}
-            >
-              {/* Avatar + Username */}
-              <Grid
-                container
-                style={{
-                  flex: 1 / 4,
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <Grid item>
-                  <TPKIcon size={125} icon={TPK.icProfile} />
-                </Grid>
-                <Grid
-                  item
-                  style={{
-                    paddingLeft: 10,
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  <Typography
-                    className={globalStyles.whiteTitle}
-                    style={{
-                      fontSize: 50,
-                      marginTop: 0,
-                      maxWidth: 50,
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {username}
-                    {/* TODO: need to be able to handle 60-character long strings without overflowing (use ellipsis) Sixty Sixty Sixty Sixty Sixty Sixty Sixty Sixty
-                    Sixty Sixty Sixty */}
-                  </Typography>
-                </Grid>
-              </Grid>
-              {/* Skills */}
+            {isUserNotFound && <UserNotFound />}
+            {!isUserNotFound && (
               <Grid
                 container
                 direction={"column"}
-                style={{ flex: 3 / 4, display: "flex" }}
+                style={{
+                  padding: 20,
+                }}
               >
-                <Grid item style={{ height: 30, width: "100%" }}>
-                  <Typography
-                    className={globalStyles.white16}
-                    style={{
-                      fontSize: 20,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Your Skills
-                  </Typography>
-                </Grid>
+                {/* Avatar + Username */}
                 <Grid
                   container
                   style={{
-                    maxHeight: 300,
-                    overflow: "hidden",
+                    flex: 1 / 4,
+                    display: "flex",
+                    alignItems: "center",
                   }}
                 >
-                  {skills.map((s, i) => (
-                    <Grid key={i} item style={{ marginTop: 10 }}>
-                      <SkillButton name={s.name} />
-                    </Grid>
-                  ))}
+                  <Grid item>
+                    <TPKIcon size={125} icon={TPK.icProfile} />
+                  </Grid>
+                  <Grid
+                    item
+                    style={{
+                      paddingLeft: 10,
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    <Typography
+                      className={globalStyles.whiteTitle}
+                      style={{
+                        fontSize: 50,
+                        marginTop: 0,
+                        maxWidth: 50,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {username}
+                      {/* TODO: need to be able to handle 60-character long strings without overflowing (use ellipsis) Sixty Sixty Sixty Sixty Sixty Sixty Sixty Sixty
+                    Sixty Sixty Sixty */}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                {/* Skills */}
+                <Grid
+                  container
+                  direction={"column"}
+                  style={{ flex: 3 / 4, display: "flex" }}
+                >
+                  <Grid item style={{ height: 30, width: "100%" }}>
+                    <Typography
+                      className={globalStyles.white16}
+                      style={{
+                        fontSize: 20,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Your Skills
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    container
+                    style={{
+                      maxHeight: 300,
+                      overflow: "hidden",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    {skills.map((s, i) => (
+                      <Grid key={i} item style={{ marginTop: 10 }}>
+                        <SkillButton name={s.name} />
+                      </Grid>
+                    ))}
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
+            )}
           </BorderBox>
         </Grid>
         <Grid
@@ -328,129 +348,138 @@ export const Profile: React.FC = () => {
             padding: 20,
           }}
         >
-          <TPKButton onClick={() => setChangeUsernameDialogIsOpen(true)}>
-            Change Username
-          </TPKButton>
-          {/* Change Username Dialog */}
-          <TPKDialog open={changeUsernameDialogIsOpen}>
-            <DialogTitle>
-              <Typography className={globalStyles.whiteTitle}>
-                Enter A New Username
-              </Typography>
-            </DialogTitle>
-            <TPKDialogContent
-              // onClickAway={() => setChangeUsernameDialogIsOpen(false)}
-              style={{ height: 100 }}
-            >
-              <TPKDialogError value={changeUsernameError} />
-              <TPKFormField
-                label="Create Your Username"
-                type="text"
-                disabled={changeUsernameIsLoading}
-                value={newUsername}
-                labelMinWidth={labelMinWidth}
-                onChange={handleNewUsernameChanged}
-                style={{ fontSize: 20 }}
-              />
-            </TPKDialogContent>
-            <TPKDialogActions>
-              <TPKButton onClick={handleChangeUsername}>Accept</TPKButton>
-              <TPKButton onClick={() => setChangeUsernameDialogIsOpen(false)}>
-                Cancel
+          {!isUserNotFound && (
+            <>
+              <TPKButton onClick={() => setChangeUsernameDialogIsOpen(true)}>
+                Change Username
               </TPKButton>
-            </TPKDialogActions>
-          </TPKDialog>
+              {/* Change Username Dialog */}
+              <TPKDialog open={changeUsernameDialogIsOpen}>
+                <DialogTitle>
+                  <Typography className={globalStyles.whiteTitle}>
+                    Enter A New Username
+                  </Typography>
+                </DialogTitle>
+                <TPKDialogContent
+                  // onClickAway={() => setChangeUsernameDialogIsOpen(false)}
+                  style={{ height: 100 }}
+                >
+                  <TPKDialogError value={changeUsernameError} />
+                  <TPKFormField
+                    label="Create Your Username"
+                    type="text"
+                    disabled={changeUsernameIsLoading}
+                    value={newUsername}
+                    labelMinWidth={labelMinWidth}
+                    onChange={handleNewUsernameChanged}
+                    style={{ fontSize: 20 }}
+                  />
+                </TPKDialogContent>
+                <TPKDialogActions>
+                  <TPKButton onClick={handleChangeUsername}>Accept</TPKButton>
+                  <TPKButton
+                    onClick={() => setChangeUsernameDialogIsOpen(false)}
+                  >
+                    Cancel
+                  </TPKButton>
+                </TPKDialogActions>
+              </TPKDialog>
 
-          <TPKButton
-            onClick={() => setChangePassDialogIsOpen(true)}
-            style={{ marginTop: 10 }}
-          >
-            Change Password
-          </TPKButton>
-          {/* Change Password Dialog */}
-          <TPKDialog open={changePassDialogIsOpen}>
-            <DialogTitle>
-              <Typography className={globalStyles.whiteTitle}>
-                Enter A New Password
-              </Typography>
-            </DialogTitle>
-            <TPKDialogContent
-              onClickAway={() => setChangePassDialogIsOpen(false)}
-              style={{
-                display: "flex",
-                justifyContent: "start",
-                flexDirection: "column",
-              }}
-            >
-              <TPKDialogError value={changePasswordError} />
-              <TPKFormField
-                label="Enter Your Old Password"
-                type="password"
-                disabled={changePassIsLoading}
-                value={oldPass}
-                labelMinWidth={labelMinWidth}
-                onChange={setOldPass}
-                style={{ fontSize: 20 }}
-              />
-              <TPKFormField
-                label="Create Your Password"
-                type="password"
-                disabled={changePassIsLoading}
-                value={newPass}
-                labelMinWidth={labelMinWidth}
-                onChange={handleNewPassChanged}
-                style={{ fontSize: 20 }}
-              />
-              <TPKFormField
-                label="Confirm Your Password"
-                type="password"
-                disabled={changePassIsLoading}
-                value={confPass}
-                labelMinWidth={labelMinWidth}
-                onChange={handleConfPassChanged}
-                style={{ fontSize: 20 }}
-              />
-            </TPKDialogContent>
-            <TPKDialogActions>
-              <TPKButton onClick={handleChangePassword} style={{ width: 75 }}>
-                Accept
-              </TPKButton>
               <TPKButton
-                onClick={() => setChangePassDialogIsOpen(false)}
-                style={{ width: 75 }}
+                onClick={() => setChangePassDialogIsOpen(true)}
+                style={{ marginTop: 10 }}
               >
-                Cancel
+                Change Password
               </TPKButton>
-            </TPKDialogActions>
-          </TPKDialog>
+              {/* Change Password Dialog */}
+              <TPKDialog open={changePassDialogIsOpen}>
+                <DialogTitle>
+                  <Typography className={globalStyles.whiteTitle}>
+                    Enter A New Password
+                  </Typography>
+                </DialogTitle>
+                <TPKDialogContent
+                  onClickAway={() => setChangePassDialogIsOpen(false)}
+                  style={{
+                    display: "flex",
+                    justifyContent: "start",
+                    flexDirection: "column",
+                  }}
+                >
+                  <TPKDialogError value={changePasswordError} />
+                  <TPKFormField
+                    label="Enter Your Old Password"
+                    type="password"
+                    disabled={changePassIsLoading}
+                    value={oldPass}
+                    labelMinWidth={labelMinWidth}
+                    onChange={setOldPass}
+                    style={{ fontSize: 20 }}
+                  />
+                  <TPKFormField
+                    label="Create Your Password"
+                    type="password"
+                    disabled={changePassIsLoading}
+                    value={newPass}
+                    labelMinWidth={labelMinWidth}
+                    onChange={handleNewPassChanged}
+                    style={{ fontSize: 20 }}
+                  />
+                  <TPKFormField
+                    label="Confirm Your Password"
+                    type="password"
+                    disabled={changePassIsLoading}
+                    value={confPass}
+                    labelMinWidth={labelMinWidth}
+                    onChange={handleConfPassChanged}
+                    style={{ fontSize: 20 }}
+                  />
+                </TPKDialogContent>
+                <TPKDialogActions>
+                  <TPKButton
+                    onClick={handleChangePassword}
+                    style={{ width: 75 }}
+                  >
+                    Accept
+                  </TPKButton>
+                  <TPKButton
+                    onClick={() => setChangePassDialogIsOpen(false)}
+                    style={{ width: 75 }}
+                  >
+                    Cancel
+                  </TPKButton>
+                </TPKDialogActions>
+              </TPKDialog>
 
-          <TPKButton
-            onClick={() => setChangeAvatarDialogIsOpen(true)}
-            disabled
-            style={{ marginTop: 10 }}
-          >
-            Change Avatar
-          </TPKButton>
-          {/* Change Avatar Dialog */}
-          <TPKDialog open={changeAvatarDialogIsOpen}>
-            <DialogTitle>Select A New Avatar</DialogTitle>
-            <TPKDialogContent
-              onClickAway={() => setChangeAvatarDialogIsOpen(false)}
-            >
-              <Typography
-                className={globalStyles.white16}
-                style={{ fontSize: 20 }}
+              <TPKButton
+                onClick={() => setChangeAvatarDialogIsOpen(true)}
+                disabled
+                style={{ marginTop: 10 }}
               >
-                Nado is the best developer in history
-              </Typography>
-            </TPKDialogContent>
-            <TPKDialogActions>
-              <TPKButton onClick={handleChangeAvatar}>Accept</TPKButton>
-              <TPKButton onClick={() => setChangeAvatarDialogIsOpen(false)}>
-                Cancel
+                Change Avatar
               </TPKButton>
-            </TPKDialogActions>
-          </TPKDialog>
+              {/* Change Avatar Dialog */}
+              <TPKDialog open={changeAvatarDialogIsOpen}>
+                <DialogTitle>Select A New Avatar</DialogTitle>
+                <TPKDialogContent
+                  onClickAway={() => setChangeAvatarDialogIsOpen(false)}
+                >
+                  <Typography
+                    className={globalStyles.white16}
+                    style={{ fontSize: 20 }}
+                  >
+                    Nado is the best developer in history
+                  </Typography>
+                </TPKDialogContent>
+                <TPKDialogActions>
+                  <TPKButton onClick={handleChangeAvatar}>Accept</TPKButton>
+                  <TPKButton onClick={() => setChangeAvatarDialogIsOpen(false)}>
+                    Cancel
+                  </TPKButton>
+                </TPKDialogActions>
+              </TPKDialog>
+            </>
+          )}
         </Grid>
       </Grid>
     </>

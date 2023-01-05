@@ -26,7 +26,6 @@ as
 		Id,
 		Username,
 		Email,
-		[Password],
 		DateAdded,
 		LastModified
 	from Users where Id=@id
@@ -37,8 +36,8 @@ as
 	select 
 		Id,
 		Username,
-		Email,
 		[Password],
+		Email,
 		DateAdded,
 		LastModified
 	from Users where Username=@username
@@ -50,7 +49,6 @@ as
 		Id,
 		Username,
 		Email,
-		[Password],
 		DateAdded,
 		LastModified
 	from Users where Email=@email
@@ -63,7 +61,6 @@ as
 		Id,
 		Username,
 		Email,
-		[Password],
 		DateAdded,
 		LastModified
 	from Users where Username like @username OR Email like @email

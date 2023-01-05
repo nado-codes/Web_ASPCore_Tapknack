@@ -14,8 +14,8 @@ const App = () => {
     { path: "/", View: Landing },
     { path: "/signin", View: Signin },
     { path: "/welcome", View: Welcome },
-    { path: "/profile/*", View: Profile},
-    { path: "/search", View: NotFound},
+    { path: "/profile/*", View: Profile },
+    { path: "/search", View: NotFound },
   ];
 
   const exitTimeout = 500;
@@ -96,7 +96,14 @@ const App = () => {
   };
 
   const errorHandler = (err) => {
-    setError(err.response.data.message);
+    const {
+      response: {
+        data: { message },
+        status,
+      },
+    } = err;
+    if (status === "401") window.location = "/signin";
+    setError(message);
     return Promise.reject(err);
   };
 

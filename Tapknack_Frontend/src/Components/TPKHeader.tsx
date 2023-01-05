@@ -142,7 +142,9 @@ export const TPKHeader: React.FC = () => {
               <TPKIcon size={45} icon={TPK.icLogout} />
             </TPKIconButton>
             <TPKIconButton
-              onClick={() => PageHelpers().GotoUrl(`/profile/${username}`)}
+              onClick={() =>
+                PageHelpers().GotoUrl(`/profile/${username.toLowerCase()}`)
+              }
               style={{ marginTop: "auto", marginBottom: "auto" }}
             >
               <TPKIcon size={45} icon={TPK.icProfile} />
