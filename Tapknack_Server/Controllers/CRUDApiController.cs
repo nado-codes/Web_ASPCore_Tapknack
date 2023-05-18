@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using NadoMapper.Models;
 using Tapknack_Server.Repositories;
 using Tapknack_Server.Providers;
+using NadoMapper;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,7 +16,7 @@ namespace Tapknack_Server.Controllers
   [ApiController]
   public class CRUDApiController<TModel, TRepo> : ControllerBase where TRepo : TPKRepoBase<TModel>, new() where TModel : ModelBase, new()
   {
-    protected TRepo _Repo = new TRepo();
+        protected TRepo _Repo = new TRepo();
 
     protected async Task AuthenticateAsync()
     {

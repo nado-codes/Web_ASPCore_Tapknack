@@ -2,12 +2,13 @@
 using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using NadoMapper.Interfaces;
 
 namespace Tapknack_Server.Repositories
 {
   public class SessionsRepository : TPKRepoBase<Session>
   {
-    public SessionsRepository()
+    public SessionsRepository(IDataContext<Session> dataContext) : base(dataContext)
     {
       PropertyConventions.Add(new IgnoreUserIdDuringUpdatePropertyConvention());
     }

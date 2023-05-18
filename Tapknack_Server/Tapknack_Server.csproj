@@ -13,9 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="NadoMapper">
-      <HintPath>bin\Debug\net5.0\NadoMapper.dll</HintPath>
-    </Reference>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Utils\Web_Utilities_NadoMapper\NadoMapper\NadoMapper\NadoMapper.csproj" />
   </ItemGroup>
 
 </Project>
