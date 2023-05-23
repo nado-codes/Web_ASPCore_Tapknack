@@ -3,6 +3,7 @@ using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using NadoMapper;
 using Tapknack_Server.Models;
 using Tapknack_Server.Repositories;
 
@@ -31,7 +32,8 @@ namespace Tapknack_Server.Providers
             var userName = userPass[0];
             var password = userPass[1];
 
-            var usersRepo = new UsersRepository();
+            var usersDataContext = new DataContext<User>();
+            var usersRepo = new UsersRepository(usersDataContext);
             var user = await usersRepo.GetByUsernameAsync(userName);
 
             if (user == null)
@@ -43,7 +45,9 @@ namespace Tapknack_Server.Providers
             if (!isValid)
                 throw new AuthenticationException("PASSWORD_FAIL");
 
-            var sessionsRepo = new SessionsRepository();
+            var sessionsDataContext = new DataContext<Session>();
+            var sessionsRepo = new SessionsRepository(sessionsDataContext);
+
             var session = await sessionsRepo.AddAsync(new Session()
             {
                 UserId = user.Id,

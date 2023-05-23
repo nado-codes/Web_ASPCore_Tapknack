@@ -10,19 +10,26 @@ using Tapknack_Server.Repositories;
 using Tapknack_Server.Providers;
 using NadoMapper.Interfaces;
 using Tapknack_Server.Interfaces;
+using NadoMapper;
 
 namespace Tapknack_Server.Controllers
 {
     [Route("api/users")]
     public class UsersController : CRUDApiController<User,IUsersRepository>
     {
-        public UsersController(IUsersRepository repo) : base(repo) { }
+        private readonly UsersProvider _usersProv;
+
+        public UsersController(IUsersRepository repo) : base(repo) {
+            var usersDataContext = new DataContext<User>();
+            _usersProv = new UsersProvider(usersDataContext);
+        }
 
         [HttpPost]
         public override async Task<User> AddAsync([FromBody] User user)
         {
             // .. remove the password from the new user for security reasons
-            var usersProv = new UsersProvider();
+            var usersDataContext = new DataContext<User>();
+            var usersProv = new UsersProvider(usersDataContext);
             var newUser = await usersProv.AddUserAsync(user) with { Password = "" };
             return newUser;
         }
@@ -46,8 +53,7 @@ namespace Tapknack_Server.Controllers
         [HttpGet("/search")]
         public Task<IEnumerable<User>> SearchByUsernameEmailAsync([FromBody] UserSearchQuery query)
         {
-            var usersProv = new UsersProvider();
-            return usersProv.SearchByUsernameEmailAsync(query.Username, query.Email);
+            return _usersProv.SearchByUsernameEmailAsync(query.Username, query.Email);
         }
 
         [HttpPut("/username")]
@@ -63,8 +69,7 @@ namespace Tapknack_Server.Controllers
         [HttpPut("/password")]
         public Task<long> UpdateUserPasswordAsync([FromBody] User user)
         {
-            var usersProv = new UsersProvider();
-            return usersProv.UpdateUserPasswordAsync(user);
+            return _usersProv.UpdateUserPasswordAsync(user);
         }
     }
 }
