@@ -16,6 +16,9 @@ using System.Collections.Generic;
 using NadoMapper.Models;
 using NadoMapper;
 using NadoMapper.SqlProvider;
+using Tapknack_Server.Interfaces;
+using Tapknack_Server.Models;
+using Tapknack_Server.Repositories;
 
 namespace Tapknack_Server
 {

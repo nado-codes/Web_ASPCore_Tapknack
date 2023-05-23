@@ -13,10 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Utils\Web_Utilities_NadoMapper\NadoMapper\NadoMapper\NadoMapper.csproj" />
   </ItemGroup>
 
