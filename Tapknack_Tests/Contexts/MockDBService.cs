@@ -1,5 +1,6 @@
 ﻿using NadoMapper.Enums;
 using NadoMapper.Interfaces;
+using Pluralize.NET;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,37 +9,53 @@ using System.Threading.Tasks;
 
 namespace Tapknack_Tests.Contexts
 {
-    public class MockDBService<TEntity> : IDbService where TEntity : IModel,new()
+    public class UnknownStoredProcedureException : NotImplementedException
+    {
+        public UnknownStoredProcedureException(string command) : base($"Unknown stored procedure \"{command}\"") { }
+    }
+
+    public class MockDBService<TEntity,X> : IDbService where TEntity : IModel,new() where X: struct
     {
         public List<IPropertyConvention> PropertyConventions { get; } = new List<IPropertyConvention>();
 
-        private readonly Dictionary<string, Action> _storedProcedures = new Dictionary<string, Action>();
+        private string modelName => typeof(TEntity).Name;
+        private string modelNamePlural { get; }
 
-        // .. TODO implement registering stored procedures so they can be executed by the service methods. they need to accept arbritrary return
-        // types and arbritrary numbers of parameters
-        public void RegisterStoredProcedure<T>(string command, Action<T> action)
+        private Dictionary<string, Func<long>> nonQueryActions = new();
+        private Dictionary<string, Func<IEnumerable<IDictionary<string, object>>>> readerActions = new();
+        private Dictionary<string, Func<object>> scalarActions = new();
+
+        public MockDBService()
         {
-            _storedProcedures.Add(command, action);
+            var pluralizer = new Pluralizer();
+            modelNamePlural = pluralizer.Pluralize(modelName);
         }
 
         public Task<long> ExecuteNonQueryAsync(string command, CRUDType crudType, IDictionary<string, object> parameters = null)
         {
-            throw new NotImplementedException();
+            if (!nonQueryActions.ContainsKey(command))
+                throw new UnknownStoredProcedureException(command);
+
+            return Task.Run(() => nonQueryActions[command]());
         }
 
         public Task<IEnumerable<IDictionary<string, object>>> ExecuteReaderAsync(string command, string parameterName, object parameterValue)
-        {
-            throw new NotImplementedException();
-        }
+            => ExecuteReaderAsync(command, new Dictionary<string, object> { { parameterName, parameterValue } });
 
         public Task<IEnumerable<IDictionary<string, object>>> ExecuteReaderAsync(string command, IDictionary<string, object> parameters = null)
         {
-            throw new NotImplementedException();
+            if (!readerActions.ContainsKey(command))
+                throw new UnknownStoredProcedureException(command);
+
+            return Task.Run(() => readerActions[command]());
         }
 
         public Task<object> ExecuteScalarAsync(string command, CRUDType crudType, IDictionary<string, object> parameters = null)
         {
-            throw new NotImplementedException();
+            if (!scalarActions.ContainsKey(command))
+                throw new UnknownStoredProcedureException(command);
+
+            return Task.Run(() => scalarActions[command]());
         }
     }
 }
