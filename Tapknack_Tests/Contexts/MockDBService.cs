@@ -1,10 +1,12 @@
-﻿using NadoMapper.Enums;
+﻿using _NadoMapper = NadoMapper.NadoMapper;
+using NadoMapper.Enums;
 using NadoMapper.Interfaces;
 using Pluralize.NET;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Tapknack_Tests.Contexts
@@ -14,7 +16,7 @@ namespace Tapknack_Tests.Contexts
         public UnknownStoredProcedureException(string command) : base($"Unknown stored procedure \"{command}\"") { }
     }
 
-    public class MockDBService<TEntity,X> : IDbService where TEntity : IModel,new() where X: struct
+    public class MockDBService<TEntity> : IDbService where TEntity : IModel,new()
     {
         public List<IPropertyConvention> PropertyConventions { get; } = new List<IPropertyConvention>();
 
@@ -23,20 +25,31 @@ namespace Tapknack_Tests.Contexts
 
         private Dictionary<string, Func<long>> nonQueryActions = new();
         private Dictionary<string, Func<IEnumerable<IDictionary<string, object>>>> readerActions = new();
-        private Dictionary<string, Func<object>> scalarActions = new();
+        private Dictionary<string, Func<int[], object>> scalarActions = new();
 
-        public MockDBService()
+        private Dictionary<string, MockStoredProcedure<TEntity>> storedProcedures = new();
+
+        private List<TEntity> entities = new();
+
+        public MockDBService(List<TEntity> dummyEntities = null)
         {
             var pluralizer = new Pluralizer();
             modelNamePlural = pluralizer.Pluralize(modelName);
+
+            entities.AddRange(dummyEntities);
         }
 
         public Task<long> ExecuteNonQueryAsync(string command, CRUDType crudType, IDictionary<string, object> parameters = null)
         {
-            if (!nonQueryActions.ContainsKey(command))
-                throw new UnknownStoredProcedureException(command);
+            if (command == $"Add{modelName}")
+            {
+                var entity = _NadoMapper.MapPropsToSingle<TEntity>(parameters);
+                entities.Add(entity);
 
-            return Task.Run(() => nonQueryActions[command]());
+                return Task.Run(() => (long)entities.Count);
+            }
+            else
+                throw new NotImplementedException();
         }
 
         public Task<IEnumerable<IDictionary<string, object>>> ExecuteReaderAsync(string command, string parameterName, object parameterValue)
