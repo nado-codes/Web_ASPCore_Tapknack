@@ -11,6 +11,14 @@ using Microsoft.AspNetCore.Diagnostics;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
 using System.Security.Authentication;
+using NadoMapper.Interfaces;
+using System.Collections.Generic;
+using NadoMapper.Models;
+using NadoMapper;
+using NadoMapper.SqlProvider;
+using Tapknack_Server.Interfaces;
+using Tapknack_Server.Models;
+using Tapknack_Server.Repositories;
 
 namespace Tapknack_Server
 {
@@ -40,6 +48,13 @@ namespace Tapknack_Server
                                   builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
                               });
             });
+
+            IConfiguration configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .Build();
+
+            services.AddSingleton(configuration);
+            services.AddTransient<IDbService, SqlService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

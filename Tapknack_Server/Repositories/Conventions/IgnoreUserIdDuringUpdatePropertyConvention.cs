@@ -1,14 +1,14 @@
-using NadoMapper.SqlProvider;
+using NadoMapper.Enums;
 using NadoMapper.Conventions;
 
 namespace Tapknack_Server.Repositories
 {
   public class IgnoreUserIdDuringUpdatePropertyConvention : PropertyConventionBase
   {
-    public IgnoreUserIdDuringUpdatePropertyConvention()
-    {
-      PropertyName = "UserId";
-      CRUDType = CRUDType.Update;
+        public IgnoreUserIdDuringUpdatePropertyConvention()
+        {
+            PropertyName = "UserId";
+            CRUDType = CRUDType.Update;
+        }
     }
-  }
 }

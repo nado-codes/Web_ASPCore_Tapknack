@@ -1,15 +1,17 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using NadoMapper;
-using NadoMapper.Models;
+using NadoMapper.Interfaces;
+using Tapknack_Server.Interfaces;
 
 namespace Tapknack_Server.Repositories
 {
-    public class TPKRepoBase<T> : RepositoryBase<T> where T : ModelBase, new()
+    public class TPKRepoBase<T> : RepositoryBase<T>, ITPKRepository<T> where T : IModel, new()
     {
         //TODO: This should be encrypted in somewhere like AppConfig ... not hardcoded here!!
         const string connectionString = "Server=localhost;Database=Tapknack;Trusted_Connection=True;";
 
-        public TPKRepoBase() : base(connectionString) { }
+        public TPKRepoBase(IDataContext<T> dataContext) : base(dataContext) { }
 
         public new async Task<T> AddAsync(T entity)
         {
