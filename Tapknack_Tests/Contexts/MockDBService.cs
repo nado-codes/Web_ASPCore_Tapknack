@@ -42,12 +42,47 @@ namespace Tapknack_Tests.Contexts
 
         public Task<long> ExecuteNonQueryAsync(string command, CRUDType crudType, IDictionary<string, object> parameters = null)
         {
-            if (command == $"Add{modelName}")
+            if (command == $"Update{modelName}")
             {
-                var entity = _NadoMapper.MapPropsToSingle<TEntity>(parameters);
-                entities.Add(entity);
+                var entityToUpdate = _NadoMapper.MapPropsToSingle<TEntity>(parameters);
 
-                return Task.Run(() => (long)entities.Count);
+                var existingEntity = entities.FirstOrDefault(e => e.Id == entityToUpdate.Id);
+
+                if (existingEntity == null)
+                    throw new NullReferenceException($"No entity exists with id {entityToUpdate.Id}");
+
+                if (existingEntity.LastModified != entityToUpdate.LastModified)
+                    throw new ApplicationException("Failed to update");
+
+                var indexOfEntity = entities.IndexOf(existingEntity);
+                entities[indexOfEntity] = entityToUpdate;
+
+                return Task.Run(() => (long)1);
+            }
+            else if (command == $"Delete{modelName}")
+            {
+                if (!parameters.ContainsKey("id"))
+                    throw new ArgumentException($"Parameter \"id\" is required in call to Delete{modelName}");
+
+                if (!int.TryParse(parameters["id"].ToString(), out int id))
+                    throw new ArgumentException($"Parameter \"id\" must be parsable to int in call to Delete{modelName}");
+
+                if (!parameters.ContainsKey("lastModified") || parameters["lastModified"] == null)
+                    throw new ArgumentException($"Parameter \"lastModified\" is required in call to Delete{modelName}");
+
+                var existingEntity = entities.FirstOrDefault(e => e.Id == id);
+
+                if (existingEntity == null)
+                    throw new NullReferenceException($"No entity exists with id {id}");
+
+                byte[] lastModified = (byte[])parameters["lastModified"];
+
+                if (!existingEntity.LastModified.SequenceEqual(lastModified))
+                    throw new ApplicationException("Failed to delete");
+
+                entities.Remove(existingEntity);
+
+                return Task.Run(() => (long)1);
             }
             else
                 throw new NotImplementedException();
@@ -62,7 +97,6 @@ namespace Tapknack_Tests.Contexts
             {
                 if (!parameters.ContainsKey("id"))
                     throw new ArgumentException($"Parameter \"id\" is required in call to Get{modelName}ById");
-
 
                 if (!int.TryParse(parameters["id"].ToString(), out int id))
                     throw new ArgumentException($"Parameter \"id\" must be parsable to int in call to Get{modelName}ById");
@@ -87,6 +121,7 @@ namespace Tapknack_Tests.Contexts
             {
                 var entity = _NadoMapper.MapPropsToSingle<TEntity>(parameters);
                 entity.Id = entities.Count + 1;
+                entity.LastModified = Encoding.UTF8.GetBytes(DateTime.Now.Ticks.ToString());
                 entities.Add(entity);
 
                 return Task.Run(() => (object)(long)entities.Count);
