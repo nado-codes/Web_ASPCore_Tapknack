@@ -18,7 +18,7 @@ namespace Tapknack_Tests.Unit
 
         public UsersRepositoryUnitTests()
         {
-            _mockUserDbService = new MockDBService<User>();
+            _mockUserDbService = new MockUserDbService();
         }
 
         [Theory]
@@ -48,6 +48,39 @@ namespace Tapknack_Tests.Unit
             Assert.Equal(username, getUserById.Username);
             Assert.Equal(password, getUserById.Password);
             Assert.Equal(user.LastModified, getUserById.LastModified);
+        }
+
+        [Theory]
+        [InlineData("testUser", "123")]
+        public async void GetUserByUsername(string username, string password)
+        {
+            var userDataContext = new DataContext<User>(_mockUserDbService);
+            var userRepo = new UsersRepository(userDataContext);
+            var user = await userRepo.AddAsync(new User() { Username = username, Password = password });
+
+            var getUserByUsername = await userRepo.GetByUsernameAsync(user.Username);
+
+            Assert.NotNull(getUserByUsername);
+            Assert.Equal(username, getUserByUsername.Username);
+            Assert.Equal(password, getUserByUsername.Password);
+            Assert.Equal(user.LastModified, getUserByUsername.LastModified);
+        }
+
+        [Theory]
+        [InlineData("testUser", "testUser@mail.com", "123")]
+        public async void GetUserByEmail(string username, string email, string password)
+        {
+            var userDataContext = new DataContext<User>(_mockUserDbService);
+            var userRepo = new UsersRepository(userDataContext);
+            var user = await userRepo.AddAsync(new User() { Username = username, Email = email, Password = password });
+
+            var getUserByEmail = await userRepo.GetByEmailAsync(user.Email);
+
+            Assert.NotNull(getUserByEmail);
+            Assert.Equal(username, getUserByEmail.Username);
+            Assert.Equal(email, getUserByEmail.Email);
+            Assert.Equal(password, getUserByEmail.Password);
+            Assert.Equal(user.LastModified, getUserByEmail.LastModified);
         }
 
         [Theory]
@@ -86,17 +119,17 @@ namespace Tapknack_Tests.Unit
         [InlineData("testUser", "123")]
         public async void DeleteUser(string username, string password)
         {
-            var userDataContext = new DataContext<User>(_mockUserDbService);
+            var mockUserDbService = new MockUserDbService(new List<User>() { new User() { Username = username, Password = password } });
+            var userDataContext = new DataContext<User>(mockUserDbService);
             var userRepo = new UsersRepository(userDataContext);
-            var user = await userRepo.AddAsync(new User() { Username = username, Password = password });
 
-            var getUserById = await userRepo.GetSingleAsync(user.Id);
+            var getUserById = await userRepo.GetSingleAsync(1);
 
             var updatedRows = await userRepo.DeleteAsync(getUserById);
 
             Assert.Equal(1, updatedRows);
 
-            await Assert.ThrowsAsync<NullReferenceException>(async () => await userRepo.GetSingleAsync(user.Id));
+            await Assert.ThrowsAsync<NullReferenceException>(async () => await userRepo.GetSingleAsync(1));
         }
     }
 }

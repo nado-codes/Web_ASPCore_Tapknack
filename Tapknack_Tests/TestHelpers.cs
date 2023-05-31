@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Tapknack_Server.Models;
 using Tapknack_Server.Providers;
 using Tapknack_Server.Repositories;
+using Tapknack_Tests.Contexts;
 
 namespace Tapknack_Tests
 {
@@ -14,7 +15,8 @@ namespace Tapknack_Tests
     {
         public static Task<User> CreateTestUser()
         {
-            var usersDataContext = new DataContext<User>();
+            var userDbService = new MockDBService<User>();
+            var usersDataContext = new DataContext<User>(userDbService);
             var usersProvider = new UsersProvider(usersDataContext);
 
             // .. add a user

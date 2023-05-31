@@ -18,7 +18,6 @@ namespace Tapknack_Server.Repositories
         public Task<User> GetByEmailAsync(string email)
             => GetSingleAsync("email", email);
 
-        // .. still need to test this!!
         public Task<IEnumerable<User>> SearchByUsernameEmailAsync(string username, string email)
             => ExecuteReaderAsync("SearchUserByUsernameEmail", new Dictionary<string, object>{
                 {"username",username},

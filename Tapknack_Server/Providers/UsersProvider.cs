@@ -42,9 +42,7 @@ namespace Tapknack_Server.Providers
 
             return await _repo.AddAsync(user with
             {
-                Password = hashedPassword,
-                Username = user.Username.ToLower(),
-                Email = user.Email.ToLower()
+                Password = hashedPassword
             });
         }
 
