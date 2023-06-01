@@ -42,8 +42,7 @@ namespace Tapknack_Tests.Unit
             Assert.Equal(email, user.Email);
 
             var passwordProvider = new PasswordProvider();
-            var passwordEncrypted = passwordProvider.Encrypt(password);
-            Assert.Equal(passwordEncrypted, user.Password);
+            Assert.True(passwordProvider.Verify(password, user.Password));
         }
 
         [Theory]

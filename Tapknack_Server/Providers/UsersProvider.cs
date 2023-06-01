@@ -59,11 +59,7 @@ namespace Tapknack_Server.Providers
                     throw new ApplicationException("EMAIL_DUPLICATE");
             }
 
-            return await _repo.UpdateAsync(user with
-            {
-                Username = user.Username.ToLower(),
-                Email = user.Email.ToLower()
-            });
+            return await _repo.UpdateAsync(user);
         }
 
         public Task<long> UpdateUserPasswordAsync(User user)

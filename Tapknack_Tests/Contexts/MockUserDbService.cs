@@ -35,8 +35,8 @@ namespace Tapknack_Tests.Contexts
                 if (!parameters.ContainsKey("username") || parameters["username"] == null)
                     throw new ArgumentException($"Parameter \"username\" is required in call to GetUserByUsername");
 
-                string name = parameters["username"].ToString();
-                var entity = Entities.FirstOrDefault(e => e.Username == name);
+                string name = parameters["username"].ToString().ToLower();
+                var entity = Entities.FirstOrDefault(e => e.Username.ToLower() == name);
 
                 if (entity == null)
                     return Task.Run(() => new List<Dictionary<string, object>>().Cast<IDictionary<string,object>>());
@@ -51,8 +51,8 @@ namespace Tapknack_Tests.Contexts
                 if (!parameters.ContainsKey("email") || parameters["email"] == null)
                     throw new ArgumentException($"Parameter \"email\" is required in call to GetUserByEmail");
 
-                string email = parameters["email"].ToString();
-                var entity = Entities.FirstOrDefault(e => e.Email == email);
+                string email = parameters["email"].ToString().ToLower();
+                var entity = Entities.FirstOrDefault(e => e.Email.ToLower() == email);
 
                 if (entity == null)
                     return Task.Run(() => new List<IDictionary<string, object>>().Cast<IDictionary<string, object>>());
@@ -70,10 +70,12 @@ namespace Tapknack_Tests.Contexts
                 if (parameters.ContainsKey("email") && string.IsNullOrEmpty(parameters["email"]?.ToString()))
                     throw new ArgumentException($"Parameter \"email\" cannot be null or empty in call to SearchUserByUsernameEmail");
 
-                string username = parameters["username"]?.ToString() ?? string.Empty;
-                string email = parameters["email"]?.ToString() ?? string.Empty;
+                string username = parameters["username"]?.ToString().ToLower() ?? string.Empty;
+                string email = parameters["email"]?.ToString().ToLower() ?? string.Empty;
 
-                var entities = Entities.Where(e => 
+                var entitiesUsernamesEmailsToLower = Entities.Select(e => e with { Username = e.Username.ToLower(), Email = e.Email.ToLower() });
+
+                var entities = entitiesUsernamesEmailsToLower.Where(e => 
                     (username != string.Empty && (e.Username.Contains(username) || e.Username.StartsWith(username) || e.Username.EndsWith(username))) ||
                     (email != string.Empty && (e.Email.Contains(email) || e.Email.StartsWith(email) || e.Email.EndsWith(email)))
                 );
