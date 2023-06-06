@@ -9,13 +9,13 @@ using Tapknack_Server.Providers;
 using Tapknack_Server.Repositories;
 using Tapknack_Tests.Contexts;
 
-namespace Tapknack_Tests
+namespace Tapknack_Tests.Utils
 {
     public static class TestHelpers
     {
         public static Task<User> CreateTestUser()
         {
-            var userDbService = new MockDBService<User>();
+            var userDbService = new MockUserDbService();
             var usersDataContext = new DataContext<User>(userDbService);
             var usersProvider = new UsersProvider(usersDataContext);
 

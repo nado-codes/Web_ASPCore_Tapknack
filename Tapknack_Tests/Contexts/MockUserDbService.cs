@@ -14,17 +14,6 @@ namespace Tapknack_Tests.Contexts
     {
         public MockUserDbService(List<User> mockUsers = null) : base(mockUsers) { }
 
-        public Task<object> ExecuteScalarAsync(string command, CRUDType crudType, string parameterName, object parameterValue)
-             => ExecuteScalarAsync(command, crudType, new Dictionary<string, object>() { { parameterName, parameterValue } });
-
-        public new Task<object> ExecuteScalarAsync(string command, CRUDType crudType, IDictionary<string, object> parameters = null)
-            => base.ExecuteScalarAsync(command, crudType, parameters);
-
-
-        public new Task<long> ExecuteNonQueryAsync(string command, CRUDType crudType, IDictionary<string, object> parameters = null)
-            => base.ExecuteNonQueryAsync(command, crudType, parameters);
-
-
         public new Task<IEnumerable<IDictionary<string, object>>> ExecuteReaderAsync(string command, string parameterName, object parameterValue)
             => ExecuteReaderAsync(command, new Dictionary<string, object>() { { parameterName, parameterValue } });
 

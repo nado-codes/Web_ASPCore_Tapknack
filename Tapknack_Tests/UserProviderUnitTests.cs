@@ -12,7 +12,7 @@ using Tapknack_Server.Repositories;
 using Tapknack_Tests.Contexts;
 using Xunit;
 
-namespace Tapknack_Tests.Unit
+namespace Tapknack_Tests
 {
     public class UserProviderUnitTests
     {
@@ -27,7 +27,7 @@ namespace Tapknack_Tests.Unit
         }
 
         [Theory]
-        [InlineData("testUser","test@mail.com","123")]
+        [InlineData("testUser", "test@mail.com", "123")]
         public async void AddUser(string username, string email, string password)
         {
             var user = await _usersProvider.AddUserAsync(new User()
@@ -46,8 +46,8 @@ namespace Tapknack_Tests.Unit
         }
 
         [Theory]
-        [InlineData("updatedUser", "updatedTest@mail.com", "321")]
-        public async void UpdateUser(string updatedUsername, string updatedEmail, string updatedPassword)
+        [InlineData("updatedUser", "updatedTest@mail.com")]
+        public async void UpdateUserNameAndEmail(string updatedUsername, string updatedEmail)
         {
             var user = await _usersProvider.AddUserAsync(new User()
             {
@@ -56,12 +56,10 @@ namespace Tapknack_Tests.Unit
                 Password = "123"
             });
 
-            var rowsUpdated = await _usersProvider.UpdateUserAsync(new User()
+            var rowsUpdated = await _usersProvider.UpdateUserAsync(user with
             {
-                Id = user.Id,
                 Username = updatedUsername,
-                Email = updatedEmail,
-                Password = updatedPassword
+                Email = updatedEmail
             });
 
             Assert.Equal(1, rowsUpdated);
@@ -72,7 +70,32 @@ namespace Tapknack_Tests.Unit
             Assert.NotNull(updatedUser);
             Assert.Equal(updatedUsername, updatedUser.Username);
             Assert.Equal(updatedEmail, updatedUser.Email);
-            Assert.Equal(updatedPassword, updatedUser.Password);
+        }
+
+        [Theory]
+        [InlineData("321")]
+        public async void UpdateUserPassword(string updatedPassword)
+        {
+            var user = await _usersProvider.AddUserAsync(new User()
+            {
+                Username = "testUser",
+                Email = "test@mail.com",
+                Password = "123"
+            });
+
+            var rowsUpdated = await _usersProvider.UpdateUserPasswordAsync(user with
+            {
+                Password = updatedPassword
+            });
+
+            Assert.Equal(1, rowsUpdated);
+
+            var userRepo = new UsersRepository(_userDataContext);
+            var updatedUser = await userRepo.GetSingleAsync(user.Id);
+
+            Assert.NotNull(updatedUser);
+            var passwordProv = new PasswordProvider();
+            passwordProv.Verify(updatedPassword, updatedUser.Password);
         }
     }
 }

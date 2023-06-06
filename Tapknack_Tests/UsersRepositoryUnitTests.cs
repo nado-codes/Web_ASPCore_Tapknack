@@ -10,7 +10,7 @@ using Tapknack_Server.Repositories;
 using Tapknack_Tests.Contexts;
 using Xunit;
 
-namespace Tapknack_Tests.Unit
+namespace Tapknack_Tests
 {
     public class UsersRepositoryUnitTests
     {
@@ -22,7 +22,7 @@ namespace Tapknack_Tests.Unit
         }
 
         [Theory]
-        [InlineData("testUser","123")]
+        [InlineData("testUser", "123")]
         public async void AddUser(string username, string password)
         {
             var userDataContext = new DataContext<User>(_mockUserDbService);
@@ -111,7 +111,7 @@ namespace Tapknack_Tests.Unit
             var user = await userRepo.AddAsync(new User() { Username = "user123", Password = "123" });
 
             user.LastModified = Encoding.UTF8.GetBytes("OopsieDaisie");
-            
+
             await Assert.ThrowsAsync<ApplicationException>(async () => await userRepo.UpdateAsync(user));
         }
 
@@ -119,17 +119,20 @@ namespace Tapknack_Tests.Unit
         [InlineData("testUser", "123")]
         public async void DeleteUser(string username, string password)
         {
-            var mockUserDbService = new MockUserDbService(new List<User>() { new User() { Username = username, Password = password } });
+            var mockUserDbService = new MockUserDbService();
             var userDataContext = new DataContext<User>(mockUserDbService);
-            var userRepo = new UsersRepository(userDataContext);
+            var usersRepository = new UsersRepository(userDataContext);
 
-            var getUserById = await userRepo.GetSingleAsync(1);
+            var newUser = await usersRepository.AddAsync(new User() { Username = username, Password = password });
 
-            var updatedRows = await userRepo.DeleteAsync(getUserById);
+            var getUserById = await usersRepository.GetSingleAsync(1);
+
+            var updatedRows = await usersRepository.DeleteAsync(getUserById);
 
             Assert.Equal(1, updatedRows);
 
-            await Assert.ThrowsAsync<NullReferenceException>(async () => await userRepo.GetSingleAsync(1));
+            var tryGetDeletedUser = await usersRepository.GetSingleAsync(newUser.Id);
+            Assert.Null(tryGetDeletedUser);
         }
     }
 }
