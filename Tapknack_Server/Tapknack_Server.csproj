@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Utils\Web_Utilities_NadoMapper\NadoMapper\NadoMapper\NadoMapper.csproj" />
+    <ProjectReference Include="..\..\..\Utilities\Web_Utilities_NadoMapperORM\NadoMapper\NadoMapper\NadoMapper.csproj" />
   </ItemGroup>
 
 </Project>

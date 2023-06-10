@@ -8,9 +8,6 @@ namespace Tapknack_Server.Repositories
 {
     public class TPKRepoBase<T> : RepositoryBase<T>, ITPKRepository<T> where T : IModel, new()
     {
-        //TODO: This should be encrypted in somewhere like AppConfig ... not hardcoded here!!
-        const string connectionString = "Server=localhost;Database=Tapknack;Trusted_Connection=True;";
-
         public TPKRepoBase(IDataContext<T> dataContext) : base(dataContext) { }
 
         public new async Task<T> AddAsync(T entity)

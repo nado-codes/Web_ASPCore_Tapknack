@@ -19,6 +19,7 @@ using NadoMapper.SqlProvider;
 using Tapknack_Server.Interfaces;
 using Tapknack_Server.Models;
 using Tapknack_Server.Repositories;
+using Tapknack_Server.Providers;
 
 namespace Tapknack_Server
 {
@@ -54,7 +55,12 @@ namespace Tapknack_Server
             .Build();
 
             services.AddSingleton(configuration);
+            services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IDbService, SqlService>();
+            services.AddTransient<IDataContext<User>,DataContext<User>>();
+            services.AddTransient<IDataContext<Session>,DataContext<Session>>();
+            services.AddTransient<IUsersRepository, UsersRepository>();
+            services.AddTransient<ISessionsRepository, SessionsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

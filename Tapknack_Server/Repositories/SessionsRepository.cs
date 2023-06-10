@@ -3,10 +3,11 @@ using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using NadoMapper.Interfaces;
+using Tapknack_Server.Interfaces;
 
 namespace Tapknack_Server.Repositories
 {
-  public class SessionsRepository : TPKRepoBase<Session>
+  public class SessionsRepository : TPKRepoBase<Session>, ISessionsRepository
   {
     public SessionsRepository(IDataContext<Session> dataContext) : base(dataContext)
     {

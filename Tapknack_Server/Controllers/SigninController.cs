@@ -5,29 +5,35 @@ using Microsoft.AspNetCore.Mvc;
 using Tapknack_Server.Models;
 using Tapknack_Server.Repositories;
 using Tapknack_Server.Providers;
+using Microsoft.Extensions.Configuration;
+using Tapknack_Server.Interfaces;
 
 namespace Tapknack_Server.Controllers
 {
   [Route("api/signin")]
   public class SigninController : ControllerBase
   {
-    [HttpPost]
-    [AllowAnonymous]
-    public async Task<SigninResponse> SigninAsync()
-    {
-      try
-      {
-        // .. remove the password from the new user for security reasons
-        var signinProv = new SigninProvider();
-        var response = await signinProv.SigninAsync(HttpContext.Request);
+        private readonly IAuthService _authService;
+        public SigninController(IAuthService authService)
+        {
+            _authService = authService;
+        }
 
-        return response;
-      }
-      catch (Exception e)
-      {
-        Console.WriteLine(e);
-        throw;
-      }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<SigninResponse> SigninAsync()
+        {
+            try
+            {
+                var response = await _authService.SigninAsync(HttpContext.Request);
+                return response;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
     }
-  }
 }

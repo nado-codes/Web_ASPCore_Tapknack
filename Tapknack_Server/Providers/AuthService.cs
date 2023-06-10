@@ -3,14 +3,21 @@ using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using NadoMapper;
+using NadoMapper.Interfaces;
+using Tapknack_Server.Interfaces;
 using Tapknack_Server.Models;
 using Tapknack_Server.Repositories;
 
 namespace Tapknack_Server.Providers
 {
-    public class SigninProvider
+    public class AuthService : IAuthService
     {
+        private readonly IUsersRepository _usersRepository;
+        public AuthService(IUsersRepository usersRepository) {
+            _usersRepository = usersRepository;
+        }
         public async Task<SigninResponse> SigninAsync(HttpRequest request)
         {
             // .. Probably wanna remove this stuff (try not to copy other projects)
@@ -32,9 +39,8 @@ namespace Tapknack_Server.Providers
             var userName = userPass[0];
             var password = userPass[1];
 
-            var usersDataContext = new DataContext<User>();
-            var usersRepo = new UsersRepository(usersDataContext);
-            var user = await usersRepo.GetByUsernameAsync(userName);
+            
+            var user = await _usersRepository.GetByUsernameAsync(userName);
 
             if (user == null)
                 throw new AuthenticationException("USER_INVALID");
