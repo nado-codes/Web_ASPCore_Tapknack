@@ -4,22 +4,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Tapknack_Server.Interfaces;
 using Tapknack_Server.Models;
 using Tapknack_Server.Repositories;
 
 namespace Tapknack_Server.Providers
 {
-    public class UsersProvider
+    public class UserService : IUserService
     {
-        private UsersRepository _repo;
+        private readonly IUsersRepository _usersRepository;
 
-        public UsersProvider(IDataContext<User> dataContext)
+        public UserService(IUsersRepository usersRepository)
         {
-            _repo = new UsersRepository(dataContext);
+            _usersRepository = usersRepository;
         }
 
         public Task<IEnumerable<User>> SearchByUsernameEmailAsync(string username, string email)
-          => _repo.SearchByUsernameEmailAsync(username, email);
+          => _usersRepository.SearchByUsernameEmailAsync(username, email);
 
         public async Task<User> AddUserAsync(User user)
         {
@@ -29,18 +30,18 @@ namespace Tapknack_Server.Providers
             var passwordProv = new PasswordProvider();
             var hashedPassword = passwordProv.Encrypt(user.Password);
 
-            var existingUser = await _repo.GetByUsernameAsync(user.Username);
+            var existingUser = await _usersRepository.GetByUsernameAsync(user.Username);
             if (existingUser != null)
                 throw new ApplicationException("USERNAME_DUPLICATE");
 
             if (user.Email != string.Empty)
             {
-                existingUser = await _repo.GetByEmailAsync(user.Email);
+                existingUser = await _usersRepository.GetByEmailAsync(user.Email);
                 if (existingUser != null)
                     throw new ApplicationException("EMAIL_DUPLICATE");
             }
 
-            return await _repo.AddAsync(user with
+            return await _usersRepository.AddAsync(user with
             {
                 Password = hashedPassword
             });
@@ -48,18 +49,18 @@ namespace Tapknack_Server.Providers
 
         public async Task<long> UpdateUserAsync(User user)
         {
-            var existingUser = await _repo.GetByUsernameAsync(user.Username);
+            var existingUser = await _usersRepository.GetByUsernameAsync(user.Username);
             if (existingUser != null)
                 throw new ApplicationException("USERNAME_DUPLICATE");
 
             if (user.Email != string.Empty)
             {
-                existingUser = await _repo.GetByEmailAsync(user.Email);
+                existingUser = await _usersRepository.GetByEmailAsync(user.Email);
                 if (existingUser != null)
                     throw new ApplicationException("EMAIL_DUPLICATE");
             }
 
-            return await _repo.UpdateAsync(user);
+            return await _usersRepository.UpdateAsync(user);
         }
 
         public Task<long> UpdateUserPasswordAsync(User user)
@@ -67,7 +68,7 @@ namespace Tapknack_Server.Providers
             var passwordProv = new PasswordProvider();
             var hashedPassword = passwordProv.Encrypt(user.Password);
 
-            return _repo.UpdateAsync(user with { Password = hashedPassword });
+            return _usersRepository.UpdateAsync(user with { Password = hashedPassword });
         }
     }
 }

@@ -17,27 +17,23 @@ namespace Tapknack_Server.Controllers
     [Route("api/users")]
     public class UsersController : CRUDApiController<User,IUsersRepository>
     {
-        private readonly UsersProvider _usersProv;
+        private readonly IUserService _userService;
 
-        public UsersController(IUsersRepository repo) : base(repo) {
-            var usersDataContext = new DataContext<User>();
-            _usersProv = new UsersProvider(usersDataContext);
+        public UsersController(IUserService userService, IUsersRepository usersRepository, IAuthService authService) : base(usersRepository,authService) {
+            _userService = userService;
         }
 
         [HttpPost]
         public override async Task<User> AddAsync([FromBody] User user)
         {
-            // .. remove the password from the new user for security reasons
-            var usersDataContext = new DataContext<User>();
-            var usersProv = new UsersProvider(usersDataContext);
-            var newUser = await usersProv.AddUserAsync(user) with { Password = "" };
+            var newUser = await _userService.AddUserAsync(user) with { Password = "" };
             return newUser;
         }
 
         [HttpGet("username/{username}")]
         public async Task<User> GetByUsernameAsync(string username)
         {
-            var user = await _repo.GetByUsernameAsync(username);
+            var user = await _repository.GetByUsernameAsync(username);
 
             if (user == null)
                 throw new ApplicationException("USER_INVALID");
@@ -47,29 +43,29 @@ namespace Tapknack_Server.Controllers
 
         [HttpGet("/email/{email}")]
         public Task<User> GetByEmailAsync(string email)
-            => _repo.GetByEmailAsync(email);
+            => _repository.GetByEmailAsync(email);
 
         // .. still need to test this!!
         [HttpGet("/search")]
         public Task<IEnumerable<User>> SearchByUsernameEmailAsync([FromBody] UserSearchQuery query)
         {
-            return _usersProv.SearchByUsernameEmailAsync(query.Username, query.Email);
+            return _userService.SearchByUsernameEmailAsync(query.Username, query.Email);
         }
 
         [HttpPut("/username")]
         public async Task<long> UpdateUserUsernameAsync([FromBody] User user)
         {
-            var existingUser = await _repo.GetByUsernameAsync(user.Username);
+            var existingUser = await _repository.GetByUsernameAsync(user.Username);
             if (existingUser != null)
                 throw new ApplicationException("USERNAME_DUPLICATE");
 
-            return await _repo.UpdateAsync(user);
+            return await _repository.UpdateAsync(user);
         }
 
         [HttpPut("/password")]
         public Task<long> UpdateUserPasswordAsync([FromBody] User user)
         {
-            return _usersProv.UpdateUserPasswordAsync(user);
+            return _userService.UpdateUserPasswordAsync(user);
         }
     }
 }

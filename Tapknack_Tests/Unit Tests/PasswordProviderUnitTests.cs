@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Tapknack_Server.Providers;
 using Xunit;
 
-namespace Tapknack_Tests
+namespace Tapknack_Tests.Unit
 {
     public class PasswordProviderUnitTests
     {

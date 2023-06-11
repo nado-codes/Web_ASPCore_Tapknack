@@ -6,31 +6,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tapknack_Server.Interfaces;
 using Tapknack_Server.Models;
 using Tapknack_Server.Providers;
 using Tapknack_Server.Repositories;
 using Tapknack_Tests.Contexts;
 using Xunit;
 
-namespace Tapknack_Tests
+namespace Tapknack_Tests.Unit
 {
     public class UserProviderUnitTests
     {
-        private UsersProvider _usersProvider;
-        private DataContext<User> _userDataContext;
+        private readonly IUserService _userService;
+        private readonly IUsersRepository _usersRepository;
 
         public UserProviderUnitTests()
         {
             var mockUserDbService = new MockUserDbService();
-            _userDataContext = new DataContext<User>(mockUserDbService);
-            _usersProvider = new UsersProvider(_userDataContext);
+            var userDataContext = new DataContext<User>(mockUserDbService);
+            _usersRepository = new UsersRepository(userDataContext);
+            _userService = new UserService(_usersRepository);
         }
 
         [Theory]
         [InlineData("testUser", "test@mail.com", "123")]
         public async void AddUser(string username, string email, string password)
         {
-            var user = await _usersProvider.AddUserAsync(new User()
+            var user = await _userService.AddUserAsync(new User()
             {
                 Username = username,
                 Email = email,
@@ -49,14 +51,14 @@ namespace Tapknack_Tests
         [InlineData("updatedUser", "updatedTest@mail.com")]
         public async void UpdateUserNameAndEmail(string updatedUsername, string updatedEmail)
         {
-            var user = await _usersProvider.AddUserAsync(new User()
+            var user = await _userService.AddUserAsync(new User()
             {
                 Username = "testUser",
                 Email = "test@mail.com",
                 Password = "123"
             });
 
-            var rowsUpdated = await _usersProvider.UpdateUserAsync(user with
+            var rowsUpdated = await _userService.UpdateUserAsync(user with
             {
                 Username = updatedUsername,
                 Email = updatedEmail
@@ -64,8 +66,7 @@ namespace Tapknack_Tests
 
             Assert.Equal(1, rowsUpdated);
 
-            var userRepo = new UsersRepository(_userDataContext);
-            var updatedUser = await userRepo.GetSingleAsync(user.Id);
+            var updatedUser = await _usersRepository.GetSingleAsync(user.Id);
 
             Assert.NotNull(updatedUser);
             Assert.Equal(updatedUsername, updatedUser.Username);
@@ -76,22 +77,21 @@ namespace Tapknack_Tests
         [InlineData("321")]
         public async void UpdateUserPassword(string updatedPassword)
         {
-            var user = await _usersProvider.AddUserAsync(new User()
+            var user = await _userService.AddUserAsync(new User()
             {
                 Username = "testUser",
                 Email = "test@mail.com",
                 Password = "123"
             });
 
-            var rowsUpdated = await _usersProvider.UpdateUserPasswordAsync(user with
+            var rowsUpdated = await _userService.UpdateUserPasswordAsync(user with
             {
                 Password = updatedPassword
             });
 
             Assert.Equal(1, rowsUpdated);
 
-            var userRepo = new UsersRepository(_userDataContext);
-            var updatedUser = await userRepo.GetSingleAsync(user.Id);
+            var updatedUser = await _usersRepository.GetSingleAsync(user.Id);
 
             Assert.NotNull(updatedUser);
             var passwordProv = new PasswordProvider();

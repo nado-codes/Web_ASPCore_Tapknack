@@ -15,9 +15,11 @@ namespace Tapknack_Server.Providers
     public class AuthService : IAuthService
     {
         private readonly IUsersRepository _usersRepository;
+
         public AuthService(IUsersRepository usersRepository) {
             _usersRepository = usersRepository;
         }
+
         public async Task<SigninResponse> SigninAsync(HttpRequest request)
         {
             // .. Probably wanna remove this stuff (try not to copy other projects)
@@ -72,6 +74,46 @@ namespace Tapknack_Server.Providers
                 Username = user.Username,
                 Token = session.AccessToken,
             };
+        }
+
+        public async Task<string> AuthenticateAsync(HttpRequest request)
+        {
+            var authHeader = request.Headers["Authorization"].ToString();
+
+            if (authHeader == "")
+                throw new ApplicationException("Authorization header must be provided");
+
+            var token = authHeader.Split(" ")[1];
+
+            if (token == "undefined")
+                throw new ApplicationException("Token cannot be undefined");
+
+            var authToken = Guid.Parse(token);
+
+            return await AuthenticateAsync(authToken);
+        }
+
+        public async Task<string> AuthenticateAsync(Guid accessToken)
+        {
+            var sessionsDataContext = new DataContext<Session>();
+            var sessionsRepo = new SessionsRepository(sessionsDataContext);
+            var session = await sessionsRepo.GetByAccessTokenAsync(accessToken);
+
+            if (session == null)
+                throw new AuthenticationException("SESSION_INVALID");
+
+            if (session.Expiry < DateTime.UtcNow)
+                throw new AuthenticationException("SESSION_EXPIRED");
+
+            if (session.AccessExpiry < DateTime.UtcNow)
+            {
+                // .. generate and return new access token
+                var newAccess = Guid.NewGuid();
+                await sessionsRepo.UpdateAsync(session with { AccessToken = newAccess, AccessExpiry = DateTime.UtcNow.AddSeconds(5) });
+            }
+
+            var updatedSession = await sessionsRepo.GetSingleAsync(session.Id);
+            return updatedSession.AccessToken.ToString();
         }
     }
 

@@ -11,7 +11,7 @@ using Tapknack_Tests.Contexts;
 using Tapknack_Tests.Utils;
 using Xunit;
 
-namespace Tapknack_Tests
+namespace Tapknack_Tests.Unit
 {
     public class SessionsRepositoryUnitTests
     {

@@ -17,7 +17,8 @@ namespace Tapknack_Tests.Utils
         {
             var userDbService = new MockUserDbService();
             var usersDataContext = new DataContext<User>(userDbService);
-            var usersProvider = new UsersProvider(usersDataContext);
+            var usersRepository = new UsersRepository(usersDataContext);
+            var usersProvider = new UserService(usersRepository);
 
             // .. add a user
             var newUsername = $"TestUser~{Guid.NewGuid()}";

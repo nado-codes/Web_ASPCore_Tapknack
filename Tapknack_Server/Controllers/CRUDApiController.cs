@@ -18,19 +18,18 @@ namespace Tapknack_Server.Controllers
     [ApiController]
     public class CRUDApiController<TModel, TRepository> : ControllerBase where TModel : ModelBase, new() where TRepository : ITPKRepository<TModel>
     {
-        protected TRepository _repo;
+        protected TRepository _repository;
+        private readonly IAuthService _authService;
 
-        public CRUDApiController(TRepository repo)
+        public CRUDApiController(TRepository repository, IAuthService authService)
         {
-            _repo = repo;
+            _repository = repository;
+            _authService = authService;
         }
 
         protected async Task AuthenticateAsync()
         {
-            // .. TODO: difficult to return a new access token to the user if it's
-            var authProv = new AuthenticationProvider();
-
-            var newToken = await authProv.AuthenticateAsync(Request);
+            var newToken = await _authService.AuthenticateAsync(Request);
             Request.Headers["access-token"] = newToken;
         }
 
@@ -39,7 +38,7 @@ namespace Tapknack_Server.Controllers
         {
             //TODO: Add authentication checking here
             await AuthenticateAsync();
-            return await _repo.GetAllAsync();
+            return await _repository.GetAllAsync();
         }
 
         [HttpGet("{id}")]
@@ -47,7 +46,7 @@ namespace Tapknack_Server.Controllers
         {
             //TODO: Add authentication checking here
             await AuthenticateAsync();
-            return await _repo.GetSingleAsync(id);
+            return await _repository.GetSingleAsync(id);
         }
 
         [HttpPost("")]
@@ -55,7 +54,7 @@ namespace Tapknack_Server.Controllers
         {
             //TODO: Add authentication checking here
             await AuthenticateAsync();
-            return await _repo.AddAsync(model);
+            return await _repository.AddAsync(model);
         }
 
         [HttpPut]
@@ -63,7 +62,7 @@ namespace Tapknack_Server.Controllers
         {
             //TODO: Add authentication checking here
             await AuthenticateAsync();
-            return await _repo.UpdateAsync(model);
+            return await _repository.UpdateAsync(model);
         }
 
         [HttpDelete("{id}")]
@@ -71,7 +70,7 @@ namespace Tapknack_Server.Controllers
         {
             //TODO: Add authentication checking here
             await AuthenticateAsync();
-            return await _repo.DeleteAsync(model);
+            return await _repository.DeleteAsync(model);
         }
     }
 }

@@ -2,6 +2,8 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tapknack_Server.Interfaces;
+using Tapknack_Server.Models;
 using Tapknack_Server.Providers;
 
 namespace Tapknack_Server.Controllers
@@ -9,32 +11,53 @@ namespace Tapknack_Server.Controllers
   [Route("api/authentication")]
   public class AuthenticationController : ControllerBase
   {
-    [HttpGet]
-    public async Task<object> AuthenticateAsync()
-    {
-      try
-      {
-        var authHeader = Request.Headers["Authorization"].ToString();
+        private readonly IAuthService _authService;
+        public AuthenticationController(IAuthService authService)
+        {
+            _authService = authService;
+        }
 
-        if (authHeader == "")
-          throw new ApplicationException("Authorization header must be provided");
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<SigninResponse> SigninAsync()
+        {
+            try
+            {
+                var response = await _authService.SigninAsync(HttpContext.Request);
+                return response;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
 
-        var token = authHeader.Split(" ")[1];
+        [HttpGet]
+        public async Task<object> AuthenticateAsync()
+        {
+            try
+            {
+                var authHeader = Request.Headers["Authorization"].ToString();
 
-        if (token == "undefined")
-          throw new ApplicationException("Token cannot be undefined");
+                if (authHeader == "")
+                    throw new ApplicationException("Authorization header must be provided");
 
-        var authToken = Guid.Parse(token);
+                var token = authHeader.Split(" ")[1];
 
-        var authProv = new AuthenticationProvider();
-        var newToken = await authProv.AuthenticateAsync(authToken);
-        return new { Token = newToken };
-      }
-      catch (Exception e)
-      {
-        Console.WriteLine(e.Message);
-        throw;
-      }
+                if (token == "undefined")
+                    throw new ApplicationException("Token cannot be undefined");
+
+                var authToken = Guid.Parse(token);
+
+                var newToken = await _authService.AuthenticateAsync(authToken);
+                return new { Token = newToken };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
     }
-  }
 }

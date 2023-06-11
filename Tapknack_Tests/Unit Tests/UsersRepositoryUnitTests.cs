@@ -10,7 +10,7 @@ using Tapknack_Server.Repositories;
 using Tapknack_Tests.Contexts;
 using Xunit;
 
-namespace Tapknack_Tests
+namespace Tapknack_Tests.Unit
 {
     public class UsersRepositoryUnitTests
     {
