@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.TestHost;
 
 using Tapknack_Tests.Utils;
 using Xunit;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace Tapknack_Tests.Integration_Tests
 {
@@ -34,10 +36,18 @@ namespace Tapknack_Tests.Integration_Tests
         [InlineData()]
         public async void CreateUserAndSignin()
         {
-            var testUser = await TestHelpers.CreateTestUser();
+            var username = $"TestUser~{Guid.NewGuid()}";
+            var email = $"TestMail@mail.com~{Guid.NewGuid()}";
+            var password = "123";
+            var testUser = await TestHelpers.CreateTestUser(username,email,password);
 
-            // var content = new Content
-            // var signinResponse = await _client.PostAsync("/api/authentication",)
+            var authString = $"{username}:{password}";
+            var auth64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(authString));
+            var authHeaderValue = new AuthenticationHeaderValue("Bearer", auth64);
+
+            _client.DefaultRequestHeaders.Authorization = authHeaderValue;
+            //var signinResponse = await _client.PostAsync("api/authentication",null);
+            var resp = await _client.GetAsync("api/authentication/test");
         }
     }
 }

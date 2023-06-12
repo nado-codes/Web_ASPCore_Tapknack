@@ -13,7 +13,7 @@ namespace Tapknack_Tests.Utils
 {
     public static class TestHelpers
     {
-        public static Task<User> CreateTestUser()
+        public static Task<User> CreateTestUser(string username = null, string email = null, string password = null)
         {
             var userDbService = new MockUserDbService();
             var usersDataContext = new DataContext<User>(userDbService);
@@ -21,9 +21,9 @@ namespace Tapknack_Tests.Utils
             var usersProvider = new UserService(usersRepository);
 
             // .. add a user
-            var newUsername = $"TestUser~{Guid.NewGuid()}";
-            var newEmail = $"TestMail@mail.com~{Guid.NewGuid()}";
-            var newPassword = $"123";
+            var newUsername = username ?? $"TestUser~{Guid.NewGuid()}";
+            var newEmail = email ?? $"TestMail@mail.com~{Guid.NewGuid()}";
+            var newPassword = password ?? $"123";
 
             return usersProvider.AddUserAsync(new User()
             {

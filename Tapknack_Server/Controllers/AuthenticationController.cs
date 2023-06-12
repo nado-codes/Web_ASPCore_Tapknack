@@ -17,6 +17,12 @@ namespace Tapknack_Server.Controllers
             _authService = authService;
         }
 
+        [HttpGet("test")]
+        public async Task TestAsync()
+        {
+
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<SigninResponse> SigninAsync()
